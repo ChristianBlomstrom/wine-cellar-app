@@ -33,13 +33,9 @@
     }
     .title{font-size:52px;font-weight:700;margin:0 0 8px 0}
     .subtitle{color:var(--muted);margin-bottom:20px}
-    .status-pills,.tabs,.action-row,.list-controls{display:flex;flex-wrap:wrap;gap:10px}
-    .pill,.btn,.action-btn,.tab{
-      border:none;cursor:pointer;font-weight:700;
-    }
-    .pill{
-      border-radius:999px;padding:10px 16px;color:#1e1e1e;
-    }
+    .status-pills,.tabs,.action-row,.list-controls,.photo-actions,.modal-actions{display:flex;flex-wrap:wrap;gap:10px}
+    .pill,.btn,.action-btn,.tab{border:none;cursor:pointer;font-weight:700}
+    .pill{border-radius:999px;padding:10px 16px;color:#1e1e1e}
     .pill.ready{background:rgba(143,209,158,.95)}
     .pill.aging{background:rgba(214,177,95,.95)}
     .pill.soon{background:rgba(217,201,107,.95)}
@@ -60,9 +56,7 @@
       background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);
       border:1px solid var(--line);border-radius:18px;padding:18px;
     }
-    .card h3{
-      margin:0 0 14px 0;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);
-    }
+    .card h3{margin:0 0 14px 0;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
     .big-number{font-size:46px;font-weight:700;text-align:center;margin-top:22px}
     .muted-center{text-align:center;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-size:12px}
     .bar-row{margin-bottom:14px}
@@ -76,49 +70,32 @@
     .fill.country{background:linear-gradient(90deg,#d77c7c,#e7c06d)}
     .fill.type{background:linear-gradient(90deg,#d77c7c,#85c8ff)}
     .region-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
-    .region-box{
-      background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:14px;min-height:100px;
-    }
+    .region-box{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:14px;min-height:100px}
     .region-code{color:var(--accent);font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}
     .region-name{font-size:20px;font-weight:700;margin-bottom:8px}
     .search{
       flex:1;min-width:220px;max-width:420px;background:rgba(255,255,255,.08);
       border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:14px;outline:none;
     }
-    .btn{
-      background:var(--accent);color:#2b1a14;border-radius:14px;padding:12px 16px;
-    }
-    .bottle{
-      background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);
-      border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:12px;
-    }
-    .bottle-top{
-      display:flex;gap:12px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;
-    }
+    .btn{background:var(--accent);color:#2b1a14;border-radius:14px;padding:12px 16px}
+    .bottle{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:12px}
+    .bottle-top{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
     .bottle-name{font-size:30px;font-weight:700;margin-bottom:4px}
     .bottle-meta{color:var(--muted);margin-bottom:8px}
-    .badge{
-      display:inline-block;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:700;margin-right:8px;margin-top:6px;
-    }
+    .badge{display:inline-block;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:700;margin-right:8px;margin-top:6px}
     .badge.ready{background:rgba(143,209,158,.2);color:var(--ready)}
     .badge.aging{background:rgba(214,177,95,.2);color:var(--aging)}
     .badge.soon{background:rgba(217,201,107,.2);color:var(--soon)}
     .badge.past{background:rgba(215,120,120,.2);color:var(--past)}
     .badge.type{background:rgba(255,255,255,.08);color:#fff}
-    .qty{
-      min-width:90px;text-align:center;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:16px;padding:10px 14px;
-    }
+    .qty{min-width:90px;text-align:center;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:16px;padding:10px 14px}
     .qty-label{color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
     .qty-value{font-size:30px;font-weight:700}
     .action-btn{border-radius:12px;padding:10px 14px}
     .secondary{background:#e9e2da;color:#2a1713}
     .danger{background:#d77878;color:#fff}
-    .timeline-header,.timeline-row{
-      display:grid;grid-template-columns:230px 1fr 100px;gap:14px;align-items:center;
-    }
-    .timeline-header{
-      color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px;
-    }
+    .timeline-header,.timeline-row{display:grid;grid-template-columns:230px 1fr 100px;gap:14px;align-items:center}
+    .timeline-header{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px}
     .timeline-row{margin-bottom:12px}
     .timeline-name{font-weight:700;margin-bottom:4px}
     .timeline-sub{color:var(--muted);font-size:13px}
@@ -131,24 +108,26 @@
     .year-line{position:absolute;top:0;bottom:0;width:2px;background:var(--accent)}
     .summary-note{color:var(--muted);margin-top:8px}
     .empty{color:var(--muted);padding:20px 0}
-    .modal-backdrop{
-      display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);padding:20px;z-index:1000;overflow:auto;
-    }
+    .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);padding:20px;z-index:1000;overflow:auto}
     .modal-backdrop.show{display:block}
-    .modal{
-      max-width:760px;margin:30px auto;background:#2c1b17;border:1px solid var(--line);border-radius:20px;padding:20px;
-    }
+    .modal{max-width:860px;margin:30px auto;background:#2c1b17;border:1px solid var(--line);border-radius:20px;padding:20px}
     .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .form-grid .full{grid-column:1 / -1}
     .field label{display:block;margin-bottom:6px;color:var(--muted);font-size:14px}
-    .field input,.field select,.field textarea{
-      width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--text);
-    }
+    .field input,.field select,.field textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--text)}
     .field textarea{min-height:90px;resize:vertical}
-    .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+    .photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .photo-card{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:14px}
+    .photo-card h4{margin:0 0 10px 0;font-size:14px;color:var(--accent);text-transform:uppercase;letter-spacing:.1em}
+    .photo-preview{width:100%;height:220px;border-radius:14px;background:rgba(0,0,0,.2);border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--muted);font-size:14px;text-align:center;padding:10px}
+    .photo-preview img{width:100%;height:100%;object-fit:cover;display:block}
+    .hidden-input{display:none}
+    .small-note{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.4}
+    .thumb-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .thumb{width:120px;height:120px;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.05)}
+    .thumb img{width:100%;height:100%;object-fit:cover}
     @media (max-width:980px){
-      .grid-3{grid-template-columns:1fr}
-      .timeline-header,.timeline-row,.form-grid{grid-template-columns:1fr}
+      .grid-3,.timeline-header,.timeline-row,.form-grid,.photo-grid{grid-template-columns:1fr}
       .title{font-size:40px}
       .bottle-name{font-size:24px}
     }
@@ -177,36 +156,17 @@
 
     <section id="overview" class="page active">
       <div class="grid grid-3">
-        <div class="card">
-          <h3>By country</h3>
-          <div id="countryBars"></div>
-        </div>
-        <div class="card">
-          <h3>By type</h3>
-          <div id="typeBars"></div>
-        </div>
-        <div class="card">
-          <h3>Drink window status</h3>
-          <div id="statusBars"></div>
-          <div class="big-number" id="readyNowNumber">0</div>
-          <div class="muted-center">Bottles ready now</div>
-        </div>
+        <div class="card"><h3>By country</h3><div id="countryBars"></div></div>
+        <div class="card"><h3>By type</h3><div id="typeBars"></div></div>
+        <div class="card"><h3>Drink window status</h3><div id="statusBars"></div><div class="big-number" id="readyNowNumber">0</div><div class="muted-center">Bottles ready now</div></div>
       </div>
-
-      <div class="card" style="margin-top:18px;">
-        <h3>Regions at a glance</h3>
-        <div id="regionGrid" class="region-grid"></div>
-      </div>
+      <div class="card" style="margin-top:18px;"><h3>Regions at a glance</h3><div id="regionGrid" class="region-grid"></div></div>
     </section>
 
     <section id="timeline" class="page">
       <div class="card">
         <h3>Drink window timeline</h3>
-        <div class="timeline-header">
-          <div>Wine</div>
-          <div id="timelineYearHeader"></div>
-          <div style="text-align:right;">Window</div>
-        </div>
+        <div class="timeline-header"><div>Wine</div><div id="timelineYearHeader"></div><div style="text-align:right;">Window</div></div>
         <div id="timelineRows"></div>
       </div>
     </section>
@@ -228,47 +188,43 @@
     <div class="modal">
       <h2 id="modalTitle">Add bottle</h2>
       <div class="form-grid">
-        <div class="field">
-          <label>Producer</label>
-          <input id="producerInput" />
-        </div>
-        <div class="field">
-          <label>Wine</label>
-          <input id="wineInput" />
-        </div>
-        <div class="field">
-          <label>Country</label>
-          <input id="countryInput" />
-        </div>
-        <div class="field">
-          <label>Region</label>
-          <input id="regionInput" />
-        </div>
-        <div class="field">
-          <label>Type</label>
-          <select id="typeInput">
-            <option>Red</option>
-            <option>White</option>
-            <option>Sparkling</option>
-            <option>Rosé</option>
-            <option>Dessert</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Quantity</label>
-          <input id="quantityInput" type="number" min="1" value="1" />
-        </div>
-        <div class="field">
-          <label>Drink from</label>
-          <input id="drinkFromInput" type="number" />
-        </div>
-        <div class="field">
-          <label>Drink to</label>
-          <input id="drinkToInput" type="number" />
-        </div>
+        <div class="field"><label>Producer</label><input id="producerInput" /></div>
+        <div class="field"><label>Wine</label><input id="wineInput" /></div>
+        <div class="field"><label>Country</label><input id="countryInput" /></div>
+        <div class="field"><label>Region</label><input id="regionInput" /></div>
+        <div class="field"><label>Type</label><select id="typeInput"><option>Red</option><option>White</option><option>Sparkling</option><option>Rosé</option><option>Dessert</option></select></div>
+        <div class="field"><label>Quantity</label><input id="quantityInput" type="number" min="1" value="1" /></div>
+        <div class="field"><label>Drink from</label><input id="drinkFromInput" type="number" /></div>
+        <div class="field"><label>Drink to</label><input id="drinkToInput" type="number" /></div>
+        <div class="field full"><label>Notes</label><textarea id="notesInput"></textarea></div>
         <div class="field full">
-          <label>Notes</label>
-          <textarea id="notesInput"></textarea>
+          <label>Add bottle photos</label>
+          <div class="photo-grid">
+            <div class="photo-card">
+              <h4>Front label</h4>
+              <div class="photo-preview" id="frontPreview">No front image selected</div>
+              <div class="photo-actions" style="margin-top:10px;">
+                <button type="button" class="action-btn secondary" id="frontUploadBtn">Choose image</button>
+                <button type="button" class="action-btn secondary" id="frontCameraBtn">Use camera</button>
+                <button type="button" class="action-btn danger" id="frontRemoveBtn">Remove</button>
+              </div>
+              <input id="frontUploadInput" class="hidden-input" type="file" accept="image/*" />
+              <input id="frontCameraInput" class="hidden-input" type="file" accept="image/*" capture="environment" />
+              <div class="small-note">You can either choose an existing front image or take a new front photo with your iPhone camera.</div>
+            </div>
+            <div class="photo-card">
+              <h4>Back label</h4>
+              <div class="photo-preview" id="backPreview">No back image selected</div>
+              <div class="photo-actions" style="margin-top:10px;">
+                <button type="button" class="action-btn secondary" id="backUploadBtn">Choose image</button>
+                <button type="button" class="action-btn secondary" id="backCameraBtn">Use camera</button>
+                <button type="button" class="action-btn danger" id="backRemoveBtn">Remove</button>
+              </div>
+              <input id="backUploadInput" class="hidden-input" type="file" accept="image/*" />
+              <input id="backCameraInput" class="hidden-input" type="file" accept="image/*" capture="environment" />
+              <div class="small-note">You can either choose an existing back image or take a new back photo with your iPhone camera.</div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-actions">
@@ -279,15 +235,15 @@
   </div>
 
   <script>
-    const STORAGE_KEY = "wine-cellar-single-file-v2";
+    const STORAGE_KEY = "wine-cellar-single-file-v3";
     const currentYear = new Date().getFullYear();
 
     const starterBottles = [
-      { id:1, producer:"Grande Alberone", wine:"Moscato", country:"Italy", region:"Bardolino", type:"Sparkling", quantity:1, drinkFrom:2025, drinkTo:2027, notes:"Imported from first uploaded bottle photo." },
-      { id:2, producer:"Saint Auriol", wine:"Chatelaine", country:"France", region:"La Clape", type:"Red", quantity:2, drinkFrom:2024, drinkTo:2028, notes:"La Clape AOP" },
-      { id:3, producer:"Example Winery", wine:"Barolo", country:"Italy", region:"Piemonte", type:"Red", quantity:1, drinkFrom:2028, drinkTo:2038, notes:"Example aging bottle" },
-      { id:4, producer:"Old Cellar", wine:"Rioja Reserva", country:"Spain", region:"Rioja", type:"Red", quantity:1, drinkFrom:2016, drinkTo:2024, notes:"Should be prioritized" },
-      { id:5, producer:"Fresh Hills", wine:"Chablis", country:"France", region:"Burgundy", type:"White", quantity:1, drinkFrom:2023, drinkTo:2026, notes:"Drink soon" }
+      { id:1, producer:"Grande Alberone", wine:"Moscato", country:"Italy", region:"Bardolino", type:"Sparkling", quantity:1, drinkFrom:2025, drinkTo:2027, notes:"Imported from first uploaded bottle photo.", frontImage:null, backImage:null },
+      { id:2, producer:"Saint Auriol", wine:"Chatelaine", country:"France", region:"La Clape", type:"Red", quantity:2, drinkFrom:2024, drinkTo:2028, notes:"La Clape AOP", frontImage:null, backImage:null },
+      { id:3, producer:"Example Winery", wine:"Barolo", country:"Italy", region:"Piemonte", type:"Red", quantity:1, drinkFrom:2028, drinkTo:2038, notes:"Example aging bottle", frontImage:null, backImage:null },
+      { id:4, producer:"Old Cellar", wine:"Rioja Reserva", country:"Spain", region:"Rioja", type:"Red", quantity:1, drinkFrom:2016, drinkTo:2024, notes:"Should be prioritized", frontImage:null, backImage:null },
+      { id:5, producer:"Fresh Hills", wine:"Chablis", country:"France", region:"Burgundy", type:"White", quantity:1, drinkFrom:2023, drinkTo:2026, notes:"Drink soon", frontImage:null, backImage:null }
     ];
 
     let bottles = loadBottles();
@@ -295,6 +251,8 @@
     let activeTab = "overview";
     let searchText = "";
     let editingId = null;
+    let frontImageData = null;
+    let backImageData = null;
 
     function loadBottles(){
       try{
@@ -361,7 +319,6 @@
       const total = totalBottleCount(data);
       renderBars("countryBars", totalsBy("country", data), total || 1, "country");
       renderBars("typeBars", totalsBy("type", data), total || 1, "type");
-
       const counts = statusCounts(data);
       const statusItems = [
         { label:"Ready", count:counts["Ready"], cls:"ready" },
@@ -369,35 +326,20 @@
         { label:"Drink soon", count:counts["Drink soon"], cls:"soon" },
         { label:"Past Peak", count:counts["Past Peak"], cls:"past" }
       ];
-
       document.getElementById("statusBars").innerHTML = statusItems.map(item => {
         const pct = total ? Math.max(8, Math.round((item.count / total) * 100)) : 0;
         return `<div class="bar-row"><div class="bar-head"><span>${item.label}</span><span>${item.count} bottles</span></div><div class="track"><div class="fill ${item.cls}" style="width:${pct}%"></div></div></div>`;
       }).join("");
-
       document.getElementById("readyNowNumber").textContent = counts["Ready"];
-
       const regions = totalsBy("region", data);
-      document.getElementById("regionGrid").innerHTML = regions.map(r => `
-        <div class="region-box">
-          <div class="region-code">${r.label.slice(0,2).toUpperCase()}</div>
-          <div class="region-name">${r.label}</div>
-          <div>${r.count} bottle${r.count === 1 ? "" : "s"}</div>
-        </div>`).join("");
-
+      document.getElementById("regionGrid").innerHTML = regions.map(r => `<div class="region-box"><div class="region-code">${r.label.slice(0,2).toUpperCase()}</div><div class="region-name">${r.label}</div><div>${r.count} bottle${r.count === 1 ? "" : "s"}</div></div>`).join("");
       document.getElementById("heroSub").textContent = `${totalBottleCount(data)} bottles · ${totalsBy("country", data).length} countries`;
     }
 
     function renderCollection(data){
-      document.getElementById("collectionSummary").textContent =
-        `Showing ${data.length} entries${activeFilter !== "All" ? " · Filter: " + activeFilter : ""}`;
-
+      document.getElementById("collectionSummary").textContent = `Showing ${data.length} entries${activeFilter !== "All" ? " · Filter: " + activeFilter : ""}`;
       const list = document.getElementById("collectionList");
-      if (!data.length){
-        list.innerHTML = '<div class="empty">No bottles match your filter.</div>';
-        return;
-      }
-
+      if (!data.length){ list.innerHTML = '<div class="empty">No bottles match your filter.</div>'; return; }
       list.innerHTML = data.map(b => {
         const status = getStatus(b);
         const statusClass = status === "Ready" ? "ready" : status === "Aging" ? "aging" : status === "Drink soon" ? "soon" : "past";
@@ -412,83 +354,68 @@
                 <span class="badge ${statusClass}">${status}</span>
                 ${status === "Drink soon" ? '<span class="badge soon">Final year</span>' : ''}
                 <div class="summary-note">${b.notes || ""}</div>
+                ${(b.frontImage || b.backImage) ? `
+                  <div class="thumb-row">
+                    ${b.frontImage ? `<div class="thumb"><img src="${b.frontImage}" alt="Front label" /></div>` : ''}
+                    ${b.backImage ? `<div class="thumb"><img src="${b.backImage}" alt="Back label" /></div>` : ''}
+                  </div>` : ''}
               </div>
-              <div class="qty">
-                <div class="qty-label">Qty</div>
-                <div class="qty-value">${b.quantity}</div>
-              </div>
+              <div class="qty"><div class="qty-label">Qty</div><div class="qty-value">${b.quantity}</div></div>
             </div>
             <div class="action-row">
               <button class="action-btn secondary" onclick="drinkOne(${b.id})">Drink one</button>
               <button class="action-btn secondary" onclick="openEdit(${b.id})">Edit</button>
               <button class="action-btn danger" onclick="deleteBottle(${b.id})">Delete</button>
             </div>
-          </div>
-        `;
+          </div>`;
       }).join("");
     }
 
     function renderTimeline(data){
       const rows = document.getElementById("timelineRows");
-      if (!data.length){
-        rows.innerHTML = '<div class="empty">No bottles match your filter.</div>';
-        return;
-      }
-
+      if (!data.length){ rows.innerHTML = '<div class="empty">No bottles match your filter.</div>'; return; }
       const valid = data.filter(b => b.drinkFrom && b.drinkTo);
-      if (!valid.length){
-        rows.innerHTML = '<div class="empty">No bottles with drink windows.</div>';
-        return;
-      }
-
+      if (!valid.length){ rows.innerHTML = '<div class="empty">No bottles with drink windows.</div>'; return; }
       const allYears = valid.flatMap(b => [b.drinkFrom, b.drinkTo]);
       const minYear = Math.min(...allYears) - 1;
       const maxYear = Math.max(...allYears) + 1;
       const span = maxYear - minYear;
-
       document.getElementById("timelineYearHeader").textContent = `${minYear} – ${maxYear}`;
-
       rows.innerHTML = valid.map(b => {
         const status = getStatus(b);
         const cls = status === "Ready" ? "ready" : status === "Aging" ? "aging" : status === "Drink soon" ? "soon" : "past";
         const left = ((b.drinkFrom - minYear) / span) * 100;
         const width = ((b.drinkTo - b.drinkFrom + 1) / span) * 100;
         const yearLine = ((currentYear - minYear) / span) * 100;
-
-        return `
-          <div class="timeline-row">
-            <div>
-              <div class="timeline-name">${b.producer} ${b.wine}</div>
-              <div class="timeline-sub">${b.country}${b.region ? " · " + b.region : ""}</div>
-            </div>
-            <div class="timeline-track">
-              <div class="year-line" style="left:${yearLine}%"></div>
-              <div class="timeline-fill ${cls}" style="left:${left}%; width:${Math.max(width,4)}%;"></div>
-            </div>
-            <div style="text-align:right; color:var(--muted);">${b.drinkFrom}–${b.drinkTo}</div>
-          </div>`;
+        return `<div class="timeline-row"><div><div class="timeline-name">${b.producer} ${b.wine}</div><div class="timeline-sub">${b.country}${b.region ? " · " + b.region : ""}</div></div><div class="timeline-track"><div class="year-line" style="left:${yearLine}%"></div><div class="timeline-fill ${cls}" style="left:${left}%; width:${Math.max(width,4)}%;"></div></div><div style="text-align:right; color:var(--muted);">${b.drinkFrom}–${b.drinkTo}</div></div>`;
       }).join("");
+    }
+
+    function setPreview(previewId, imageData, emptyText){
+      const el = document.getElementById(previewId);
+      if (imageData) {
+        el.innerHTML = `<img src="${imageData}" alt="Preview" />`;
+      } else {
+        el.textContent = emptyText;
+      }
     }
 
     function renderAll(){
       const data = getFilteredBottles();
-
       document.querySelectorAll(".pill").forEach(btn => btn.classList.toggle("active", btn.dataset.filter === activeFilter));
       document.querySelectorAll(".tab").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === activeTab));
       document.querySelectorAll(".page").forEach(page => page.classList.toggle("active", page.id === activeTab));
-
       renderOverview(data);
       renderCollection(data);
       renderTimeline(data);
     }
 
-    function openModal(){
-      document.getElementById("modalBackdrop").classList.add("show");
-    }
+    function openModal(){ document.getElementById("modalBackdrop").classList.add("show"); }
 
-    function closeModal(){
-      document.getElementById("modalBackdrop").classList.remove("show");
+    function resetModal(){
       editingId = null;
+      frontImageData = null;
+      backImageData = null;
       document.getElementById("modalTitle").textContent = "Add bottle";
       document.getElementById("producerInput").value = "";
       document.getElementById("wineInput").value = "";
@@ -499,12 +426,26 @@
       document.getElementById("drinkFromInput").value = "";
       document.getElementById("drinkToInput").value = "";
       document.getElementById("notesInput").value = "";
+      document.getElementById("frontUploadInput").value = "";
+      document.getElementById("frontCameraInput").value = "";
+      document.getElementById("backUploadInput").value = "";
+      document.getElementById("backCameraInput").value = "";
+      setPreview("frontPreview", null, "No front image selected");
+      setPreview("backPreview", null, "No back image selected");
+    }
+
+    function closeModal(){
+      document.getElementById("modalBackdrop").classList.remove("show");
+      resetModal();
     }
 
     function openEdit(id){
       const b = bottles.find(x => x.id === id);
       if (!b) return;
+      resetModal();
       editingId = id;
+      frontImageData = b.frontImage || null;
+      backImageData = b.backImage || null;
       document.getElementById("modalTitle").textContent = "Edit bottle";
       document.getElementById("producerInput").value = b.producer || "";
       document.getElementById("wineInput").value = b.wine || "";
@@ -515,7 +456,31 @@
       document.getElementById("drinkFromInput").value = b.drinkFrom || "";
       document.getElementById("drinkToInput").value = b.drinkTo || "";
       document.getElementById("notesInput").value = b.notes || "";
+      setPreview("frontPreview", frontImageData, "No front image selected");
+      setPreview("backPreview", backImageData, "No back image selected");
       openModal();
+    }
+
+    function fileToDataUrl(file){
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function handleImageInput(event, side){
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const dataUrl = await fileToDataUrl(file);
+      if (side === "front") {
+        frontImageData = dataUrl;
+        setPreview("frontPreview", frontImageData, "No front image selected");
+      } else {
+        backImageData = dataUrl;
+        setPreview("backPreview", backImageData, "No back image selected");
+      }
     }
 
     function saveBottle(){
@@ -529,20 +494,16 @@
         quantity: Number(document.getElementById("quantityInput").value || 1),
         drinkFrom: Number(document.getElementById("drinkFromInput").value || 0) || null,
         drinkTo: Number(document.getElementById("drinkToInput").value || 0) || null,
-        notes: document.getElementById("notesInput").value.trim()
+        notes: document.getElementById("notesInput").value.trim(),
+        frontImage: frontImageData,
+        backImage: backImageData
       };
-
-      if (!bottle.producer || !bottle.wine){
-        alert("Please enter producer and wine.");
-        return;
-      }
-
-      if (editingId){
+      if (!bottle.producer || !bottle.wine){ alert("Please enter producer and wine."); return; }
+      if (editingId) {
         bottles = bottles.map(b => b.id === editingId ? bottle : b);
       } else {
         bottles.unshift(bottle);
       }
-
       saveBottles();
       closeModal();
       renderAll();
@@ -556,43 +517,29 @@
     }
 
     function drinkOne(id){
-      bottles = bottles
-        .map(b => b.id === id ? { ...b, quantity: Math.max(0, Number(b.quantity || 0) - 1) } : b)
-        .filter(b => Number(b.quantity) > 0);
+      bottles = bottles.map(b => b.id === id ? { ...b, quantity: Math.max(0, Number(b.quantity || 0) - 1) } : b).filter(b => Number(b.quantity) > 0);
       saveBottles();
       renderAll();
     }
 
-    document.querySelectorAll(".pill").forEach(btn => {
-      btn.addEventListener("click", () => {
-        activeFilter = btn.dataset.filter;
-        renderAll();
-      });
-    });
-
-    document.querySelectorAll(".tab").forEach(btn => {
-      btn.addEventListener("click", () => {
-        activeTab = btn.dataset.tab;
-        renderAll();
-      });
-    });
-
-    document.getElementById("searchInput").addEventListener("input", (e) => {
-      searchText = e.target.value;
-      renderAll();
-    });
-
-    document.getElementById("addBottleBtn").addEventListener("click", () => {
-      editingId = null;
-      document.getElementById("modalTitle").textContent = "Add bottle";
-      openModal();
-    });
-
+    document.querySelectorAll(".pill").forEach(btn => btn.addEventListener("click", () => { activeFilter = btn.dataset.filter; renderAll(); }));
+    document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", () => { activeTab = btn.dataset.tab; renderAll(); }));
+    document.getElementById("searchInput").addEventListener("input", (e) => { searchText = e.target.value; renderAll(); });
+    document.getElementById("addBottleBtn").addEventListener("click", () => { resetModal(); openModal(); });
     document.getElementById("cancelBtn").addEventListener("click", closeModal);
     document.getElementById("saveBtn").addEventListener("click", saveBottle);
-    document.getElementById("modalBackdrop").addEventListener("click", (e) => {
-      if (e.target.id === "modalBackdrop") closeModal();
-    });
+    document.getElementById("modalBackdrop").addEventListener("click", (e) => { if (e.target.id === "modalBackdrop") closeModal(); });
+
+    document.getElementById("frontUploadBtn").addEventListener("click", () => document.getElementById("frontUploadInput").click());
+    document.getElementById("frontCameraBtn").addEventListener("click", () => document.getElementById("frontCameraInput").click());
+    document.getElementById("backUploadBtn").addEventListener("click", () => document.getElementById("backUploadInput").click());
+    document.getElementById("backCameraBtn").addEventListener("click", () => document.getElementById("backCameraInput").click());
+    document.getElementById("frontRemoveBtn").addEventListener("click", () => { frontImageData = null; setPreview("frontPreview", null, "No front image selected"); document.getElementById("frontUploadInput").value = ""; document.getElementById("frontCameraInput").value = ""; });
+    document.getElementById("backRemoveBtn").addEventListener("click", () => { backImageData = null; setPreview("backPreview", null, "No back image selected"); document.getElementById("backUploadInput").value = ""; document.getElementById("backCameraInput").value = ""; });
+    document.getElementById("frontUploadInput").addEventListener("change", (e) => handleImageInput(e, "front"));
+    document.getElementById("frontCameraInput").addEventListener("change", (e) => handleImageInput(e, "front"));
+    document.getElementById("backUploadInput").addEventListener("change", (e) => handleImageInput(e, "back"));
+    document.getElementById("backCameraInput").addEventListener("change", (e) => handleImageInput(e, "back"));
 
     renderAll();
   </script>
