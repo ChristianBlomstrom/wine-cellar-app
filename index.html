@@ -13,10 +13,7 @@
       --text: #f7efe9;
       --muted: #d0b8a8;
       --accent: #f0d28c;
-      --accent-dark: #6a4d22;
       --danger: #d48a8a;
-      --success: #86c29a;
-      --chip: rgba(255,255,255,0.08);
       --shadow: 0 12px 30px rgba(0,0,0,0.28);
       --radius: 18px;
     }
@@ -109,7 +106,7 @@
     }
 
     .stat {
-      background: var(--chip);
+      background: rgba(255,255,255,0.08);
       border: 1px solid var(--border);
       border-radius: 999px;
       padding: 10px 14px;
@@ -153,7 +150,7 @@
 
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 16px;
     }
 
@@ -164,24 +161,6 @@
       overflow: hidden;
       box-shadow: var(--shadow);
       backdrop-filter: blur(8px);
-    }
-
-    .card-image {
-      height: 220px;
-      background: rgba(255,255,255,0.04);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .card-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
     }
 
     .card-body {
@@ -302,26 +281,6 @@
       color: var(--muted);
     }
 
-    .photo-preview {
-      height: 220px;
-      border: 1px dashed var(--border);
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255,255,255,0.04);
-      overflow: hidden;
-      color: var(--muted);
-      text-align: center;
-      padding: 10px;
-    }
-
-    .photo-preview img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
     .modal-actions {
       display: flex;
       gap: 10px;
@@ -330,20 +289,9 @@
       margin-top: 18px;
     }
 
-    .helper {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 6px;
-    }
-
     @media (max-width: 900px) {
-      .toolbar {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
+      .toolbar { grid-template-columns: 1fr 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 640px) {
@@ -360,7 +308,7 @@
     <div class="header">
       <div class="title-wrap">
         <h1>Wine Cellar</h1>
-        <p>Manual wine collection with filters, editing, photos, and local save on your device.</p>
+        <p>Manual wine collection with filters, editing, and local save on your device.</p>
       </div>
       <div class="top-actions">
         <button class="btn-primary" id="addBottleBtn">+ Add bottle</button>
@@ -407,20 +355,9 @@
   <div class="modal-backdrop" id="modalBackdrop">
     <div class="modal">
       <h2 id="modalTitle">Add bottle</h2>
-      <p>Enter the wine details manually. Optional: add one front photo for display in the collection.</p>
+      <p>Enter the wine details manually.</p>
 
       <div class="form-grid">
-        <div class="field full">
-          <label>Photo (optional)</label>
-          <div class="photo-preview" id="photoPreview">No photo selected</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
-            <input type="file" id="photoInput" accept="image/*" hidden />
-            <button type="button" class="btn-secondary" id="choosePhotoBtn">Choose photo</button>
-            <button type="button" class="btn-secondary" id="removePhotoBtn">Remove photo</button>
-          </div>
-          <div class="helper">The photo is stored only in this browser on this device.</div>
-        </div>
-
         <div class="field">
           <label>Name</label>
           <input id="nameInput" type="text" placeholder="e.g. Taittinger Brut Réserve" />
@@ -518,584 +455,43 @@
   </div>
 
   <script>
-    const STORAGE_KEY = "wine-cellar-manual-v3";
+    const STORAGE_KEY = "wine-cellar-manual-v4";
 
     const starterBottles = [
-      {
-        id: crypto.randomUUID(),
-        name: "Grande Alberone Moscato Spumante Dolce",
-        producer: "Grande Alberone",
-        country: "Italy",
-        region: "Spumante Dolce",
-        type: "sparkling",
-        grapes: "Moscato",
-        vintage: "",
-        alcohol: "7.5",
-        priceSek: 99,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2026",
-        quantity: 1,
-        location: "",
-        notes: "Imported from your uploaded bottle photos.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Saint Auriol Chatelaine La Clape",
-        producer: "Saint Auriol",
-        country: "France",
-        region: "La Clape",
-        type: "red",
-        grapes: "",
-        vintage: "2023",
-        alcohol: "14",
-        priceSek: 129,
-        status: "aging",
-        drinkFrom: "2025",
-        drinkTo: "2028",
-        quantity: 1,
-        location: "",
-        notes: "Vin biologique.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Rawson's Retreat Chardonnay",
-        producer: "Rawson's Retreat",
-        country: "Australia",
-        region: "South Eastern Australia",
-        type: "white",
-        grapes: "Chardonnay",
-        vintage: "2020",
-        alcohol: "9.5",
-        priceSek: 89,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2025",
-        quantity: 1,
-        location: "",
-        notes: "Reduced alcohol wine-based beverage.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Casalforte Prosecco Extra Dry",
-        producer: "Casalforte",
-        country: "Italy",
-        region: "Prosecco DOC",
-        type: "sparkling",
-        grapes: "Glera",
-        vintage: "",
-        alcohol: "11.5",
-        priceSek: 119,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2026",
-        quantity: 1,
-        location: "",
-        notes: "Imported from your uploaded bottle photos.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Barón de Ley Reserva",
-        producer: "Barón de Ley",
-        country: "Spain",
-        region: "Rioja",
-        type: "red",
-        grapes: "Tempranillo",
-        vintage: "",
-        alcohol: "14",
-        priceSek: 179,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2028",
-        quantity: 1,
-        location: "",
-        notes: "Vintage not fully readable from uploaded photos.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "El Mar Cava Brut Rosé",
-        producer: "El Mar",
-        country: "Spain",
-        region: "Cava",
-        type: "rosé",
-        grapes: "",
-        vintage: "",
-        alcohol: "11.5",
-        priceSek: 99,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2026",
-        quantity: 1,
-        location: "",
-        notes: "Método tradicional.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Blossa Sparkling & Spices Citrus",
-        producer: "Blossa",
-        country: "Germany",
-        region: "Aromatized wine-based drink",
-        type: "aromatized",
-        grapes: "",
-        vintage: "",
-        alcohol: "10",
-        priceSek: 99,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2025",
-        quantity: 1,
-        location: "",
-        notes: "Sparkling and spices citrus.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Cadis Amarone della Valpolicella",
-        producer: "Cadis",
-        country: "Italy",
-        region: "Amarone della Valpolicella",
-        type: "red",
-        grapes: "",
-        vintage: "2017",
-        alcohol: "15",
-        priceSek: 349,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2032",
-        quantity: 1,
-        location: "",
-        notes: "Imported from your uploaded bottle photos.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Couvent des Jacobins Bourgogne Pinot Noir",
-        producer: "Louis Jadot",
-        country: "France",
-        region: "Bourgogne",
-        type: "red",
-        grapes: "Pinot Noir",
-        vintage: "2019",
-        alcohol: "13",
-        priceSek: 219,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2028",
-        quantity: 1,
-        location: "",
-        notes: "Imported from your uploaded bottle photos.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Memòro Italia",
-        producer: "Piccini",
-        country: "Italy",
-        region: "Vino Rosso d'Italia",
-        type: "red",
-        grapes: "",
-        vintage: "",
-        alcohol: "14",
-        priceSek: 129,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2027",
-        quantity: 1,
-        location: "",
-        notes: "Imported from your uploaded bottle photos.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Bonacosta Valpolicella Classico",
-        producer: "Masi",
-        country: "Italy",
-        region: "Valpolicella Classico",
-        type: "red",
-        grapes: "",
-        vintage: "2016",
-        alcohol: "12",
-        priceSek: 169,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2027",
-        quantity: 1,
-        location: "",
-        notes: "Imported from your uploaded bottle photos.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Villa Fura Valpolicella Ripasso Superiore",
-        producer: "Villa Fura",
-        country: "Italy",
-        region: "Valpolicella Ripasso Superiore",
-        type: "red",
-        grapes: "",
-        vintage: "",
-        alcohol: "14",
-        priceSek: 149,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2028",
-        quantity: 1,
-        location: "",
-        notes: "Lot shows 2020. Vintage not clearly stated on front label.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Domaine d'Agel Sensation'Ailes",
-        producer: "Domaine d'Agel",
-        country: "France",
-        region: "Minervois",
-        type: "red",
-        grapes: "Syrah, Grenache, Carignan, Mourvèdre",
-        vintage: "2024",
-        alcohol: "14",
-        priceSek: 159,
-        status: "aging",
-        drinkFrom: "2025",
-        drinkTo: "2029",
-        quantity: 1,
-        location: "",
-        notes: "Organic wine.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "B by Fonbadet Bordeaux",
-        producer: "Fonbadet",
-        country: "France",
-        region: "Bordeaux",
-        type: "red",
-        grapes: "",
-        vintage: "2019",
-        alcohol: "13.5",
-        priceSek: 139,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2028",
-        quantity: 1,
-        location: "",
-        notes: "Imported from your uploaded bottle photos.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "El Círculo Rioja Crianza",
-        producer: "Pagos del Rey",
-        country: "Spain",
-        region: "Rioja",
-        type: "red",
-        grapes: "",
-        vintage: "2015",
-        alcohol: "13.5",
-        priceSek: 139,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2027",
-        quantity: 1,
-        location: "",
-        notes: "Aged 12 months in oak barrels.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Orso d'Oro",
-        producer: "Orso d'Oro",
-        country: "Italy",
-        region: "Vino Rosso",
-        type: "red",
-        grapes: "",
-        vintage: "",
-        alcohol: "15",
-        priceSek: 109,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2027",
-        quantity: 1,
-        location: "",
-        notes: "Southern Italian red wine.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Ruppertsberger Imperial Pinot Noir",
-        producer: "Ruppertsberger Weinkeller Hoheburg eG",
-        country: "Germany",
-        region: "Pfalz",
-        type: "red",
-        grapes: "Pinot Noir",
-        vintage: "2019",
-        alcohol: "13.5",
-        priceSek: 169,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2028",
-        quantity: 1,
-        location: "",
-        notes: "Imported from your uploaded bottle photos.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Coronas Tempranillo Organic Wine",
-        producer: "Torres",
-        country: "Spain",
-        region: "Penedès",
-        type: "red",
-        grapes: "Tempranillo",
-        vintage: "2018",
-        alcohol: "",
-        priceSek: 149,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2027",
-        quantity: 1,
-        location: "",
-        notes: "Organic wine.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Les Dauphins Côtes du Rhône Organic",
-        producer: "Les Dauphins",
-        country: "France",
-        region: "Côtes du Rhône",
-        type: "red",
-        grapes: "",
-        vintage: "2016",
-        alcohol: "14",
-        priceSek: 139,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2027",
-        quantity: 1,
-        location: "",
-        notes: "Organic wine.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Réserve de Bonpas Côtes-du-Rhône",
-        producer: "Bonpas",
-        country: "France",
-        region: "Côtes-du-Rhône",
-        type: "red",
-        grapes: "",
-        vintage: "",
-        alcohol: "13.5",
-        priceSek: 129,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2027",
-        quantity: 1,
-        location: "",
-        notes: "Imported from your uploaded bottle photos.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Lynx Petite Sirah Zinfandel",
-        producer: "Lynx",
-        country: "USA",
-        region: "California",
-        type: "red",
-        grapes: "Petite Sirah, Zinfandel",
-        vintage: "2020",
-        alcohol: "13.5",
-        priceSek: 159,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2028",
-        quantity: 1,
-        location: "",
-        notes: "Precision picked.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Richard Juhlin Blanc de Blancs Brut",
-        producer: "Richard Juhlin",
-        country: "France",
-        region: "Vin de France",
-        type: "sparkling",
-        grapes: "Chardonnay",
-        vintage: "",
-        alcohol: "12",
-        priceSek: 129,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2026",
-        quantity: 1,
-        location: "",
-        notes: "Méthode traditionnelle.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Jeanmaire Cuvée Brut",
-        producer: "Jeanmaire",
-        country: "France",
-        region: "Champagne",
-        type: "sparkling",
-        grapes: "Pinot Noir, Pinot Meunier, Chardonnay",
-        vintage: "",
-        alcohol: "",
-        priceSek: 299,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2027",
-        quantity: 1,
-        location: "",
-        notes: "Champagne brut.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "François Martenot Crémant de Bourgogne Brut",
-        producer: "François Martenot",
-        country: "France",
-        region: "Crémant de Bourgogne",
-        type: "sparkling",
-        grapes: "",
-        vintage: "2022",
-        alcohol: "12",
-        priceSek: 149,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2027",
-        quantity: 1,
-        location: "",
-        notes: "Imported from your uploaded bottle photos.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Charles de Fère Cuvée Jean-Louis Blanc de Blancs Brut",
-        producer: "Charles de Fère",
-        country: "France",
-        region: "Sparkling wine",
-        type: "sparkling",
-        grapes: "",
-        vintage: "",
-        alcohol: "",
-        priceSek: 119,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2026",
-        quantity: 1,
-        location: "",
-        notes: "Imported from your uploaded bottle photos.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Champagne Vieille France Blanc de Noirs",
-        producer: "Vieille France",
-        country: "France",
-        region: "Champagne",
-        type: "sparkling",
-        grapes: "Pinot Noir",
-        vintage: "2013",
-        alcohol: "12",
-        priceSek: 499,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2030",
-        quantity: 1,
-        location: "",
-        notes: "Millésime 2013.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Taittinger Brut Réserve",
-        producer: "Taittinger",
-        country: "France",
-        region: "Champagne",
-        type: "sparkling",
-        grapes: "Chardonnay, Pinot Noir, Pinot Meunier",
-        vintage: "",
-        alcohol: "12.5",
-        priceSek: 549,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2029",
-        quantity: 1,
-        location: "",
-        notes: "Predominantly Chardonnay blend.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Louis Bouillot Crémant de Bourgogne Perle de Vigne Brut",
-        producer: "Louis Bouillot",
-        country: "France",
-        region: "Crémant de Bourgogne",
-        type: "sparkling",
-        grapes: "",
-        vintage: "",
-        alcohol: "12",
-        priceSek: 179,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2027",
-        quantity: 1,
-        location: "",
-        notes: "Grande Réserve.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Pol Roger Vintage",
-        producer: "Pol Roger",
-        country: "France",
-        region: "Champagne",
-        type: "sparkling",
-        grapes: "",
-        vintage: "2015",
-        alcohol: "",
-        priceSek: 999,
-        status: "aging",
-        drinkFrom: "2026",
-        drinkTo: "2038",
-        quantity: 1,
-        location: "",
-        notes: "Vintage champagne.",
-        image: ""
-      },
-      {
-        id: crypto.randomUUID(),
-        name: "Louis Roederer Collection 242",
-        producer: "Louis Roederer",
-        country: "France",
-        region: "Champagne",
-        type: "sparkling",
-        grapes: "",
-        vintage: "",
-        alcohol: "12",
-        priceSek: 699,
-        status: "ready",
-        drinkFrom: "2025",
-        drinkTo: "2030",
-        quantity: 1,
-        location: "",
-        notes: "242nd harvest. Based on 2017 harvest with reserve wines aged in oak.",
-        image: ""
-      }
+      { id: crypto.randomUUID(), name: "Grande Alberone Moscato Spumante Dolce", producer: "Grande Alberone", country: "Italy", region: "Spumante Dolce", type: "sparkling", grapes: "Moscato", vintage: "", alcohol: "7.5", priceSek: 99, status: "ready", drinkFrom: "2025", drinkTo: "2026", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
+      { id: crypto.randomUUID(), name: "Saint Auriol Chatelaine La Clape", producer: "Saint Auriol", country: "France", region: "La Clape", type: "red", grapes: "", vintage: "2023", alcohol: "14", priceSek: 129, status: "aging", drinkFrom: "2025", drinkTo: "2028", quantity: 1, location: "", notes: "Vin biologique." },
+      { id: crypto.randomUUID(), name: "Rawson's Retreat Chardonnay", producer: "Rawson's Retreat", country: "Australia", region: "South Eastern Australia", type: "white", grapes: "Chardonnay", vintage: "2020", alcohol: "9.5", priceSek: 89, status: "ready", drinkFrom: "2025", drinkTo: "2025", quantity: 1, location: "", notes: "Reduced alcohol wine-based beverage." },
+      { id: crypto.randomUUID(), name: "Casalforte Prosecco Extra Dry", producer: "Casalforte", country: "Italy", region: "Prosecco DOC", type: "sparkling", grapes: "Glera", vintage: "", alcohol: "11.5", priceSek: 119, status: "ready", drinkFrom: "2025", drinkTo: "2026", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
+      { id: crypto.randomUUID(), name: "Barón de Ley Reserva", producer: "Barón de Ley", country: "Spain", region: "Rioja", type: "red", grapes: "Tempranillo", vintage: "", alcohol: "14", priceSek: 179, status: "ready", drinkFrom: "2025", drinkTo: "2028", quantity: 1, location: "", notes: "Vintage not fully readable from uploaded photos." },
+      { id: crypto.randomUUID(), name: "El Mar Cava Brut Rosé", producer: "El Mar", country: "Spain", region: "Cava", type: "rosé", grapes: "", vintage: "", alcohol: "11.5", priceSek: 99, status: "ready", drinkFrom: "2025", drinkTo: "2026", quantity: 1, location: "", notes: "Método tradicional." },
+      { id: crypto.randomUUID(), name: "Blossa Sparkling & Spices Citrus", producer: "Blossa", country: "Germany", region: "Aromatized wine-based drink", type: "aromatized", grapes: "", vintage: "", alcohol: "10", priceSek: 99, status: "ready", drinkFrom: "2025", drinkTo: "2025", quantity: 1, location: "", notes: "Sparkling and spices citrus." },
+      { id: crypto.randomUUID(), name: "Cadis Amarone della Valpolicella", producer: "Cadis", country: "Italy", region: "Amarone della Valpolicella", type: "red", grapes: "", vintage: "2017", alcohol: "15", priceSek: 349, status: "ready", drinkFrom: "2025", drinkTo: "2032", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
+      { id: crypto.randomUUID(), name: "Couvent des Jacobins Bourgogne Pinot Noir", producer: "Louis Jadot", country: "France", region: "Bourgogne", type: "red", grapes: "Pinot Noir", vintage: "2019", alcohol: "13", priceSek: 219, status: "ready", drinkFrom: "2025", drinkTo: "2028", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
+      { id: crypto.randomUUID(), name: "Memòro Italia", producer: "Piccini", country: "Italy", region: "Vino Rosso d'Italia", type: "red", grapes: "", vintage: "", alcohol: "14", priceSek: 129, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
+      { id: crypto.randomUUID(), name: "Bonacosta Valpolicella Classico", producer: "Masi", country: "Italy", region: "Valpolicella Classico", type: "red", grapes: "", vintage: "2016", alcohol: "12", priceSek: 169, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
+      { id: crypto.randomUUID(), name: "Villa Fura Valpolicella Ripasso Superiore", producer: "Villa Fura", country: "Italy", region: "Valpolicella Ripasso Superiore", type: "red", grapes: "", vintage: "", alcohol: "14", priceSek: 149, status: "ready", drinkFrom: "2025", drinkTo: "2028", quantity: 1, location: "", notes: "Lot shows 2020. Vintage not clearly stated on front label." },
+      { id: crypto.randomUUID(), name: "Domaine d'Agel Sensation'Ailes", producer: "Domaine d'Agel", country: "France", region: "Minervois", type: "red", grapes: "Syrah, Grenache, Carignan, Mourvèdre", vintage: "2024", alcohol: "14", priceSek: 159, status: "aging", drinkFrom: "2025", drinkTo: "2029", quantity: 1, location: "", notes: "Organic wine." },
+      { id: crypto.randomUUID(), name: "B by Fonbadet Bordeaux", producer: "Fonbadet", country: "France", region: "Bordeaux", type: "red", grapes: "", vintage: "2019", alcohol: "13.5", priceSek: 139, status: "ready", drinkFrom: "2025", drinkTo: "2028", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
+      { id: crypto.randomUUID(), name: "El Círculo Rioja Crianza", producer: "Pagos del Rey", country: "Spain", region: "Rioja", type: "red", grapes: "", vintage: "2015", alcohol: "13.5", priceSek: 139, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Aged 12 months in oak barrels." },
+      { id: crypto.randomUUID(), name: "Orso d'Oro", producer: "Orso d'Oro", country: "Italy", region: "Vino Rosso", type: "red", grapes: "", vintage: "", alcohol: "15", priceSek: 109, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Southern Italian red wine." },
+      { id: crypto.randomUUID(), name: "Ruppertsberger Imperial Pinot Noir", producer: "Ruppertsberger Weinkeller Hoheburg eG", country: "Germany", region: "Pfalz", type: "red", grapes: "Pinot Noir", vintage: "2019", alcohol: "13.5", priceSek: 169, status: "ready", drinkFrom: "2025", drinkTo: "2028", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
+      { id: crypto.randomUUID(), name: "Coronas Tempranillo Organic Wine", producer: "Torres", country: "Spain", region: "Penedès", type: "red", grapes: "Tempranillo", vintage: "2018", alcohol: "", priceSek: 149, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Organic wine." },
+      { id: crypto.randomUUID(), name: "Les Dauphins Côtes du Rhône Organic", producer: "Les Dauphins", country: "France", region: "Côtes du Rhône", type: "red", grapes: "", vintage: "2016", alcohol: "14", priceSek: 139, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Organic wine." },
+      { id: crypto.randomUUID(), name: "Réserve de Bonpas Côtes-du-Rhône", producer: "Bonpas", country: "France", region: "Côtes-du-Rhône", type: "red", grapes: "", vintage: "", alcohol: "13.5", priceSek: 129, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
+      { id: crypto.randomUUID(), name: "Lynx Petite Sirah Zinfandel", producer: "Lynx", country: "USA", region: "California", type: "red", grapes: "Petite Sirah, Zinfandel", vintage: "2020", alcohol: "13.5", priceSek: 159, status: "ready", drinkFrom: "2025", drinkTo: "2028", quantity: 1, location: "", notes: "Precision picked." },
+      { id: crypto.randomUUID(), name: "Richard Juhlin Blanc de Blancs Brut", producer: "Richard Juhlin", country: "France", region: "Vin de France", type: "sparkling", grapes: "Chardonnay", vintage: "", alcohol: "12", priceSek: 129, status: "ready", drinkFrom: "2025", drinkTo: "2026", quantity: 1, location: "", notes: "Méthode traditionnelle." },
+      { id: crypto.randomUUID(), name: "Jeanmaire Cuvée Brut", producer: "Jeanmaire", country: "France", region: "Champagne", type: "sparkling", grapes: "Pinot Noir, Pinot Meunier, Chardonnay", vintage: "", alcohol: "", priceSek: 299, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Champagne brut." },
+      { id: crypto.randomUUID(), name: "François Martenot Crémant de Bourgogne Brut", producer: "François Martenot", country: "France", region: "Crémant de Bourgogne", type: "sparkling", grapes: "", vintage: "2022", alcohol: "12", priceSek: 149, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
+      { id: crypto.randomUUID(), name: "Charles de Fère Cuvée Jean-Louis Blanc de Blancs Brut", producer: "Charles de Fère", country: "France", region: "Sparkling wine", type: "sparkling", grapes: "", vintage: "", alcohol: "", priceSek: 119, status: "ready", drinkFrom: "2025", drinkTo: "2026", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
+      { id: crypto.randomUUID(), name: "Champagne Vieille France Blanc de Noirs", producer: "Vieille France", country: "France", region: "Champagne", type: "sparkling", grapes: "Pinot Noir", vintage: "2013", alcohol: "12", priceSek: 499, status: "ready", drinkFrom: "2025", drinkTo: "2030", quantity: 1, location: "", notes: "Millésime 2013." },
+      { id: crypto.randomUUID(), name: "Taittinger Brut Réserve", producer: "Taittinger", country: "France", region: "Champagne", type: "sparkling", grapes: "Chardonnay, Pinot Noir, Pinot Meunier", vintage: "", alcohol: "12.5", priceSek: 549, status: "ready", drinkFrom: "2025", drinkTo: "2029", quantity: 1, location: "", notes: "Predominantly Chardonnay blend." },
+      { id: crypto.randomUUID(), name: "Louis Bouillot Crémant de Bourgogne Perle de Vigne Brut", producer: "Louis Bouillot", country: "France", region: "Crémant de Bourgogne", type: "sparkling", grapes: "", vintage: "", alcohol: "12", priceSek: 179, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Grande Réserve." },
+      { id: crypto.randomUUID(), name: "Pol Roger Vintage", producer: "Pol Roger", country: "France", region: "Champagne", type: "sparkling", grapes: "", vintage: "2015", alcohol: "", priceSek: 999, status: "aging", drinkFrom: "2026", drinkTo: "2038", quantity: 1, location: "", notes: "Vintage champagne." },
+      { id: crypto.randomUUID(), name: "Louis Roederer Collection 242", producer: "Louis Roederer", country: "France", region: "Champagne", type: "sparkling", grapes: "", vintage: "", alcohol: "12", priceSek: 699, status: "ready", drinkFrom: "2025", drinkTo: "2030", quantity: 1, location: "", notes: "242nd harvest. Based on 2017 harvest with reserve wines aged in oak." }
     ];
 
     let wines = loadWines();
     let editingId = null;
-    let currentPhotoData = "";
 
     const elements = {
       cards: document.getElementById("cards"),
@@ -1112,10 +508,6 @@
       modalTitle: document.getElementById("modalTitle"),
       saveBtn: document.getElementById("saveBtn"),
       cancelBtn: document.getElementById("cancelBtn"),
-      choosePhotoBtn: document.getElementById("choosePhotoBtn"),
-      removePhotoBtn: document.getElementById("removePhotoBtn"),
-      photoInput: document.getElementById("photoInput"),
-      photoPreview: document.getElementById("photoPreview"),
       nameInput: document.getElementById("nameInput"),
       producerInput: document.getElementById("producerInput"),
       countryInput: document.getElementById("countryInput"),
@@ -1135,12 +527,12 @@
 
     function loadWines() {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (!saved) return structuredClone(starterBottles);
+      if (!saved) return deepCopy(starterBottles);
       try {
         const parsed = JSON.parse(saved);
-        return Array.isArray(parsed) ? parsed : structuredClone(starterBottles);
+        return Array.isArray(parsed) ? parsed : deepCopy(starterBottles);
       } catch {
-        return structuredClone(starterBottles);
+        return deepCopy(starterBottles);
       }
     }
 
@@ -1148,7 +540,7 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(wines));
     }
 
-    function structuredClone(data) {
+    function deepCopy(data) {
       return JSON.parse(JSON.stringify(data));
     }
 
@@ -1245,9 +637,6 @@
 
       elements.cards.innerHTML = filtered.map((wine) => `
         <div class="card">
-          <div class="card-image">
-            ${wine.image ? `<img src="${wine.image}" alt="${escapeHtml(wine.name)}" />` : `<span>No photo</span>`}
-          </div>
           <div class="card-body">
             <h3 class="wine-name">${escapeHtml(wine.name)}</h3>
             <p class="wine-sub">${escapeHtml(wine.producer || "Unknown producer")}</p>
@@ -1302,8 +691,6 @@
         elements.quantityInput.value = editWine.quantity || 1;
         elements.locationInput.value = editWine.location || "";
         elements.notesInput.value = editWine.notes || "";
-        currentPhotoData = editWine.image || "";
-        refreshPhotoPreview();
       } else {
         editingId = null;
         elements.modalTitle.textContent = "Add bottle";
@@ -1322,36 +709,11 @@
         elements.quantityInput.value = 1;
         elements.locationInput.value = "";
         elements.notesInput.value = "";
-        currentPhotoData = "";
-        refreshPhotoPreview();
       }
     }
 
     function closeModal() {
       elements.modalBackdrop.classList.remove("open");
-    }
-
-    function refreshPhotoPreview() {
-      elements.photoPreview.innerHTML = currentPhotoData
-        ? `<img src="${currentPhotoData}" alt="Bottle preview" />`
-        : `No photo selected`;
-    }
-
-    function readPhoto(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    async function handlePhotoSelect(event) {
-      const file = event.target.files?.[0];
-      if (!file) return;
-      currentPhotoData = await readPhoto(file);
-      refreshPhotoPreview();
-      event.target.value = "";
     }
 
     function getFormData() {
@@ -1371,14 +733,12 @@
         drinkTo: elements.drinkToInput.value.trim(),
         quantity: elements.quantityInput.value ? Number(elements.quantityInput.value) : 1,
         location: elements.locationInput.value.trim(),
-        notes: elements.notesInput.value.trim(),
-        image: currentPhotoData || ""
+        notes: elements.notesInput.value.trim()
       };
     }
 
     function saveBottle() {
       const wine = getFormData();
-
       if (!wine.name) {
         alert("Please enter at least the wine name.");
         return;
@@ -1437,9 +797,6 @@
     elements.addBottleBtn.addEventListener("click", () => openModal());
     elements.cancelBtn.addEventListener("click", closeModal);
     elements.saveBtn.addEventListener("click", saveBottle);
-    elements.choosePhotoBtn.addEventListener("click", () => elements.photoInput.click());
-    elements.removePhotoBtn.addEventListener("click", () => { currentPhotoData = ""; refreshPhotoPreview(); });
-    elements.photoInput.addEventListener("change", handlePhotoSelect);
     elements.exportBtn.addEventListener("click", exportJson);
     elements.importBtn.addEventListener("click", () => elements.importFile.click());
     elements.importFile.addEventListener("change", async (event) => {
