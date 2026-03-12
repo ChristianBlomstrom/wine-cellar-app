@@ -1,49 +1,1544 @@
-<script>
-function renderTimeline(){
-  const minYear = 2005;
-  const maxYear = 2040;
-  const range = maxYear - minYear;
-  const axis = document.getElementById("yearAxis");
-  const rows = document.getElementById("timelineRows");
-  const year = new Date().getFullYear();
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wine Cellar Dashboard</title>
+  <style>
+    :root{
+      --bg:#1b110b;
+      --bg-2:#24160e;
+      --panel:#3a2a1f;
+      --panel-2:#463326;
+      --line:#6b4d31;
+      --gold:#d7b06a;
+      --gold-soft:#b79258;
+      --text:#f2e6d2;
+      --muted:#bda98d;
+      --green:#bfe6c3;
+      --amber:#d6b05d;
+      --red:#d98a8a;
+      --rose:#d24d6a;
+      --blue:#7ec7e8;
+      --shadow:0 18px 40px rgba(0,0,0,.35);
+      --radius:22px;
+    }
 
-  let ticks = "";
-  for(let y = minYear; y <= maxYear; y += 5){
-    const left = ((y - minYear) / range) * 100;
-    ticks += `
-      <div class="tick" style="left:${left}%">
-        <span>${y.toString().slice(2)}</span>
-      </div>
-    `;
-  }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:
+      radial-gradient(circle at top left, rgba(157,78,30,.28), transparent 28%),
+      radial-gradient(circle at top right, rgba(120,55,12,.22), transparent 25%),
+      linear-gradient(180deg, #2a170d 0%, var(--bg) 20%, #170d08 100%);
+      color:var(--text);
+      min-height:100%;
+    }
 
-  const todayLeft = ((year - minYear) / range) * 100;
-  axis.innerHTML = ticks + `<div class="today-line" style="left:${todayLeft}%"></div>`;
+    .container{
+      max-width:1500px;
+      margin:0 auto;
+      padding:24px;
+    }
 
-  rows.innerHTML = bottles
-    .slice()
-    .sort((a,b) => {
-      const pa = a.producer || "";
-      const pb = b.producer || "";
-      return pa.localeCompare(pb);
-    })
-    .map(b => {
-      const status = getStatus(b);
-      const left = ((Number(b.drinkFrom) - minYear) / range) * 100;
-      const width = ((Number(b.drinkTo) - Number(b.drinkFrom)) / range) * 100;
-      const cls =
-        status === "Ready" ? "ready" :
-        status === "Aging" ? "aging" : "past";
+    .hero{
+      background:
+        linear-gradient(180deg, rgba(255,183,94,.06), rgba(0,0,0,0)),
+        linear-gradient(135deg, rgba(150,85,35,.20), rgba(80,40,15,.05));
+      border:1px solid rgba(215,176,106,.18);
+      border-radius:28px;
+      padding:28px 28px 20px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
 
-      return `
-        <div class="timeline-row">
-          <div class="timeline-name">${escapeHtml(b.producer || b.name)}</div>
-          <div class="timeline-track">
-            <div class="timeline-bar ${cls}" style="left:${left}%; width:${Math.max(width, 1.5)}%"></div>
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:auto -10% -60% auto;
+      width:420px;
+      height:420px;
+      background:radial-gradient(circle, rgba(215,176,106,.12), transparent 60%);
+      pointer-events:none;
+    }
+
+    .title-row{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:flex-start;
+      gap:14px;
+    }
+
+    .brand .icon{
+      font-size:30px;
+      line-height:1;
+      margin-top:2px;
+    }
+
+    h1{
+      margin:0;
+      font-size:40px;
+      line-height:1;
+      letter-spacing:.06em;
+      font-family:Georgia, "Times New Roman", serif;
+      color:var(--gold);
+    }
+
+    .subtitle{
+      margin-top:8px;
+      color:var(--muted);
+      letter-spacing:.20em;
+      text-transform:uppercase;
+      font-size:12px;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .pill-stats{
+      margin-top:18px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .pill{
+      border:1px solid rgba(215,176,106,.25);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:14px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .pill strong{color:var(--gold)}
+
+    .tabs{
+      display:flex;
+      gap:8px;
+      margin:18px 0 24px;
+      border-bottom:1px solid rgba(215,176,106,.18);
+      padding-bottom:10px;
+      flex-wrap:wrap;
+    }
+
+    .tab{
+      background:transparent;
+      color:var(--muted);
+      border:none;
+      padding:12px 8px;
+      min-width:120px;
+      text-align:left;
+      font-weight:600;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      font-size:12px;
+      border-bottom:2px solid transparent;
+      cursor:pointer;
+    }
+
+    .tab.active{
+      color:var(--gold);
+      border-bottom-color:var(--gold);
+    }
+
+    .tab-content{display:none}
+    .tab-content.active{display:block}
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:18px;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+      border:1px solid rgba(215,176,106,.14);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+
+    .panel h3{
+      margin:0 0 16px;
+      font-size:13px;
+      color:var(--gold);
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      font-weight:700;
+      font-family:Georgia, "Times New Roman", serif;
+    }
+
+    .bar-list{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .bar-row .meta{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      font-size:14px;
+      margin-bottom:6px;
+    }
+
+    .bar-row .meta span:last-child{
+      color:var(--gold);
+      font-weight:700;
+    }
+
+    .bar-track{
+      height:10px;
+      border-radius:999px;
+      background:#241a14;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.04);
+    }
+
+    .bar-fill{
+      height:100%;
+      border-radius:999px;
+    }
+
+    .fill-rose{background:linear-gradient(90deg, #b72f53, #d54a68)}
+    .fill-gold{background:linear-gradient(90deg, #b9923d, #e1c162)}
+    .fill-blue{background:linear-gradient(90deg, #63a7c5, #8fd5f0)}
+    .fill-green{background:linear-gradient(90deg, #a8d7ad, #d3f2d6)}
+    .fill-red{background:linear-gradient(90deg, #c26d6d, #e39a9a)}
+    .fill-purple{background:linear-gradient(90deg, #7f5aa7, #9f7fc5)}
+
+    .ready-box{
+      margin-top:18px;
+      border:1px solid rgba(215,176,106,.18);
+      border-radius:18px;
+      padding:18px;
+      text-align:center;
+      background:rgba(215,176,106,.07);
+    }
+
+    .ready-number{
+      font-size:42px;
+      line-height:1;
+      color:var(--gold);
+      font-family:Georgia, "Times New Roman", serif;
+      margin-bottom:8px;
+    }
+
+    .ready-label{
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:11px;
+    }
+
+    .region-grid{
+      display:grid;
+      grid-template-columns:repeat(6, 1fr);
+      gap:12px;
+    }
+
+    .region-card{
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(215,176,106,.12);
+      border-radius:18px;
+      padding:14px;
+      min-height:110px;
+    }
+
+    .region-code{
+      color:var(--text);
+      font-weight:800;
+      font-size:14px;
+      letter-spacing:.08em;
+      margin-bottom:8px;
+    }
+
+    .region-country{
+      font-size:18px;
+      font-family:Georgia, "Times New Roman", serif;
+      margin-bottom:6px;
+    }
+
+    .region-sub{
+      color:var(--muted);
+      font-size:13px;
+      min-height:32px;
+    }
+
+    .region-count{
+      margin-top:10px;
+      color:var(--gold);
+      font-weight:700;
+      font-size:20px;
+      font-family:Georgia, "Times New Roman", serif;
+    }
+
+    .kpi-grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:14px;
+      margin-bottom:18px;
+    }
+
+    .kpi{
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(215,176,106,.12);
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .kpi-label{
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-size:11px;
+      margin-bottom:8px;
+    }
+
+    .kpi-value{
+      font-size:30px;
+      color:var(--gold);
+      font-family:Georgia, "Times New Roman", serif;
+    }
+
+    .timeline-list{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .timeline-item{
+      display:grid;
+      grid-template-columns:130px 1fr auto;
+      gap:14px;
+      align-items:center;
+      padding:16px;
+      border-radius:18px;
+      border:1px solid rgba(215,176,106,.12);
+      background:rgba(255,255,255,.03);
+    }
+
+    .timeline-year{
+      color:var(--gold);
+      font-weight:800;
+      font-size:16px;
+      letter-spacing:.06em;
+    }
+
+    .timeline-main{
+      min-width:0;
+    }
+
+    .timeline-title{
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .timeline-sub{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .timeline-badge{
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      border:1px solid rgba(255,255,255,.08);
+      white-space:nowrap;
+    }
+
+    .badge-ready{background:rgba(191,230,195,.12); color:var(--green)}
+    .badge-aging{background:rgba(214,176,93,.10); color:var(--amber)}
+    .badge-past{background:rgba(217,138,138,.10); color:var(--red)}
+
+    .toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+      align-items:center;
+    }
+
+    input, select, textarea{
+      background:#241912;
+      color:var(--text);
+      border:1px solid rgba(215,176,106,.18);
+      border-radius:14px;
+      padding:12px 14px;
+      font-size:14px;
+      outline:none;
+      width:100%;
+    }
+
+    input::placeholder, textarea::placeholder{color:#8f7d68}
+
+    .btn{
+      border:none;
+      border-radius:14px;
+      padding:12px 16px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:14px;
+    }
+
+    .btn-primary{
+      background:linear-gradient(180deg, #d1a65b, #b48543);
+      color:#23160e;
+    }
+
+    .btn-secondary{
+      background:#2b1d14;
+      color:var(--text);
+      border:1px solid rgba(215,176,106,.18);
+    }
+
+    .btn-danger{
+      background:#5f2727;
+      color:#fff1f1;
+      border:1px solid rgba(255,255,255,.05);
+    }
+
+    .btn-small{
+      padding:8px 12px;
+      font-size:12px;
+      border-radius:10px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:12px;
+    }
+
+    .form-grid .full{grid-column:1/-1}
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      overflow:hidden;
+      border-radius:16px;
+    }
+
+    th, td{
+      padding:14px 12px;
+      border-bottom:1px solid rgba(215,176,106,.10);
+      text-align:left;
+      font-size:14px;
+      vertical-align:top;
+    }
+
+    th{
+      color:var(--gold);
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:11px;
+      background:rgba(255,255,255,.02);
+      position:sticky;
+      top:0;
+    }
+
+    tbody tr:hover{
+      background:rgba(255,255,255,.025);
+    }
+
+    .table-wrap{
+      overflow:auto;
+      border:1px solid rgba(215,176,106,.12);
+      border-radius:18px;
+    }
+
+    .wine-name{
+      font-weight:700;
+    }
+
+    .wine-sub{
+      color:var(--muted);
+      font-size:12px;
+      margin-top:4px;
+    }
+
+    .status-dot{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      display:inline-block;
+    }
+
+    .dot-ready{background:var(--green)}
+    .dot-aging{background:var(--amber)}
+    .dot-past{background:var(--red)}
+
+    .muted{color:var(--muted)}
+    .section-spacer{height:18px}
+
+    .footer-note{
+      margin-top:16px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    @media (max-width: 1200px){
+      .grid-3,.grid-2,.kpi-grid,.form-grid{grid-template-columns:1fr 1fr}
+      .region-grid{grid-template-columns:repeat(3,1fr)}
+    }
+
+    @media (max-width: 760px){
+      .container{padding:14px}
+      h1{font-size:30px}
+      .grid-3,.grid-2,.kpi-grid,.form-grid{grid-template-columns:1fr}
+      .region-grid{grid-template-columns:1fr 1fr}
+      .timeline-item{grid-template-columns:1fr; align-items:flex-start}
+      .tab{min-width:auto}
+      .title-row{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <div class="title-row">
+        <div>
+          <div class="brand">
+            <div class="icon">🍷</div>
+            <div>
+              <h1>WINE CELLAR</h1>
+              <div class="subtitle" id="heroSubtitle">0 bottles · 0 countries</div>
+            </div>
           </div>
-          <div class="timeline-end">${escapeHtml(`${b.drinkFrom}–${b.drinkTo}`)}</div>
+          <div class="pill-stats">
+            <div class="pill"><span>Ready</span><strong id="pillReady">0</strong></div>
+            <div class="pill"><span>Aging</span><strong id="pillAging">0</strong></div>
+            <div class="pill"><span>Past Peak</span><strong id="pillPast">0</strong></div>
+            <div class="pill"><span>Cellar value</span><strong id="pillValue">0 SEK</strong></div>
+          </div>
         </div>
-      `;
-    }).join("");
-}
-</script>
+
+        <div class="top-actions">
+          <button class="btn btn-secondary" id="exportBtn">Export JSON</button>
+          <button class="btn btn-secondary" id="resetBtn">Reset demo data</button>
+          <button class="btn btn-primary" id="jumpAddBtn">Add bottle</button>
+        </div>
+      </div>
+    </section>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="overview">Overview</button>
+      <button class="tab" data-tab="timeline">Timeline</button>
+      <button class="tab" data-tab="collection">Collection</button>
+    </nav>
+
+    <section id="overview" class="tab-content active">
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Total bottles</div>
+          <div class="kpi-value" id="kpiBottles">0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Countries</div>
+          <div class="kpi-value" id="kpiCountries">0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Average price</div>
+          <div class="kpi-value" id="kpiAvgPrice">0 SEK</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Most expensive</div>
+          <div class="kpi-value" id="kpiMostExpensive">—</div>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="panel">
+          <h3>By country</h3>
+          <div class="bar-list" id="countryBars"></div>
+        </div>
+
+        <div class="panel">
+          <h3>By type</h3>
+          <div class="bar-list" id="typeBars"></div>
+        </div>
+
+        <div class="panel">
+          <h3>Drink window status</h3>
+          <div class="bar-list" id="statusBars"></div>
+          <div class="ready-box">
+            <div class="ready-number" id="readyNowBig">0</div>
+            <div class="ready-label">Bottles ready now</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-spacer"></div>
+
+      <div class="panel">
+        <h3>Regions at a glance</h3>
+        <div class="region-grid" id="regionGrid"></div>
+      </div>
+    </section>
+
+    <section id="timeline" class="tab-content">
+      <div class="grid-2">
+        <div class="panel">
+          <h3>Drink now & soon</h3>
+          <div class="timeline-list" id="timelineNow"></div>
+        </div>
+        <div class="panel">
+          <h3>Age longer</h3>
+          <div class="timeline-list" id="timelineLater"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="collection" class="tab-content">
+      <div class="panel" id="addBottlePanel">
+        <h3>Add or edit bottle</h3>
+        <div class="form-grid">
+          <input id="f_name" placeholder="Wine name" />
+          <input id="f_producer" placeholder="Producer" />
+          <input id="f_country" placeholder="Country" />
+          <input id="f_region" placeholder="Region" />
+
+          <select id="f_type">
+            <option value="">Type</option>
+            <option>Red</option>
+            <option>White</option>
+            <option>Sparkling</option>
+            <option>Rosé</option>
+            <option>Sweet</option>
+            <option>Aromatised</option>
+          </select>
+
+          <input id="f_vintage" placeholder="Vintage / NV" />
+          <input id="f_price" type="number" placeholder="Price SEK" />
+          <input id="f_quantity" type="number" placeholder="Quantity" value="1" />
+
+          <input id="f_drinkFrom" type="number" placeholder="Drink from year" />
+          <input id="f_drinkTo" type="number" placeholder="Drink to year" />
+          <input id="f_food" placeholder="Food pairing" class="full" />
+          <textarea id="f_notes" placeholder="Notes" rows="3" class="full"></textarea>
+        </div>
+
+        <div class="toolbar" style="margin-top:14px;">
+          <button class="btn btn-primary" id="saveBottleBtn">Save bottle</button>
+          <button class="btn btn-secondary" id="clearFormBtn">Clear form</button>
+          <span class="muted" id="editState">Adding new bottle</span>
+        </div>
+      </div>
+
+      <div class="section-spacer"></div>
+
+      <div class="panel">
+        <h3>Collection</h3>
+
+        <div class="toolbar">
+          <input id="searchInput" placeholder="Search wine, producer, region..." style="max-width:320px;">
+          <select id="filterType" style="max-width:180px;">
+            <option value="">All types</option>
+          </select>
+          <select id="filterCountry" style="max-width:180px;">
+            <option value="">All countries</option>
+          </select>
+          <select id="filterStatus" style="max-width:180px;">
+            <option value="">All status</option>
+            <option value="Ready">Ready</option>
+            <option value="Aging">Aging</option>
+            <option value="Past Peak">Past Peak</option>
+          </select>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Wine</th>
+                <th>Country / Region</th>
+                <th>Type</th>
+                <th>Vintage</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Drink window</th>
+                <th>Food</th>
+                <th>Qty</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="collectionBody"></tbody>
+          </table>
+        </div>
+
+        <div class="footer-note">
+          All changes are stored in your browser with localStorage.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "wineCellarDashboardData_v1";
+    const CURRENT_YEAR = new Date().getFullYear();
+
+    const seedData = [
+      {
+        id: crypto.randomUUID(),
+        name: "Collection 242",
+        producer: "Louis Roederer",
+        country: "France",
+        region: "Champagne",
+        type: "Sparkling",
+        vintage: "NV",
+        priceSek: 649,
+        drinkFrom: 2023,
+        drinkTo: 2028,
+        food: "oysters, sushi, shellfish",
+        notes: "Base harvest 2017. Champagne.",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Perle de Vigne Crémant de Bourgogne",
+        producer: "Louis Bouillot",
+        country: "France",
+        region: "Burgundy",
+        type: "Sparkling",
+        vintage: "NV",
+        priceSek: 169,
+        drinkFrom: 2023,
+        drinkTo: 2026,
+        food: "aperitif, seafood, salads",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Vintage Brut",
+        producer: "Pol Roger",
+        country: "France",
+        region: "Champagne",
+        type: "Sparkling",
+        vintage: "2015",
+        priceSek: 899,
+        drinkFrom: 2024,
+        drinkTo: 2033,
+        food: "lobster, turbot, chicken",
+        notes: "Age-worthy champagne.",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Prosecco DOC Extra Dry",
+        producer: "Casalforte",
+        country: "Italy",
+        region: "Veneto",
+        type: "Sparkling",
+        vintage: "NV",
+        priceSek: 119,
+        drinkFrom: 2023,
+        drinkTo: 2026,
+        food: "aperitif, prosciutto, light pasta",
+        notes: "",
+        quantity: 2
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Brut Réserve",
+        producer: "Taittinger",
+        country: "France",
+        region: "Champagne",
+        type: "Sparkling",
+        vintage: "NV",
+        priceSek: 559,
+        drinkFrom: 2023,
+        drinkTo: 2028,
+        food: "sushi, scallops, creamy fish dishes",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Blanc de Noirs",
+        producer: "Champagne Vieille France",
+        country: "France",
+        region: "Champagne",
+        type: "Sparkling",
+        vintage: "2013",
+        priceSek: 399,
+        drinkFrom: 2021,
+        drinkTo: 2027,
+        food: "aperitif, foie gras, canapés",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Crémant de Bourgogne Brut",
+        producer: "François Martenot",
+        country: "France",
+        region: "Burgundy",
+        type: "Sparkling",
+        vintage: "2022",
+        priceSek: 159,
+        drinkFrom: 2023,
+        drinkTo: 2026,
+        food: "aperitif, seafood",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Cuvée Brut",
+        producer: "Jeanmaire",
+        country: "France",
+        region: "Champagne",
+        type: "Sparkling",
+        vintage: "NV",
+        priceSek: 329,
+        drinkFrom: 2023,
+        drinkTo: 2027,
+        food: "sushi, shellfish",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Blanc de Blancs Brut",
+        producer: "Richard Juhlin",
+        country: "France",
+        region: "France",
+        type: "Sparkling",
+        vintage: "NV",
+        priceSek: 199,
+        drinkFrom: 2023,
+        drinkTo: 2026,
+        food: "fish, shellfish",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Petite Sirah / Zinfandel",
+        producer: "Lynx",
+        country: "USA",
+        region: "California",
+        type: "Red",
+        vintage: "2020",
+        priceSek: 129,
+        drinkFrom: 2023,
+        drinkTo: 2028,
+        food: "barbecue, steaks",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Réserve de Bonpas Côtes-du-Rhône",
+        producer: "Bonpas",
+        country: "France",
+        region: "Rhône",
+        type: "Red",
+        vintage: "NV",
+        priceSek: 119,
+        drinkFrom: 2022,
+        drinkTo: 2026,
+        food: "grilled meats, lamb",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Côtes-du-Rhône Organic",
+        producer: "Les Dauphins",
+        country: "France",
+        region: "Rhône",
+        type: "Red",
+        vintage: "2016",
+        priceSek: 129,
+        drinkFrom: 2021,
+        drinkTo: 2027,
+        food: "beef, lamb",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Ruja Langhe Nebbiolo",
+        producer: "Gemma",
+        country: "Italy",
+        region: "Piedmont",
+        type: "Red",
+        vintage: "2021",
+        priceSek: 199,
+        drinkFrom: 2024,
+        drinkTo: 2029,
+        food: "pasta, red meat",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Barolo Piccole Vigne",
+        producer: "Giacomo Grimaldi",
+        country: "Italy",
+        region: "Piedmont",
+        type: "Red",
+        vintage: "2018",
+        priceSek: 399,
+        drinkFrom: 2025,
+        drinkTo: 2035,
+        food: "game, truffle, aged cheese",
+        notes: "Age-worthy.",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Cuvée Jean-Louis Blanc de Blancs Brut",
+        producer: "Charles de Fère",
+        country: "France",
+        region: "France",
+        type: "Sparkling",
+        vintage: "NV",
+        priceSek: 119,
+        drinkFrom: 2023,
+        drinkTo: 2026,
+        food: "seafood, aperitif",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Coronas Tempranillo Organic",
+        producer: "Torres",
+        country: "Spain",
+        region: "Penedès",
+        type: "Red",
+        vintage: "2018",
+        priceSek: 139,
+        drinkFrom: 2022,
+        drinkTo: 2027,
+        food: "grilled meat, tapas",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Imperial Pinot Noir",
+        producer: "Ruppertsberger",
+        country: "Germany",
+        region: "Pfalz",
+        type: "Red",
+        vintage: "2019",
+        priceSek: 149,
+        drinkFrom: 2023,
+        drinkTo: 2028,
+        food: "duck, mushrooms, salmon",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Orso d'Oro Rosso",
+        producer: "Orso d'Oro",
+        country: "Italy",
+        region: "Italy",
+        type: "Red",
+        vintage: "NV",
+        priceSek: 99,
+        drinkFrom: 2023,
+        drinkTo: 2026,
+        food: "steak, barbecue, cheese",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "El Círculo Rioja Crianza",
+        producer: "Pagos del Rey",
+        country: "Spain",
+        region: "Rioja",
+        type: "Red",
+        vintage: "2015",
+        priceSek: 129,
+        drinkFrom: 2022,
+        drinkTo: 2028,
+        food: "lamb, tapas",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Bordeaux",
+        producer: "B by Fonbadet",
+        country: "France",
+        region: "Bordeaux",
+        type: "Red",
+        vintage: "2019",
+        priceSek: 129,
+        drinkFrom: 2023,
+        drinkTo: 2027,
+        food: "beef, roast chicken",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Sensation'Ailes Minervois",
+        producer: "Domaine d'Agel",
+        country: "France",
+        region: "Minervois",
+        type: "Red",
+        vintage: "2024",
+        priceSek: 139,
+        drinkFrom: 2024,
+        drinkTo: 2028,
+        food: "grilled lamb, stews",
+        notes: "Organic",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Valpolicella Ripasso Superiore",
+        producer: "Villa Fura",
+        country: "Italy",
+        region: "Veneto",
+        type: "Red",
+        vintage: "2020",
+        priceSek: 159,
+        drinkFrom: 2023,
+        drinkTo: 2030,
+        food: "pasta with meat sauce, steak",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Bonacosta Valpolicella Classico",
+        producer: "Masi",
+        country: "Italy",
+        region: "Veneto",
+        type: "Red",
+        vintage: "2016",
+        priceSek: 149,
+        drinkFrom: 2020,
+        drinkTo: 2026,
+        food: "pizza, pasta, grilled chicken",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Memoro Rosso d'Italia",
+        producer: "Piccini",
+        country: "Italy",
+        region: "Italy",
+        type: "Red",
+        vintage: "NV",
+        priceSek: 129,
+        drinkFrom: 2023,
+        drinkTo: 2027,
+        food: "bolognese, grilled meat, hard cheese",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Couvent des Jacobins Bourgogne Pinot Noir",
+        producer: "Louis Jadot",
+        country: "France",
+        region: "Burgundy",
+        type: "Red",
+        vintage: "2019",
+        priceSek: 219,
+        drinkFrom: 2023,
+        drinkTo: 2029,
+        food: "duck, mushrooms, salmon",
+        notes: "",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Amarone della Valpolicella",
+        producer: "Cadis",
+        country: "Italy",
+        region: "Veneto",
+        type: "Red",
+        vintage: "2017",
+        priceSek: 379,
+        drinkFrom: 2025,
+        drinkTo: 2035,
+        food: "steak, venison, aged cheese",
+        notes: "Age-worthy.",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Sparkling & Spices Citrus",
+        producer: "Blossa",
+        country: "Germany",
+        region: "Germany",
+        type: "Aromatised",
+        vintage: "NV",
+        priceSek: 99,
+        drinkFrom: 2023,
+        drinkTo: 2025,
+        food: "snacks, aperitif",
+        notes: "Aromatised sparkling drink.",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Grande Alberone Moscato Spumante Dolce",
+        producer: "Grande Alberone",
+        country: "Italy",
+        region: "Italy",
+        type: "Sweet",
+        vintage: "NV",
+        priceSek: 109,
+        drinkFrom: 2023,
+        drinkTo: 2026,
+        food: "desserts, fruit",
+        notes: "Sweet sparkling moscato.",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "La Clape",
+        producer: "Saint Auriol Chatelaine",
+        country: "France",
+        region: "La Clape",
+        type: "Red",
+        vintage: "2023",
+        priceSek: 129,
+        drinkFrom: 2024,
+        drinkTo: 2028,
+        food: "lamb, Mediterranean dishes",
+        notes: "Organic.",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Chardonnay",
+        producer: "Rawson's Retreat",
+        country: "Australia",
+        region: "South Eastern Australia",
+        type: "White",
+        vintage: "2020",
+        priceSek: 109,
+        drinkFrom: 2022,
+        drinkTo: 2025,
+        food: "chicken, seafood, salads",
+        notes: "Reduced alcohol 9.5%.",
+        quantity: 1
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Reserva Rioja",
+        producer: "Baron de Ley",
+        country: "Spain",
+        region: "Rioja",
+        type: "Red",
+        vintage: "2020",
+        priceSek: 209,
+        drinkFrom: 2025,
+        drinkTo: 2035,
+        food: "steak, lamb, tapas",
+        notes: "Reserva.",
+        quantity: 1
+      }
+    ];
+
+    let bottles = loadData();
+    let editingId = null;
+
+    function loadData(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return structuredClone(seedData);
+      try{
+        return JSON.parse(raw);
+      }catch{
+        return structuredClone(seedData);
+      }
+    }
+
+    function saveData(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(bottles));
+    }
+
+    function currency(n){
+      return `${Math.round(Number(n || 0)).toLocaleString("sv-SE")} SEK`;
+    }
+
+    function getStatus(bottle){
+      const from = Number(bottle.drinkFrom || CURRENT_YEAR);
+      const to = Number(bottle.drinkTo || CURRENT_YEAR);
+      if (CURRENT_YEAR < from) return "Aging";
+      if (CURRENT_YEAR > to) return "Past Peak";
+      return "Ready";
+    }
+
+    function totalBottleCount(data){
+      return data.reduce((sum,b)=>sum + Number(b.quantity || 1),0);
+    }
+
+    function totalValue(data){
+      return data.reduce((sum,b)=>sum + (Number(b.priceSek || 0) * Number(b.quantity || 1)),0);
+    }
+
+    function aggregate(data, key){
+      const map = {};
+      data.forEach(item=>{
+        const qty = Number(item.quantity || 1);
+        const k = (item[key] || "Unknown").trim();
+        map[k] = (map[k] || 0) + qty;
+      });
+      return Object.entries(map).sort((a,b)=>b[1]-a[1]);
+    }
+
+    function aggregateStatus(data){
+      const map = {Ready:0, Aging:0, "Past Peak":0};
+      data.forEach(item=>{
+        map[getStatus(item)] += Number(item.quantity || 1);
+      });
+      return Object.entries(map);
+    }
+
+    function renderBars(containerId, items, fillClasses = []){
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+      const max = Math.max(...items.map(i=>i[1]), 1);
+      items.forEach((item, idx)=>{
+        const pct = (item[1]/max)*100;
+        const fillClass = fillClasses[idx % fillClasses.length] || "fill-rose";
+        const row = document.createElement("div");
+        row.className = "bar-row";
+        row.innerHTML = `
+          <div class="meta">
+            <span>${item[0]}</span>
+            <span>${item[1]}</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill ${fillClass}" style="width:${pct}%"></div>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function renderRegions(){
+      const grid = document.getElementById("regionGrid");
+      grid.innerHTML = "";
+      const map = {};
+      bottles.forEach(b=>{
+        const key = `${b.country}|${b.region}`;
+        if(!map[key]){
+          map[key] = {
+            country:b.country || "Unknown",
+            region:b.region || "Unknown",
+            count:0
+          };
+        }
+        map[key].count += Number(b.quantity || 1);
+      });
+
+      const items = Object.values(map).sort((a,b)=>b.count-a.count).slice(0,12);
+      items.forEach(item=>{
+        const code = (item.country || "XX").slice(0,2).toUpperCase();
+        const el = document.createElement("div");
+        el.className = "region-card";
+        el.innerHTML = `
+          <div class="region-code">${code}</div>
+          <div class="region-country">${item.country}</div>
+          <div class="region-sub">${item.region}</div>
+          <div class="region-count">${item.count}</div>
+        `;
+        grid.appendChild(el);
+      });
+    }
+
+    function renderOverview(){
+      const bottleCount = totalBottleCount(bottles);
+      const countries = new Set(bottles.map(b=>b.country).filter(Boolean)).size;
+      const value = totalValue(bottles);
+      const statuses = Object.fromEntries(aggregateStatus(bottles));
+
+      document.getElementById("heroSubtitle").textContent = `${bottleCount} bottles · ${countries} countries`;
+      document.getElementById("pillReady").textContent = statuses.Ready || 0;
+      document.getElementById("pillAging").textContent = statuses.Aging || 0;
+      document.getElementById("pillPast").textContent = statuses["Past Peak"] || 0;
+      document.getElementById("pillValue").textContent = currency(value);
+
+      document.getElementById("kpiBottles").textContent = bottleCount;
+      document.getElementById("kpiCountries").textContent = countries;
+      document.getElementById("kpiAvgPrice").textContent = bottleCount ? currency(value / bottleCount) : "0 SEK";
+
+      const mostExp = [...bottles].sort((a,b)=>Number(b.priceSek||0)-Number(a.priceSek||0))[0];
+      document.getElementById("kpiMostExpensive").textContent = mostExp ? `${mostExp.name}` : "—";
+      document.getElementById("readyNowBig").textContent = statuses.Ready || 0;
+
+      renderBars("countryBars", aggregate(bottles, "country").slice(0,10), ["fill-rose","fill-gold","fill-blue","fill-purple"]);
+      renderBars("typeBars", aggregate(bottles, "type"), ["fill-rose","fill-gold","fill-blue","fill-purple","fill-green"]);
+      renderBars("statusBars", aggregateStatus(bottles), ["fill-green","fill-gold","fill-red"]);
+
+      renderRegions();
+      renderFilters();
+    }
+
+    function renderTimeline(){
+      const now = document.getElementById("timelineNow");
+      const later = document.getElementById("timelineLater");
+      now.innerHTML = "";
+      later.innerHTML = "";
+
+      const sorted = [...bottles].sort((a,b)=>Number(a.drinkFrom||9999)-Number(b.drinkFrom||9999));
+
+      const readySoon = sorted.filter(b=>Number(b.drinkFrom||0) <= CURRENT_YEAR + 1);
+      const ageLonger = sorted.filter(b=>Number(b.drinkFrom||0) > CURRENT_YEAR + 1);
+
+      const renderList = (target, list) => {
+        if(!list.length){
+          target.innerHTML = `<div class="muted">No bottles in this section.</div>`;
+          return;
+        }
+        list.forEach(b=>{
+          const status = getStatus(b);
+          const badgeClass = status === "Ready" ? "badge-ready" : status === "Aging" ? "badge-aging" : "badge-past";
+          const div = document.createElement("div");
+          div.className = "timeline-item";
+          div.innerHTML = `
+            <div class="timeline-year">${b.drinkFrom || "—"}–${b.drinkTo || "—"}</div>
+            <div class="timeline-main">
+              <div class="timeline-title">${b.producer} — ${b.name}</div>
+              <div class="timeline-sub">${b.country} · ${b.region || "—"} · ${b.vintage || "NV"} · ${currency(b.priceSek)}</div>
+            </div>
+            <div class="timeline-badge ${badgeClass}">${status}</div>
+          `;
+          target.appendChild(div);
+        });
+      };
+
+      renderList(now, readySoon);
+      renderList(later, ageLonger);
+    }
+
+    function statusCell(status){
+      const cls = status === "Ready" ? "dot-ready" : status === "Aging" ? "dot-aging" : "dot-past";
+      return `<span class="status-dot"><span class="dot ${cls}"></span>${status}</span>`;
+    }
+
+    function renderFilters(){
+      const typeSelect = document.getElementById("filterType");
+      const countrySelect = document.getElementById("filterCountry");
+      const types = [...new Set(bottles.map(b=>b.type).filter(Boolean))].sort();
+      const countries = [...new Set(bottles.map(b=>b.country).filter(Boolean))].sort();
+
+      typeSelect.innerHTML = `<option value="">All types</option>` + types.map(t=>`<option>${t}</option>`).join("");
+      countrySelect.innerHTML = `<option value="">All countries</option>` + countries.map(c=>`<option>${c}</option>`).join("");
+    }
+
+    function renderCollection(){
+      const body = document.getElementById("collectionBody");
+      body.innerHTML = "";
+
+      const q = document.getElementById("searchInput").value.trim().toLowerCase();
+      const type = document.getElementById("filterType").value;
+      const country = document.getElementById("filterCountry").value;
+      const statusFilter = document.getElementById("filterStatus").value;
+
+      const filtered = bottles.filter(b=>{
+        const status = getStatus(b);
+        const searchBlob = `${b.name} ${b.producer} ${b.country} ${b.region} ${b.food} ${b.notes}`.toLowerCase();
+        return (!q || searchBlob.includes(q))
+          && (!type || b.type === type)
+          && (!country || b.country === country)
+          && (!statusFilter || status === statusFilter);
+      });
+
+      filtered.forEach(b=>{
+        const tr = document.createElement("tr");
+        const status = getStatus(b);
+        tr.innerHTML = `
+          <td>
+            <div class="wine-name">${b.name}</div>
+            <div class="wine-sub">${b.producer}</div>
+          </td>
+          <td>${b.country}<div class="wine-sub">${b.region || "—"}</div></td>
+          <td>${b.type || "—"}</td>
+          <td>${b.vintage || "NV"}</td>
+          <td>${currency(b.priceSek)}</td>
+          <td>${statusCell(status)}</td>
+          <td>${b.drinkFrom || "—"}–${b.drinkTo || "—"}</td>
+          <td>${b.food || "—"}</td>
+          <td>${b.quantity || 1}</td>
+          <td>
+            <button class="btn btn-secondary btn-small" onclick="editBottle('${b.id}')">Edit</button>
+            <button class="btn btn-danger btn-small" onclick="deleteBottle('${b.id}')">Delete</button>
+          </td>
+        `;
+        body.appendChild(tr);
+      });
+
+      if(!filtered.length){
+        body.innerHTML = `<tr><td colspan="10" class="muted">No bottles match your filter.</td></tr>`;
+      }
+    }
+
+    function clearForm(){
+      editingId = null;
+      document.getElementById("f_name").value = "";
+      document.getElementById("f_producer").value = "";
+      document.getElementById("f_country").value = "";
+      document.getElementById("f_region").value = "";
+      document.getElementById("f_type").value = "";
+      document.getElementById("f_vintage").value = "";
+      document.getElementById("f_price").value = "";
+      document.getElementById("f_quantity").value = 1;
+      document.getElementById("f_drinkFrom").value = "";
+      document.getElementById("f_drinkTo").value = "";
+      document.getElementById("f_food").value = "";
+      document.getElementById("f_notes").value = "";
+      document.getElementById("editState").textContent = "Adding new bottle";
+    }
+
+    function getFormData(){
+      return {
+        id: editingId || crypto.randomUUID(),
+        name: document.getElementById("f_name").value.trim(),
+        producer: document.getElementById("f_producer").value.trim(),
+        country: document.getElementById("f_country").value.trim(),
+        region: document.getElementById("f_region").value.trim(),
+        type: document.getElementById("f_type").value.trim(),
+        vintage: document.getElementById("f_vintage").value.trim(),
+        priceSek: Number(document.getElementById("f_price").value || 0),
+        quantity: Number(document.getElementById("f_quantity").value || 1),
+        drinkFrom: Number(document.getElementById("f_drinkFrom").value || 0),
+        drinkTo: Number(document.getElementById("f_drinkTo").value || 0),
+        food: document.getElementById("f_food").value.trim(),
+        notes: document.getElementById("f_notes").value.trim()
+      };
+    }
+
+    function saveBottle(){
+      const item = getFormData();
+      if(!item.name || !item.producer || !item.country){
+        alert("Please fill at least Wine name, Producer and Country.");
+        return;
+      }
+
+      if(editingId){
+        bottles = bottles.map(b => b.id === editingId ? item : b);
+      }else{
+        bottles.unshift(item);
+      }
+
+      saveData();
+      clearForm();
+      renderAll();
+      switchTab("collection");
+    }
+
+    window.editBottle = function(id){
+      const b = bottles.find(x=>x.id===id);
+      if(!b) return;
+      editingId = id;
+      document.getElementById("f_name").value = b.name || "";
+      document.getElementById("f_producer").value = b.producer || "";
+      document.getElementById("f_country").value = b.country || "";
+      document.getElementById("f_region").value = b.region || "";
+      document.getElementById("f_type").value = b.type || "";
+      document.getElementById("f_vintage").value = b.vintage || "";
+      document.getElementById("f_price").value = b.priceSek || "";
+      document.getElementById("f_quantity").value = b.quantity || 1;
+      document.getElementById("f_drinkFrom").value = b.drinkFrom || "";
+      document.getElementById("f_drinkTo").value = b.drinkTo || "";
+      document.getElementById("f_food").value = b.food || "";
+      document.getElementById("f_notes").value = b.notes || "";
+      document.getElementById("editState").textContent = `Editing: ${b.producer} — ${b.name}`;
+      switchTab("collection");
+      document.getElementById("addBottlePanel").scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    window.deleteBottle = function(id){
+      if(!confirm("Delete this bottle?")) return;
+      bottles = bottles.filter(b=>b.id!==id);
+      saveData();
+      renderAll();
+    }
+
+    function exportJson(){
+      const blob = new Blob([JSON.stringify(bottles, null, 2)], {type:"application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "wine-cellar-data.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function resetDemo(){
+      if(!confirm("Reset to original seeded demo data? This removes your browser changes.")) return;
+      bottles = structuredClone(seedData);
+      saveData();
+      clearForm();
+      renderAll();
+    }
+
+    function switchTab(tabId){
+      document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active", t.dataset.tab === tabId));
+      document.querySelectorAll(".tab-content").forEach(c=>c.classList.toggle("active", c.id === tabId));
+    }
+
+    function renderAll(){
+      renderOverview();
+      renderTimeline();
+      renderCollection();
+    }
+
+    document.querySelectorAll(".tab").forEach(btn=>{
+      btn.addEventListener("click", ()=>switchTab(btn.dataset.tab));
+    });
+
+    document.getElementById("saveBottleBtn").addEventListener("click", saveBottle);
+    document.getElementById("clearFormBtn").addEventListener("click", clearForm);
+    document.getElementById("exportBtn").addEventListener("click", exportJson);
+    document.getElementById("resetBtn").addEventListener("click", resetDemo);
+    document.getElementById("jumpAddBtn").addEventListener("click", ()=>{
+      switchTab("collection");
+      document.getElementById("addBottlePanel").scrollIntoView({behavior:"smooth", block:"start"});
+    });
+
+    ["searchInput","filterType","filterCountry","filterStatus"].forEach(id=>{
+      document.getElementById(id).addEventListener("input", renderCollection);
+      document.getElementById(id).addEventListener("change", renderCollection);
+    });
+
+    clearForm();
+    renderAll();
+  </script>
+</body>
+</html>
