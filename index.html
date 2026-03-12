@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wine Cellar</title>
+<style>
+body{
+font-family:Arial;
+background:#2a1d18;
+color:white;
+padding:20px;
+}
+button{
+padding:8px 14px;
+margin:4px;
+border-radius:8px;
+border:none;
+cursor:pointer;
+}
+.card{
+background:#3b2a24;
+padding:15px;
+margin:10px 0;
+border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Wine Cellar</h1>
+
+<button onclick="filter('all')">All</button>
+<button onclick="filter('ready')">Ready</button>
+<button onclick="filter('aging')">Aging</button>
+<button onclick="filter('past')">Past Peak</button>
+
+<div id="list"></div>
+
+<script>
+
+const wines=[
+{wine:"Moscato",producer:"Grande Alberone",status:"ready"},
+{wine:"Chatelaine",producer:"Saint Auriol",status:"ready"},
+{wine:"Barolo",producer:"Example Winery",status:"aging"}
+]
+
+function render(list){
+const container=document.getElementById("list")
+container.innerHTML=""
+list.forEach(w=>{
+container.innerHTML+=`
+<div class="card">
+<b>${w.producer}</b><br>
+${w.wine}<br>
+Status: ${w.status}
+</div>`
+})
+}
+
+function filter(type){
+if(type==="all") return render(wines)
+render(wines.filter(w=>w.status===type))
+}
+
+render(wines)
+
+</script>
+
+</body>
+</html>
