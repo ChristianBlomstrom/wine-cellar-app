@@ -6,124 +6,286 @@
   <title>Wine Cellar</title>
   <style>
     :root{
-      --bg:#241512;
-      --bg2:#3a241d;
-      --card:#432e27;
-      --card2:#4b342d;
-      --text:#f7efe8;
-      --muted:#d9c3b6;
-      --line:rgba(255,255,255,0.08);
-      --ready:#8fd19e;
-      --aging:#d6b15f;
-      --soon:#d9c96b;
-      --past:#d77878;
+      --bg:#1f120f;
+      --bg2:#2b1713;
+      --card:#3a2721;
+      --card2:#4a332b;
+      --line:rgba(255,255,255,.08);
+      --text:#f8efe8;
+      --muted:#d7c1b4;
       --accent:#f0d28b;
-      --price:#9fd3ff;
+      --ready:#9cd3ab;
+      --aging:#d8b46a;
+      --soon:#d8c96f;
+      --past:#d77d7d;
+      --spark:#9fd7ff;
+      --danger:#d77d7d;
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#2a1713 0%,#1e1210 100%);color:var(--text)}
-    .wrap{max-width:1400px;margin:0 auto;padding:28px}
-    .hero{background:linear-gradient(180deg,#43251b 0%,#2a1713 100%);border-radius:20px;padding:28px;border:1px solid var(--line);margin-bottom:18px}
-    .title{font-size:52px;font-weight:700;margin:0 0 8px 0}
-    .subtitle{color:var(--muted);margin-bottom:20px}
-    .status-pills,.tabs,.action-row,.list-controls,.photo-actions,.modal-actions,.scan-actions,.price-pills{display:flex;flex-wrap:wrap;gap:10px}
-    .pill,.btn,.action-btn,.tab,.price-pill{border:none;cursor:pointer;font-weight:700}
-    .pill,.price-pill{border-radius:999px;padding:10px 16px;color:#1e1e1e}
-    .pill.ready{background:rgba(143,209,158,.95)}
-    .pill.aging{background:rgba(214,177,95,.95)}
-    .pill.soon{background:rgba(217,201,107,.95)}
-    .pill.past{background:rgba(215,120,120,.95)}
-    .pill.all{background:#f1ece7}
-    .price-pill{background:#e7f2fb;color:#24425b}
-    .pill.active,.price-pill.active{outline:3px solid rgba(255,255,255,.25)}
-    .tabs{margin-top:14px}
-    .tab{background:transparent;color:var(--muted);border-bottom:2px solid transparent;padding:10px 0;font-size:15px;letter-spacing:.04em;text-transform:uppercase}
+    body{
+      margin:0;
+      font-family:Arial,Helvetica,sans-serif;
+      background:linear-gradient(180deg,var(--bg2) 0%,var(--bg) 100%);
+      color:var(--text);
+    }
+    .wrap{max-width:1440px;margin:0 auto;padding:24px}
+    .hero{
+      background:linear-gradient(180deg,#43251b 0%,#2a1713 100%);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:24px;
+      margin-bottom:18px;
+    }
+    h1{margin:0 0 8px 0;font-size:46px}
+    .sub{color:var(--muted);margin-bottom:18px}
+    .row{display:flex;flex-wrap:wrap;gap:10px}
+    .pill,.tab,.btn,.small-btn,.price-pill{
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+      border-radius:999px;
+      padding:10px 14px;
+    }
+    .pill,.price-pill{color:#241612}
+    .pill.all,.price-pill{background:#efe8e2}
+    .pill.ready{background:var(--ready)}
+    .pill.aging{background:var(--aging)}
+    .pill.soon{background:var(--soon)}
+    .pill.past{background:var(--past)}
+    .pill.active,.price-pill.active{outline:3px solid rgba(255,255,255,.22)}
+    .tabs{margin-top:14px;display:flex;gap:18px;flex-wrap:wrap}
+    .tab{
+      background:transparent;
+      color:var(--muted);
+      border-radius:0;
+      padding:10px 0;
+      border-bottom:2px solid transparent;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:14px;
+    }
     .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
     .page{display:none}
     .page.active{display:block}
     .grid{display:grid;gap:18px}
-    .grid-3{grid-template-columns:1.4fr 1.4fr 1fr}
-    .card{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--line);border-radius:18px;padding:18px}
-    .card h3{margin:0 0 14px 0;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
-    .big-number{font-size:46px;font-weight:700;text-align:center;margin-top:22px}
-    .muted-center{text-align:center;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-size:12px}
-    .bar-row{margin-bottom:14px}
+    .grid-3{grid-template-columns:1.2fr 1.2fr 1fr}
+    .card{
+      background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px;
+    }
+    .card h3{
+      margin:0 0 12px 0;
+      font-size:13px;
+      color:var(--accent);
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+    .bar-row{margin-bottom:12px}
     .bar-head{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
-    .track{height:10px;background:rgba(0,0,0,.35);border-radius:999px;overflow:hidden}
+    .track{height:10px;border-radius:999px;background:rgba(0,0,0,.32);overflow:hidden}
     .fill{height:100%;border-radius:999px}
+    .fill.country{background:linear-gradient(90deg,#d77c7c,#e6bf6b)}
+    .fill.type{background:linear-gradient(90deg,#9fd7ff,#d77c7c)}
+    .fill.price{background:linear-gradient(90deg,#8db8ff,#bce5ff)}
     .fill.ready{background:var(--ready)}
     .fill.aging{background:var(--aging)}
     .fill.soon{background:var(--soon)}
     .fill.past{background:var(--past)}
-    .fill.country{background:linear-gradient(90deg,#d77c7c,#e7c06d)}
-    .fill.type{background:linear-gradient(90deg,#d77c7c,#85c8ff)}
-    .fill.price{background:linear-gradient(90deg,#7fb8e6,#bce2ff)}
-    .region-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
-    .region-box{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:14px;min-height:100px}
-    .region-code{color:var(--accent);font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}
-    .region-name{font-size:20px;font-weight:700;margin-bottom:8px}
-    .search{flex:1;min-width:220px;max-width:420px;background:rgba(255,255,255,.08);border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:14px;outline:none}
-    .btn{background:var(--accent);color:#2b1a14;border-radius:14px;padding:12px 16px}
-    .bottle{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:12px}
-    .bottle-top{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
-    .bottle-name{font-size:30px;font-weight:700;margin-bottom:4px}
-    .bottle-meta{color:var(--muted);margin-bottom:8px}
-    .badge{display:inline-block;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:700;margin-right:8px;margin-top:6px}
-    .badge.ready{background:rgba(143,209,158,.2);color:var(--ready)}
-    .badge.aging{background:rgba(214,177,95,.2);color:var(--aging)}
-    .badge.soon{background:rgba(217,201,107,.2);color:var(--soon)}
-    .badge.past{background:rgba(215,120,120,.2);color:var(--past)}
+    .regions{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+    .region{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      min-height:96px;
+    }
+    .region .code{
+      font-size:12px;
+      color:var(--accent);
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+    .big{
+      font-size:42px;
+      font-weight:700;
+      text-align:center;
+      margin-top:16px;
+    }
+    .center-note{
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-bottom:14px;
+    }
+    .search{
+      flex:1;
+      min-width:240px;
+      max-width:420px;
+      border:none;
+      outline:none;
+      border-radius:14px;
+      padding:12px 14px;
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .btn{
+      background:var(--accent);
+      color:#2b1a14;
+      border-radius:14px;
+      padding:12px 16px;
+    }
+    .small-btn{
+      padding:9px 12px;
+      border-radius:12px;
+      background:#ece4dc;
+      color:#261611;
+    }
+    .small-btn.danger{
+      background:var(--danger);
+      color:#fff;
+    }
+    .summary{color:var(--muted);margin-bottom:14px}
+    .bottle{
+      background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:14px;
+    }
+    .bottle-grid{
+      display:grid;
+      grid-template-columns:140px 1fr 110px;
+      gap:16px;
+      align-items:start;
+    }
+    .photo{
+      width:140px;
+      height:180px;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+      padding:10px;
+      position:relative;
+    }
+    .photo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .photo-placeholder{
+      width:100%;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:32px;
+      font-weight:700;
+      color:#fff;
+      background:linear-gradient(180deg,#5c4035 0%,#3a2721 100%);
+    }
+    .name{font-size:28px;font-weight:700;margin-bottom:4px}
+    .wine{font-size:24px;margin-bottom:6px}
+    .meta{color:var(--muted);margin-bottom:8px}
+    .badge{
+      display:inline-block;
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      margin-right:8px;
+      margin-top:6px;
+    }
+    .badge.ready{background:rgba(156,211,171,.18);color:var(--ready)}
+    .badge.aging{background:rgba(216,180,106,.18);color:var(--aging)}
+    .badge.soon{background:rgba(216,201,111,.18);color:var(--soon)}
+    .badge.past{background:rgba(215,125,125,.18);color:var(--past)}
     .badge.type{background:rgba(255,255,255,.08);color:#fff}
-    .badge.price{background:rgba(159,211,255,.18);color:var(--price)}
-    .qty{min-width:110px;text-align:center;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:16px;padding:10px 14px}
-    .qty-label{color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
-    .qty-value{font-size:30px;font-weight:700}
-    .action-btn{border-radius:12px;padding:10px 14px}
-    .secondary{background:#e9e2da;color:#2a1713}
-    .danger{background:#d77878;color:#fff}
-    .timeline-header,.timeline-row{display:grid;grid-template-columns:230px 1fr 100px;gap:14px;align-items:center}
-    .timeline-header{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px}
-    .timeline-row{margin-bottom:12px}
-    .timeline-name{font-weight:700;margin-bottom:4px}
-    .timeline-sub{color:var(--muted);font-size:13px}
-    .timeline-track{position:relative;height:22px;background:rgba(0,0,0,.3);border-radius:999px;overflow:hidden}
-    .timeline-fill{position:absolute;top:0;height:100%;border-radius:999px}
-    .timeline-fill.ready{background:linear-gradient(90deg,#4a8d60,#8fd19e)}
-    .timeline-fill.aging{background:linear-gradient(90deg,#7a6736,#d6b15f)}
-    .timeline-fill.soon{background:linear-gradient(90deg,#8d813c,#d9c96b)}
-    .timeline-fill.past{background:linear-gradient(90deg,#7a3333,#d77878)}
-    .year-line{position:absolute;top:0;bottom:0;width:2px;background:var(--accent)}
-    .summary-note{color:var(--muted);margin-top:8px}
-    .empty{color:var(--muted);padding:20px 0}
-    .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);padding:20px;z-index:1000;overflow:auto}
-    .modal-backdrop.show{display:block}
-    .modal{max-width:920px;margin:30px auto;background:#2c1b17;border:1px solid var(--line);border-radius:20px;padding:20px}
-    .form-grid{display:grid;grid-template-columns:1fr;gap:12px}
-    .field label{display:block;margin-bottom:6px;color:var(--muted);font-size:14px}
-    .photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .photo-card,.scan-card{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:14px}
-    .photo-card h4,.scan-card h4{margin:0 0 10px 0;font-size:14px;color:var(--accent);text-transform:uppercase;letter-spacing:.1em}
-    .photo-preview{width:100%;height:220px;border-radius:14px;background:rgba(0,0,0,.2);border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--muted);font-size:14px;text-align:center;padding:10px}
-    .photo-preview img{width:100%;height:100%;object-fit:cover;display:block}
-    .hidden-input{display:none}
-    .small-note{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.4}
-    .thumb-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .thumb{width:120px;height:120px;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.05)}
-    .thumb img{width:100%;height:100%;object-fit:cover}
-    .scan-output{margin-top:12px;padding:14px;border-radius:14px;background:rgba(0,0,0,.18);border:1px solid var(--line)}
-    .scan-output h5{margin:0 0 10px 0;color:var(--accent);font-size:13px;text-transform:uppercase;letter-spacing:.1em}
-    .scan-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;font-size:14px}
-    .scan-grid div span{color:var(--muted);display:block;font-size:12px}
-    @media (max-width:980px){.grid-3,.timeline-header,.timeline-row,.photo-grid,.scan-grid{grid-template-columns:1fr}.title{font-size:40px}.bottle-name{font-size:24px}}
+    .badge.price{background:rgba(159,215,255,.18);color:var(--spark)}
+    .badge.vintage{background:rgba(240,210,139,.18);color:var(--accent)}
+    .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+    .qty{
+      background:rgba(0,0,0,.2);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      text-align:center;
+    }
+    .qty-label{
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+    .qty-value{font-size:32px;font-weight:700}
+    .timeline-row{
+      display:grid;
+      grid-template-columns:240px 1fr 110px;
+      gap:12px;
+      align-items:center;
+      margin-bottom:12px;
+    }
+    .timeline-track{
+      position:relative;
+      height:22px;
+      background:rgba(0,0,0,.28);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .timeline-fill{
+      position:absolute;
+      top:0;
+      height:100%;
+      border-radius:999px;
+    }
+    .timeline-fill.ready{background:linear-gradient(90deg,#4f8d61,#8fd19e)}
+    .timeline-fill.aging{background:linear-gradient(90deg,#7d6837,#d6b15f)}
+    .timeline-fill.soon{background:linear-gradient(90deg,#8a803d,#d9c96b)}
+    .timeline-fill.past{background:linear-gradient(90deg,#7d3333,#d77878)}
+    .year-line{
+      position:absolute;
+      top:0;
+      bottom:0;
+      width:2px;
+      background:var(--accent);
+    }
+    .empty{color:var(--muted);padding:18px 0}
+    .hidden{display:none}
+    @media (max-width:980px){
+      .grid-3,.bottle-grid,.timeline-row{grid-template-columns:1fr}
+      .photo{width:100%;height:260px}
+      h1{font-size:38px}
+      .name{font-size:24px}
+      .wine{font-size:20px}
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <section class="hero">
-      <div class="title">Wine Cellar</div>
-      <div class="subtitle" id="heroSub"></div>
+      <h1>Wine Cellar</h1>
+      <div class="sub" id="heroSub"></div>
 
-      <div class="status-pills">
+      <div class="row" id="statusFilters">
         <button class="pill all active" data-filter="All">All</button>
         <button class="pill ready" data-filter="Ready">Ready</button>
         <button class="pill aging" data-filter="Aging">Aging</button>
@@ -131,13 +293,13 @@
         <button class="pill past" data-filter="Past Peak">Past Peak</button>
       </div>
 
-      <div class="price-pills" style="margin-top:10px;">
-        <button class="price-pill active" data-price-filter="All">All prices</button>
-        <button class="price-pill" data-price-filter="<100">&lt;100</button>
-        <button class="price-pill" data-price-filter="100-199">100–199</button>
-        <button class="price-pill" data-price-filter="200-299">200–299</button>
-        <button class="price-pill" data-price-filter="300-399">300–399</button>
-        <button class="price-pill" data-price-filter="400+">400+</button>
+      <div class="row" id="priceFilters" style="margin-top:10px;">
+        <button class="price-pill active" data-price="All">All prices</button>
+        <button class="price-pill" data-price="<100">&lt;100</button>
+        <button class="price-pill" data-price="100-199">100–199</button>
+        <button class="price-pill" data-price="200-299">200–299</button>
+        <button class="price-pill" data-price="300-399">300–399</button>
+        <button class="price-pill" data-price="400+">400+</button>
       </div>
 
       <div class="tabs">
@@ -149,35 +311,48 @@
 
     <section id="overview" class="page active">
       <div class="grid grid-3">
-        <div class="card"><h3>By country</h3><div id="countryBars"></div></div>
-        <div class="card"><h3>By type</h3><div id="typeBars"></div></div>
-        <div class="card"><h3>Drink window status</h3><div id="statusBars"></div><div class="big-number" id="readyNowNumber">0</div><div class="muted-center">Bottles ready now</div></div>
+        <div class="card">
+          <h3>By country</h3>
+          <div id="countryBars"></div>
+        </div>
+        <div class="card">
+          <h3>By type</h3>
+          <div id="typeBars"></div>
+        </div>
+        <div class="card">
+          <h3>Drink status</h3>
+          <div id="statusBars"></div>
+          <div class="big" id="readyCount">0</div>
+          <div class="center-note">Bottles ready now</div>
+        </div>
       </div>
 
       <div class="grid grid-3" style="margin-top:18px;">
         <div class="card">
-          <h3>By price range (SEK)</h3>
+          <h3>By price range</h3>
           <div id="priceBars"></div>
         </div>
         <div class="card">
-          <h3>Average price</h3>
-          <div class="big-number" id="avgPriceNumber">0</div>
-          <div class="muted-center">SEK per bottle</div>
+          <h3>Average bottle price</h3>
+          <div class="big" id="avgPrice">0</div>
+          <div class="center-note">SEK</div>
         </div>
         <div class="card">
           <h3>Total cellar value</h3>
-          <div class="big-number" id="totalValueNumber">0</div>
-          <div class="muted-center">SEK</div>
+          <div class="big" id="totalValue">0</div>
+          <div class="center-note">SEK</div>
         </div>
       </div>
 
-      <div class="card" style="margin-top:18px;"><h3>Regions at a glance</h3><div id="regionGrid" class="region-grid"></div></div>
+      <div class="card" style="margin-top:18px;">
+        <h3>Regions at a glance</h3>
+        <div class="regions" id="regionGrid"></div>
+      </div>
     </section>
 
     <section id="timeline" class="page">
       <div class="card">
         <h3>Drink window timeline</h3>
-        <div class="timeline-header"><div>Wine</div><div id="timelineYearHeader"></div><div style="text-align:right;">Window</div></div>
         <div id="timelineRows"></div>
       </div>
     </section>
@@ -185,510 +360,375 @@
     <section id="collection" class="page">
       <div class="card">
         <h3>Collection</h3>
-        <div class="list-controls">
-          <input id="searchInput" class="search" type="text" placeholder="Search producer, wine, country, region..." />
-          <button class="btn" id="addBottleBtn">Add bottle</button>
+        <div class="controls">
+          <input id="searchInput" class="search" placeholder="Search producer, wine, country, region..." />
+          <button id="resetPhotosBtn" class="small-btn danger">Reset all saved photos</button>
         </div>
-        <div class="summary-note" id="collectionSummary"></div>
+        <div class="summary" id="collectionSummary"></div>
         <div id="collectionList"></div>
       </div>
     </section>
   </div>
 
-  <div class="modal-backdrop" id="modalBackdrop">
-    <div class="modal">
-      <h2 id="modalTitle">Add bottle from photos</h2>
-      <div class="form-grid">
-        <div class="field">
-          <label>Add bottle photos</label>
-          <div class="photo-grid">
-            <div class="photo-card">
-              <h4>Front label</h4>
-              <div class="photo-preview" id="frontPreview">No front image selected</div>
-              <div class="photo-actions" style="margin-top:10px;">
-                <button type="button" class="action-btn secondary" id="frontUploadBtn">Choose image</button>
-                <button type="button" class="action-btn secondary" id="frontCameraBtn">Use camera</button>
-                <button type="button" class="action-btn danger" id="frontRemoveBtn">Remove</button>
-              </div>
-              <input id="frontUploadInput" class="hidden-input" type="file" accept="image/*" />
-              <input id="frontCameraInput" class="hidden-input" type="file" accept="image/*" capture="environment" />
-            </div>
-            <div class="photo-card">
-              <h4>Back label</h4>
-              <div class="photo-preview" id="backPreview">No back image selected</div>
-              <div class="photo-actions" style="margin-top:10px;">
-                <button type="button" class="action-btn secondary" id="backUploadBtn">Choose image</button>
-                <button type="button" class="action-btn secondary" id="backCameraBtn">Use camera</button>
-                <button type="button" class="action-btn danger" id="backRemoveBtn">Remove</button>
-              </div>
-              <input id="backUploadInput" class="hidden-input" type="file" accept="image/*" />
-              <input id="backCameraInput" class="hidden-input" type="file" accept="image/*" capture="environment" />
-            </div>
-          </div>
-          <div class="small-note">You can add a bottle in two ways: choose two existing images or take two new photos with the iPhone camera.</div>
-        </div>
-
-        <div class="scan-card">
-          <h4>AI scan preview</h4>
-          <div class="small-note">This browser-only version can prepare the workflow, but real automatic extraction needs a secure backend service. For now, the app creates a bottle from photos and shows a placeholder result including a price field.</div>
-          <div class="scan-actions" style="margin-top:12px;">
-            <button type="button" class="btn" id="scanInfoBtn">Simulate AI scan</button>
-          </div>
-          <div class="scan-output" id="scanOutput" style="display:none;">
-            <h5>Detected information</h5>
-            <div class="scan-grid" id="scanGrid"></div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-actions">
-        <button class="action-btn secondary" id="cancelBtn">Cancel</button>
-        <button class="btn" id="saveBtn">Save bottle</button>
-      </div>
-    </div>
-  </div>
-
   <script>
-    const STORAGE_KEY = "wine-cellar-single-file-v6";
+    const STORAGE_KEY = "wine-cellar-complete-v1";
     const currentYear = new Date().getFullYear();
 
-    const starterBottles = [];
+    const seedBottles = [
+      { id:1, producer:"Grande Alberone", wine:"Moscato Spumante Dolce", vintage:"NV", country:"Italy", region:"Bardolino", type:"Sparkling", quantity:1, drinkFrom:2025, drinkTo:2027, priceSek:109, photo:"" },
+      { id:2, producer:"Saint Auriol", wine:"Chatelaine La Clape", vintage:"2023", country:"France", region:"La Clape", type:"Red", quantity:1, drinkFrom:2024, drinkTo:2028, priceSek:139, photo:"" },
+      { id:3, producer:"Rawson's Retreat", wine:"Chardonnay", vintage:"NV", country:"Australia", region:"South Eastern Australia", type:"White", quantity:1, drinkFrom:2024, drinkTo:2026, priceSek:89, photo:"" },
+      { id:4, producer:"Casalforte", wine:"Prosecco Extra Dry DOC", vintage:"NV", country:"Italy", region:"Veneto", type:"Sparkling", quantity:1, drinkFrom:2025, drinkTo:2026, priceSek:99, photo:"" },
+      { id:5, producer:"Baron de Ley", wine:"Reserva Rioja", vintage:"2020", country:"Spain", region:"Rioja", type:"Red", quantity:1, drinkFrom:2025, drinkTo:2030, priceSek:87, photo:"" },
+
+      { id:6, producer:"El Mar", wine:"Cava Brut Rosé", vintage:"NV", country:"Spain", region:"Catalonia", type:"Sparkling", quantity:1, drinkFrom:2024, drinkTo:2026, priceSek:95, photo:"" },
+      { id:7, producer:"Blossa", wine:"Sparkling & Spices Citrus", vintage:"NV", country:"Germany", region:"", type:"Aromatized", quantity:1, drinkFrom:2024, drinkTo:2026, priceSek:95, photo:"" },
+      { id:8, producer:"Cadis", wine:"Amarone della Valpolicella", vintage:"2017", country:"Italy", region:"Valpolicella", type:"Red", quantity:1, drinkFrom:2024, drinkTo:2032, priceSek:299, photo:"" },
+      { id:9, producer:"Louis Jadot", wine:"Couvent des Jacobins Bourgogne Pinot Noir", vintage:"2019", country:"France", region:"Burgundy", type:"Red", quantity:1, drinkFrom:2024, drinkTo:2029, priceSek:229, photo:"" },
+      { id:10, producer:"Piccini", wine:"Memoro Rosso d'Italia", vintage:"NV", country:"Italy", region:"", type:"Red", quantity:1, drinkFrom:2024, drinkTo:2028, priceSek:129, photo:"" },
+
+      { id:11, producer:"Masi", wine:"Bonacosta Valpolicella Classico", vintage:"2016", country:"Italy", region:"Valpolicella", type:"Red", quantity:1, drinkFrom:2024, drinkTo:2027, priceSek:127, photo:"" },
+      { id:12, producer:"Villa Fura", wine:"Valpolicella Ripasso Superiore", vintage:"2020", country:"Italy", region:"Valpolicella", type:"Red", quantity:1, drinkFrom:2024, drinkTo:2029, priceSek:169, photo:"" },
+      { id:13, producer:"Domaine d'Agel", wine:"Sensation'Ailes Minervois", vintage:"2024", country:"France", region:"Minervois", type:"Red", quantity:1, drinkFrom:2025, drinkTo:2029, priceSek:129, photo:"" },
+      { id:14, producer:"Fonbadet", wine:"B by Fonbadet Bordeaux", vintage:"2019", country:"France", region:"Bordeaux", type:"Red", quantity:1, drinkFrom:2024, drinkTo:2030, priceSek:199, photo:"" },
+      { id:15, producer:"Pagos del Rey", wine:"El Círculo Rioja Crianza", vintage:"2015", country:"Spain", region:"Rioja", type:"Red", quantity:1, drinkFrom:2024, drinkTo:2027, priceSek:99, photo:"" },
+
+      { id:16, producer:"Orso d'Oro", wine:"Vino Rosso", vintage:"NV", country:"Italy", region:"Southern Italy", type:"Red", quantity:1, drinkFrom:2023, drinkTo:2027, priceSek:89, photo:"" },
+      { id:17, producer:"Ruppertsberger", wine:"Imperial Pinot Noir", vintage:"2019", country:"Germany", region:"Pfalz", type:"Red", quantity:1, drinkFrom:2023, drinkTo:2028, priceSek:139, photo:"" },
+      { id:18, producer:"Torres", wine:"Coronas Tempranillo Organic", vintage:"2018", country:"Spain", region:"Penedès", type:"Red", quantity:1, drinkFrom:2023, drinkTo:2028, priceSek:129, photo:"" },
+      { id:19, producer:"Charles de Fère", wine:"Cuvée Jean-Louis Blanc de Blancs Brut", vintage:"NV", country:"France", region:"Burgundy", type:"Sparkling", quantity:1, drinkFrom:2023, drinkTo:2026, priceSek:99, photo:"" },
+      { id:20, producer:"Giacomo Grimaldi", wine:"Barolo Piccole Vigne", vintage:"2018", country:"Italy", region:"Barolo", type:"Red", quantity:1, drinkFrom:2026, drinkTo:2038, priceSek:399, photo:"" },
+
+      { id:21, producer:"Les Dauphins", wine:"Côtes du Rhône Organic", vintage:"2016", country:"France", region:"Rhône Valley", type:"Red", quantity:1, drinkFrom:2018, drinkTo:2026, priceSek:119, photo:"" },
+      { id:22, producer:"Bonpas", wine:"Réserve de Bonpas Côtes-du-Rhône", vintage:"NV", country:"France", region:"Rhône Valley", type:"Red", quantity:1, drinkFrom:2022, drinkTo:2027, priceSek:109, photo:"" },
+      { id:23, producer:"Lynx", wine:"Petite Sirah Zinfandel No 8", vintage:"2020", country:"USA", region:"California", type:"Red", quantity:1, drinkFrom:2023, drinkTo:2028, priceSek:129, photo:"" },
+      { id:24, producer:"Richard Juhlin", wine:"Blanc de Blancs Brut", vintage:"NV", country:"France", region:"Vin de France", type:"Sparkling", quantity:1, drinkFrom:2023, drinkTo:2027, priceSek:129, photo:"" },
+
+      { id:25, producer:"François Martenot", wine:"Crémant de Bourgogne Brut", vintage:"2022", country:"France", region:"Burgundy", type:"Sparkling", quantity:1, drinkFrom:2023, drinkTo:2028, priceSek:159, photo:"" },
+      { id:26, producer:"Champagne Vieille France", wine:"Blanc de Noirs", vintage:"2013", country:"France", region:"Champagne", type:"Champagne", quantity:1, drinkFrom:2020, drinkTo:2030, priceSek:449, photo:"" }
+    ];
 
     let bottles = loadBottles();
     let activeFilter = "All";
-    let activePriceFilter = "All";
+    let activePrice = "All";
     let activeTab = "overview";
     let searchText = "";
-    let editingId = null;
-    let frontImageData = null;
-    let backImageData = null;
-    let scanResult = null;
 
     function loadBottles(){
       try{
         const saved = localStorage.getItem(STORAGE_KEY);
-        if(!saved) return [];
-        const parsed = JSON.parse(saved);
-        return Array.isArray(parsed) ? parsed : [];
-      }catch{
-        return [];
-      }
+        if(saved){
+          const parsed = JSON.parse(saved);
+          if(Array.isArray(parsed) && parsed.length) return parsed;
+        }
+      }catch(e){}
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(seedBottles));
+      return JSON.parse(JSON.stringify(seedBottles));
     }
 
-    function saveBottles(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(bottles)); }
+    function saveBottles(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(bottles));
+    }
 
-    function getStatus(bottle){
-      if (!bottle.drinkFrom && !bottle.drinkTo) return "Ready";
-      if (currentYear < bottle.drinkFrom) return "Aging";
-      if (currentYear > bottle.drinkTo) return "Past Peak";
-      if (currentYear === bottle.drinkTo) return "Drink soon";
+    function getStatus(b){
+      if(!b.drinkFrom || !b.drinkTo) return "Ready";
+      if(currentYear < b.drinkFrom) return "Aging";
+      if(currentYear > b.drinkTo) return "Past Peak";
+      if(currentYear === b.drinkTo) return "Drink soon";
       return "Ready";
     }
 
-    function getPriceRange(price){
+    function getPriceBand(price){
       const p = Number(price || 0);
-      if (!p) return "Unknown";
-      if (p < 100) return "<100";
-      if (p >= 100 && p <= 199) return "100-199";
-      if (p >= 200 && p <= 299) return "200-299";
-      if (p >= 300 && p <= 399) return "300-399";
+      if(p < 100) return "<100";
+      if(p <= 199) return "100-199";
+      if(p <= 299) return "200-299";
+      if(p <= 399) return "300-399";
       return "400+";
     }
 
-    function matchesPriceFilter(bottle){
-      if (activePriceFilter === "All") return true;
-      return getPriceRange(bottle.priceSek) === activePriceFilter;
-    }
-
-    function getFilteredBottles(){
+    function filteredBottles(){
       return bottles.filter(b => {
-        const status = getStatus(b);
-        const matchesFilter = activeFilter === "All" ? true : status === activeFilter;
-        const matchesPrice = matchesPriceFilter(b);
-        const hay = `${b.producer || ""} ${b.wine || ""} ${b.country || ""} ${b.region || ""} ${b.type || ""}`.toLowerCase();
-        const matchesSearch = hay.includes(searchText.toLowerCase());
-        return matchesFilter && matchesPrice && matchesSearch;
+        const statusOk = activeFilter === "All" || getStatus(b) === activeFilter;
+        const priceOk = activePrice === "All" || getPriceBand(b.priceSek) === activePrice;
+        const hay = `${b.producer} ${b.wine} ${b.vintage} ${b.country} ${b.region} ${b.type}`.toLowerCase();
+        const searchOk = hay.includes(searchText.toLowerCase());
+        return statusOk && priceOk && searchOk;
       });
     }
 
-    function totalsBy(field, data){
-      const map = {};
-      data.forEach(b => {
-        const key = b[field] || "Unknown";
-        map[key] = (map[key] || 0) + Number(b.quantity || 1);
-      });
-      return Object.entries(map).map(([label,count]) => ({label,count})).sort((a,b) => b.count - a.count);
-    }
-
-    function totalsByPriceRange(data){
-      const ranges = {
-        "<100":0,
-        "100-199":0,
-        "200-299":0,
-        "300-399":0,
-        "400+":0
-      };
-      data.forEach(b => {
-        const range = getPriceRange(b.priceSek);
-        if (ranges[range] !== undefined) ranges[range] += Number(b.quantity || 1);
-      });
-      return Object.entries(ranges).map(([label,count]) => ({label,count}));
-    }
-
-    function statusCounts(data){
-      const base = { "Ready":0, "Aging":0, "Drink soon":0, "Past Peak":0 };
-      data.forEach(b => { base[getStatus(b)] += Number(b.quantity || 1); });
-      return base;
-    }
-
-    function totalBottleCount(data){ return data.reduce((sum,b) => sum + Number(b.quantity || 1), 0); }
-
-    function averagePrice(data){
-      const withPrice = data.filter(b => Number(b.priceSek || 0) > 0);
-      if (!withPrice.length) return 0;
-      const totalQty = withPrice.reduce((sum,b) => sum + Number(b.quantity || 1), 0);
-      const totalValue = withPrice.reduce((sum,b) => sum + (Number(b.priceSek || 0) * Number(b.quantity || 1)), 0);
-      return Math.round(totalValue / Math.max(totalQty, 1));
+    function totalQty(data){
+      return data.reduce((s,b) => s + Number(b.quantity || 1), 0);
     }
 
     function totalValue(data){
-      return data.reduce((sum,b) => sum + (Number(b.priceSek || 0) * Number(b.quantity || 1)), 0);
+      return data.reduce((s,b) => s + Number(b.quantity || 1) * Number(b.priceSek || 0), 0);
     }
 
-    function renderBars(containerId, items, total, cssClass){
-      const el = document.getElementById(containerId);
-      if (!items.length){ el.innerHTML = '<div class="empty">No data</div>'; return; }
-      el.innerHTML = items.map(item => {
-        const pct = total ? Math.max(8, Math.round((item.count / total) * 100)) : 0;
-        return `<div class="bar-row"><div class="bar-head"><span>${item.label}</span><span>${item.count}</span></div><div class="track"><div class="fill ${cssClass}" style="width:${pct}%"></div></div></div>`;
+    function avgPrice(data){
+      const qty = totalQty(data);
+      if(!qty) return 0;
+      return Math.round(totalValue(data) / qty);
+    }
+
+    function countBy(field, data){
+      const m = {};
+      data.forEach(b => {
+        const key = b[field] || "Unknown";
+        m[key] = (m[key] || 0) + Number(b.quantity || 1);
+      });
+      return Object.entries(m)
+        .map(([label,count]) => ({label,count}))
+        .sort((a,b) => b.count - a.count);
+    }
+
+    function statusCounts(data){
+      const out = {Ready:0,Aging:0,"Drink soon":0,"Past Peak":0};
+      data.forEach(b => out[getStatus(b)] += Number(b.quantity || 1));
+      return out;
+    }
+
+    function priceCounts(data){
+      const out = {"<100":0,"100-199":0,"200-299":0,"300-399":0,"400+":0};
+      data.forEach(b => out[getPriceBand(b.priceSek)] += Number(b.quantity || 1));
+      return Object.entries(out).map(([label,count]) => ({label,count}));
+    }
+
+    function renderBars(targetId, items, total, cls){
+      const el = document.getElementById(targetId);
+      if(!items.length){ el.innerHTML = '<div class="empty">No data</div>'; return; }
+      el.innerHTML = items.map(i => {
+        const pct = total ? Math.max(8, Math.round((i.count / total) * 100)) : 0;
+        return `
+          <div class="bar-row">
+            <div class="bar-head"><span>${i.label}</span><span>${i.count}</span></div>
+            <div class="track"><div class="fill ${cls}" style="width:${pct}%"></div></div>
+          </div>
+        `;
       }).join("");
     }
 
     function renderOverview(data){
-      const total = totalBottleCount(data);
-      renderBars("countryBars", totalsBy("country", data), total || 1, "country");
-      renderBars("typeBars", totalsBy("type", data), total || 1, "type");
-      renderBars("priceBars", totalsByPriceRange(data), total || 1, "price");
+      const total = totalQty(data);
+      renderBars("countryBars", countBy("country", data), total || 1, "country");
+      renderBars("typeBars", countBy("type", data), total || 1, "type");
+      renderBars("priceBars", priceCounts(data), total || 1, "price");
 
-      const counts = statusCounts(data);
-      const statusItems = [
-        { label:"Ready", count:counts["Ready"], cls:"ready" },
-        { label:"Aging", count:counts["Aging"], cls:"aging" },
-        { label:"Drink soon", count:counts["Drink soon"], cls:"soon" },
-        { label:"Past Peak", count:counts["Past Peak"], cls:"past" }
-      ];
-      document.getElementById("statusBars").innerHTML = statusItems.map(item => {
-        const pct = total ? Math.max(8, Math.round((item.count / total) * 100)) : 0;
-        return `<div class="bar-row"><div class="bar-head"><span>${item.label}</span><span>${item.count} bottles</span></div><div class="track"><div class="fill ${item.cls}" style="width:${pct}%"></div></div></div>`;
+      const sc = statusCounts(data);
+      document.getElementById("statusBars").innerHTML = [
+        {label:"Ready", count:sc.Ready, cls:"ready"},
+        {label:"Aging", count:sc.Aging, cls:"aging"},
+        {label:"Drink soon", count:sc["Drink soon"], cls:"soon"},
+        {label:"Past Peak", count:sc["Past Peak"], cls:"past"}
+      ].map(i => {
+        const pct = total ? Math.max(8, Math.round((i.count / total) * 100)) : 0;
+        return `
+          <div class="bar-row">
+            <div class="bar-head"><span>${i.label}</span><span>${i.count}</span></div>
+            <div class="track"><div class="fill ${i.cls}" style="width:${pct}%"></div></div>
+          </div>
+        `;
       }).join("");
 
-      document.getElementById("readyNowNumber").textContent = counts["Ready"];
-      document.getElementById("avgPriceNumber").textContent = averagePrice(data);
-      document.getElementById("totalValueNumber").textContent = totalValue(data);
+      document.getElementById("readyCount").textContent = sc.Ready;
+      document.getElementById("avgPrice").textContent = avgPrice(data);
+      document.getElementById("totalValue").textContent = totalValue(data);
 
-      const regions = totalsBy("region", data);
+      const regions = countBy("region", data);
       document.getElementById("regionGrid").innerHTML = regions.length
-        ? regions.map(r => `<div class="region-box"><div class="region-code">${r.label.slice(0,2).toUpperCase()}</div><div class="region-name">${r.label}</div><div>${r.count} bottle${r.count === 1 ? "" : "s"}</div></div>`).join("")
-        : '<div class="empty">No regions yet.</div>';
+        ? regions.map(r => `
+            <div class="region">
+              <div class="code">${(r.label || "UK").slice(0,2).toUpperCase()}</div>
+              <div style="font-size:20px;font-weight:700;margin-bottom:8px;">${r.label || "Unknown"}</div>
+              <div>${r.count} bottle${r.count === 1 ? "" : "s"}</div>
+            </div>
+          `).join("")
+        : '<div class="empty">No regions yet</div>';
 
-      document.getElementById("heroSub").textContent = `${totalBottleCount(data)} bottles · ${totalsBy("country", data).length} countries`;
+      document.getElementById("heroSub").textContent =
+        `${totalQty(data)} bottles · ${countBy("country", data).length} countries · ${totalValue(data)} SEK cellar value`;
+    }
+
+    function photoMarkup(b){
+      if(b.photo){
+        return `<img src="${b.photo}" alt="${b.producer} ${b.wine}" />`;
+      }
+      const initials = (b.producer || "W").split(" ").map(x => x[0]).join("").slice(0,2).toUpperCase();
+      return `<div class="photo-placeholder">${initials}</div>`;
+    }
+
+    function statusClass(status){
+      if(status === "Ready") return "ready";
+      if(status === "Aging") return "aging";
+      if(status === "Drink soon") return "soon";
+      return "past";
     }
 
     function renderCollection(data){
       document.getElementById("collectionSummary").textContent =
-        `Showing ${data.length} entries`
+        `Showing ${data.length} wines`
         + (activeFilter !== "All" ? ` · Status: ${activeFilter}` : "")
-        + (activePriceFilter !== "All" ? ` · Price: ${activePriceFilter}` : "");
+        + (activePrice !== "All" ? ` · Price: ${activePrice}` : "");
 
       const list = document.getElementById("collectionList");
-      if (!data.length){ list.innerHTML = '<div class="empty">No bottles match your filter.</div>'; return; }
+      if(!data.length){
+        list.innerHTML = '<div class="empty">No bottles match your filter.</div>';
+        return;
+      }
 
       list.innerHTML = data.map(b => {
-        const status = getStatus(b);
-        const statusClass = status === "Ready" ? "ready" : status === "Aging" ? "aging" : status === "Drink soon" ? "soon" : "past";
+        const st = getStatus(b);
         return `
           <div class="bottle">
-            <div class="bottle-top">
+            <div class="bottle-grid">
               <div>
-                <div class="bottle-name">${b.producer || "Wine bottle"}</div>
-                <div style="font-size:28px; margin-bottom:6px;">${b.wine || "Added from photos"}</div>
-                <div class="bottle-meta">${b.country || "Unknown"} · ${b.region || "Unknown"} · ${b.drinkFrom || "?"}–${b.drinkTo || "?"}</div>
-                <span class="badge type">${b.type || "Unknown"}</span>
-                <span class="badge ${statusClass}">${status}</span>
-                <span class="badge price">${Number(b.priceSek || 0) ? `${b.priceSek} SEK` : "No price"}</span>
-                ${status === "Drink soon" ? '<span class="badge soon">Final year</span>' : ''}
-                <div class="summary-note">${b.notes || ""}</div>
-                ${(b.frontImage || b.backImage) ? `
-                  <div class="thumb-row">
-                    ${b.frontImage ? `<div class="thumb"><img src="${b.frontImage}" alt="Front label" /></div>` : ''}
-                    ${b.backImage ? `<div class="thumb"><img src="${b.backImage}" alt="Back label" /></div>` : ''}
-                  </div>` : ''}
+                <div class="photo">${photoMarkup(b)}</div>
+                <div class="actions" style="margin-top:10px;">
+                  <button class="small-btn" onclick="document.getElementById('file-${b.id}').click()">Add photo</button>
+                  ${b.photo ? `<button class="small-btn danger" onclick="removePhoto(${b.id})">Remove</button>` : ""}
+                </div>
+                <input class="hidden" id="file-${b.id}" type="file" accept="image/*" capture="environment" onchange="updatePhoto(${b.id}, event)">
               </div>
+
+              <div>
+                <div class="name">${b.producer}</div>
+                <div class="wine">${b.wine}</div>
+                <div class="meta">${b.country}${b.region ? " · " + b.region : ""}${b.vintage && b.vintage !== "NV" ? " · " + b.vintage : ""}</div>
+
+                <span class="badge type">${b.type}</span>
+                <span class="badge ${statusClass(st)}">${st}</span>
+                <span class="badge price">${b.priceSek} SEK</span>
+                ${b.vintage && b.vintage !== "NV" ? `<span class="badge vintage">${b.vintage}</span>` : ""}
+                <div class="meta" style="margin-top:10px;">Drink window: ${b.drinkFrom}–${b.drinkTo}</div>
+
+                <div class="actions">
+                  <button class="small-btn" onclick="drinkOne(${b.id})">Drink one</button>
+                  <button class="small-btn" onclick="addOne(${b.id})">Add one</button>
+                </div>
+              </div>
+
               <div class="qty">
                 <div class="qty-label">Qty</div>
-                <div class="qty-value">${b.quantity || 1}</div>
+                <div class="qty-value">${b.quantity}</div>
               </div>
             </div>
-            <div class="action-row">
-              <button class="action-btn secondary" onclick="drinkOne(${b.id})">Drink one</button>
-              <button class="action-btn secondary" onclick="openEdit(${b.id})">Edit</button>
-              <button class="action-btn danger" onclick="deleteBottle(${b.id})">Delete</button>
-            </div>
-          </div>`;
+          </div>
+        `;
       }).join("");
     }
 
     function renderTimeline(data){
       const rows = document.getElementById("timelineRows");
-      if (!data.length){ rows.innerHTML = '<div class="empty">No bottles match your filter.</div>'; return; }
-
       const valid = data.filter(b => b.drinkFrom && b.drinkTo);
-      if (!valid.length){ rows.innerHTML = '<div class="empty">No bottles with drink windows.</div>'; return; }
+      if(!valid.length){
+        rows.innerHTML = '<div class="empty">No timeline data.</div>';
+        return;
+      }
 
-      const allYears = valid.flatMap(b => [b.drinkFrom, b.drinkTo]);
-      const minYear = Math.min(...allYears) - 1;
-      const maxYear = Math.max(...allYears) + 1;
+      const years = valid.flatMap(b => [b.drinkFrom,b.drinkTo]);
+      const minYear = Math.min(...years) - 1;
+      const maxYear = Math.max(...years) + 1;
       const span = maxYear - minYear;
-      document.getElementById("timelineYearHeader").textContent = `${minYear} – ${maxYear}`;
 
       rows.innerHTML = valid.map(b => {
-        const status = getStatus(b);
-        const cls = status === "Ready" ? "ready" : status === "Aging" ? "aging" : status === "Drink soon" ? "soon" : "past";
+        const st = getStatus(b);
         const left = ((b.drinkFrom - minYear) / span) * 100;
         const width = ((b.drinkTo - b.drinkFrom + 1) / span) * 100;
         const yearLine = ((currentYear - minYear) / span) * 100;
-        return `<div class="timeline-row"><div><div class="timeline-name">${b.producer || "Wine bottle"} ${b.wine || ""}</div><div class="timeline-sub">${b.country || "Unknown"}${b.region ? " · " + b.region : ""}</div></div><div class="timeline-track"><div class="year-line" style="left:${yearLine}%"></div><div class="timeline-fill ${cls}" style="left:${left}%; width:${Math.max(width,4)}%;"></div></div><div style="text-align:right; color:var(--muted);">${b.drinkFrom}–${b.drinkTo}</div></div>`;
+        return `
+          <div class="timeline-row">
+            <div>
+              <div style="font-weight:700;">${b.producer}</div>
+              <div style="color:var(--muted);font-size:13px;">${b.wine}</div>
+            </div>
+            <div class="timeline-track">
+              <div class="year-line" style="left:${yearLine}%"></div>
+              <div class="timeline-fill ${statusClass(st)}" style="left:${left}%;width:${Math.max(width,4)}%;"></div>
+            </div>
+            <div style="text-align:right;color:var(--muted);">${b.drinkFrom}–${b.drinkTo}</div>
+          </div>
+        `;
       }).join("");
     }
 
-    function setPreview(previewId, imageData, emptyText){
-      const el = document.getElementById(previewId);
-      if (imageData) el.innerHTML = `<img src="${imageData}" alt="Preview" />`;
-      else el.textContent = emptyText;
-    }
-
-    function renderScanResult(){
-      const output = document.getElementById("scanOutput");
-      const grid = document.getElementById("scanGrid");
-      if (!scanResult) {
-        output.style.display = "none";
-        grid.innerHTML = "";
-        return;
-      }
-      output.style.display = "block";
-      grid.innerHTML = `
-        <div><span>Producer</span>${scanResult.producer}</div>
-        <div><span>Wine</span>${scanResult.wine}</div>
-        <div><span>Country</span>${scanResult.country}</div>
-        <div><span>Region</span>${scanResult.region}</div>
-        <div><span>Type</span>${scanResult.type}</div>
-        <div><span>Drink window</span>${scanResult.drinkFrom || "?"}–${scanResult.drinkTo || "?"}</div>
-        <div><span>Price SEK</span>${scanResult.priceSek || "Unknown"}</div>
-      `;
-    }
-
     function renderAll(){
-      const data = getFilteredBottles();
-      document.querySelectorAll(".pill").forEach(btn => btn.classList.toggle("active", btn.dataset.filter === activeFilter));
-      document.querySelectorAll(".price-pill").forEach(btn => btn.classList.toggle("active", btn.dataset.priceFilter === activePriceFilter));
-      document.querySelectorAll(".tab").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === activeTab));
-      document.querySelectorAll(".page").forEach(page => page.classList.toggle("active", page.id === activeTab));
+      const data = filteredBottles();
+
+      document.querySelectorAll(".pill").forEach(b => b.classList.toggle("active", b.dataset.filter === activeFilter));
+      document.querySelectorAll(".price-pill").forEach(b => b.classList.toggle("active", b.dataset.price === activePrice));
+      document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === activeTab));
+      document.querySelectorAll(".page").forEach(p => p.classList.toggle("active", p.id === activeTab));
+
       renderOverview(data);
       renderCollection(data);
       renderTimeline(data);
-      renderScanResult();
     }
 
-    function openModal(){ document.getElementById("modalBackdrop").classList.add("show"); }
-
-    function resetModal(){
-      editingId = null;
-      frontImageData = null;
-      backImageData = null;
-      scanResult = null;
-      document.getElementById("modalTitle").textContent = "Add bottle from photos";
-      document.getElementById("frontUploadInput").value = "";
-      document.getElementById("frontCameraInput").value = "";
-      document.getElementById("backUploadInput").value = "";
-      document.getElementById("backCameraInput").value = "";
-      setPreview("frontPreview", null, "No front image selected");
-      setPreview("backPreview", null, "No back image selected");
-      renderScanResult();
-    }
-
-    function closeModal(){ document.getElementById("modalBackdrop").classList.remove("show"); resetModal(); }
-
-    function openEdit(id){
-      const b = bottles.find(x => x.id === id);
-      if (!b) return;
-      resetModal();
-      editingId = id;
-      frontImageData = b.frontImage || null;
-      backImageData = b.backImage || null;
-      scanResult = {
-        producer: b.producer || "Wine bottle",
-        wine: b.wine || "Added from photos",
-        country: b.country || "Unknown",
-        region: b.region || "Unknown",
-        type: b.type || "Unknown",
-        drinkFrom: b.drinkFrom || null,
-        drinkTo: b.drinkTo || null,
-        priceSek: b.priceSek || null
-      };
-      document.getElementById("modalTitle").textContent = "Edit bottle photos";
-      setPreview("frontPreview", frontImageData, "No front image selected");
-      setPreview("backPreview", backImageData, "No back image selected");
-      renderScanResult();
-      openModal();
-    }
-
-    function fileToDataUrl(file){
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    async function handleImageInput(event, side){
-      const file = event.target.files && event.target.files[0];
-      if (!file) return;
-      const dataUrl = await fileToDataUrl(file);
-      if (side === "front") {
-        frontImageData = dataUrl;
-        setPreview("frontPreview", frontImageData, "No front image selected");
-      } else {
-        backImageData = dataUrl;
-        setPreview("backPreview", backImageData, "No back image selected");
-      }
-    }
-
-    function simulateAiScan(){
-      if (!frontImageData && !backImageData) {
-        alert("Please add at least a front or back label photo first.");
-        return;
-      }
-      scanResult = {
-        producer: "Wine bottle",
-        wine: "Added from photos",
-        country: "Unknown",
-        region: "Unknown",
-        type: "Unknown",
-        drinkFrom: null,
-        drinkTo: null,
-        priceSek: null
-      };
-      renderScanResult();
-    }
-
-    function saveBottle(){
-      if (!frontImageData && !backImageData) {
-        alert("Please add at least one photo before saving.");
-        return;
-      }
-      const base = scanResult || {
-        producer: "Wine bottle",
-        wine: "Added from photos",
-        country: "Unknown",
-        region: "Unknown",
-        type: "Unknown",
-        drinkFrom: null,
-        drinkTo: null,
-        priceSek: null
-      };
-      const bottle = {
-        id: editingId || Date.now(),
-        producer: base.producer,
-        wine: base.wine,
-        country: base.country,
-        region: base.region,
-        type: base.type,
-        quantity: 1,
-        drinkFrom: base.drinkFrom,
-        drinkTo: base.drinkTo,
-        priceSek: base.priceSek,
-        notes: scanResult ? "Added using bottle photos and scan workflow" : "Added using bottle photos",
-        frontImage: frontImageData,
-        backImage: backImageData
-      };
-      if (editingId) bottles = bottles.map(b => b.id === editingId ? bottle : b);
-      else bottles.unshift(bottle);
-      saveBottles();
-      closeModal();
-      renderAll();
-    }
-
-    function deleteBottle(id){
-      if (!confirm("Delete this bottle?")) return;
-      bottles = bottles.filter(b => b.id !== id);
+    function addOne(id){
+      bottles = bottles.map(b => b.id === id ? {...b, quantity:Number(b.quantity || 1) + 1} : b);
       saveBottles();
       renderAll();
     }
 
     function drinkOne(id){
-      bottles = bottles
-        .map(b => b.id === id ? { ...b, quantity: Math.max(0, Number(b.quantity || 0) - 1) } : b)
-        .filter(b => Number(b.quantity) > 0);
+      bottles = bottles.map(b => b.id === id ? {...b, quantity:Math.max(0, Number(b.quantity || 1) - 1)} : b)
+                       .filter(b => b.quantity > 0);
       saveBottles();
       renderAll();
     }
 
-    document.querySelectorAll(".pill").forEach(btn => btn.addEventListener("click", () => {
-      activeFilter = btn.dataset.filter;
+    function removePhoto(id){
+      bottles = bottles.map(b => b.id === id ? {...b, photo:""} : b);
+      saveBottles();
       renderAll();
-    }));
+    }
 
-    document.querySelectorAll(".price-pill").forEach(btn => btn.addEventListener("click", () => {
-      activePriceFilter = btn.dataset.priceFilter;
+    function updatePhoto(id, event){
+      const file = event.target.files && event.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        bottles = bottles.map(b => b.id === id ? {...b, photo:reader.result} : b);
+        saveBottles();
+        renderAll();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function resetAllPhotos(){
+      if(!confirm("Remove all saved bottle photos?")) return;
+      bottles = bottles.map(b => ({...b, photo:""}));
+      saveBottles();
       renderAll();
-    }));
+    }
 
-    document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", () => {
-      activeTab = btn.dataset.tab;
-      renderAll();
-    }));
-
-    document.getElementById("searchInput").addEventListener("input", (e) => {
-      searchText = e.target.value;
+    document.getElementById("searchInput").addEventListener("input", e => {
+      searchText = e.target.value || "";
       renderAll();
     });
 
-    document.getElementById("addBottleBtn").addEventListener("click", () => {
-      resetModal();
-      openModal();
+    document.getElementById("resetPhotosBtn").addEventListener("click", resetAllPhotos);
+
+    document.querySelectorAll("#statusFilters .pill").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeFilter = btn.dataset.filter;
+        renderAll();
+      });
     });
 
-    document.getElementById("cancelBtn").addEventListener("click", closeModal);
-    document.getElementById("saveBtn").addEventListener("click", saveBottle);
-    document.getElementById("scanInfoBtn").addEventListener("click", simulateAiScan);
-
-    document.getElementById("modalBackdrop").addEventListener("click", (e) => {
-      if (e.target.id === "modalBackdrop") closeModal();
+    document.querySelectorAll("#priceFilters .price-pill").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activePrice = btn.dataset.price;
+        renderAll();
+      });
     });
 
-    document.getElementById("frontUploadBtn").addEventListener("click", () => document.getElementById("frontUploadInput").click());
-    document.getElementById("frontCameraBtn").addEventListener("click", () => document.getElementById("frontCameraInput").click());
-    document.getElementById("backUploadBtn").addEventListener("click", () => document.getElementById("backUploadInput").click());
-    document.getElementById("backCameraBtn").addEventListener("click", () => document.getElementById("backCameraInput").click());
-
-    document.getElementById("frontRemoveBtn").addEventListener("click", () => {
-      frontImageData = null;
-      setPreview("frontPreview", null, "No front image selected");
-      document.getElementById("frontUploadInput").value = "";
-      document.getElementById("frontCameraInput").value = "";
+    document.querySelectorAll(".tab").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeTab = btn.dataset.tab;
+        renderAll();
+      });
     });
-
-    document.getElementById("backRemoveBtn").addEventListener("click", () => {
-      backImageData = null;
-      setPreview("backPreview", null, "No back image selected");
-      document.getElementById("backUploadInput").value = "";
-      document.getElementById("backCameraInput").value = "";
-    });
-
-    document.getElementById("frontUploadInput").addEventListener("change", (e) => handleImageInput(e, "front"));
-    document.getElementById("frontCameraInput").addEventListener("change", (e) => handleImageInput(e, "front"));
-    document.getElementById("backUploadInput").addEventListener("change", (e) => handleImageInput(e, "back"));
-    document.getElementById("backCameraInput").addEventListener("change", (e) => handleImageInput(e, "back"));
 
     renderAll();
   </script>
