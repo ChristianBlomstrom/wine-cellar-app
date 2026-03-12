@@ -3,49 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wine Cellar Dashboard</title>
+  <title>Wine Cellar</title>
   <style>
     :root{
-      --bg:#1b110b;
-      --bg-2:#24160e;
-      --panel:#3a2a1f;
-      --panel-2:#463326;
-      --line:#6b4d31;
-      --gold:#d7b06a;
-      --gold-soft:#b79258;
-      --text:#f2e6d2;
-      --muted:#bda98d;
-      --green:#bfe6c3;
-      --amber:#d6b05d;
-      --red:#d98a8a;
-      --rose:#d24d6a;
-      --blue:#7ec7e8;
+      --bg:#1a100b;
+      --bg2:#24160f;
+      --panel:#463327;
+      --panel-soft:#3d2c22;
+      --line:#6f4e2f;
+      --gold:#d2ab67;
+      --gold-soft:#b89256;
+      --text:#f0e3cf;
+      --muted:#b7a389;
+      --green:#65bf69;
+      --green-soft:#8edd86;
+      --red:#b53a3a;
+      --amber:#d8b45d;
       --shadow:0 18px 40px rgba(0,0,0,.35);
       --radius:22px;
+      --timeline-track:#221913;
     }
 
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:
-      radial-gradient(circle at top left, rgba(157,78,30,.28), transparent 28%),
-      radial-gradient(circle at top right, rgba(120,55,12,.22), transparent 25%),
-      linear-gradient(180deg, #2a170d 0%, var(--bg) 20%, #170d08 100%);
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--text);
-      min-height:100%;
+      background:
+        radial-gradient(circle at top left, rgba(157,78,30,.28), transparent 28%),
+        radial-gradient(circle at top right, rgba(120,55,12,.18), transparent 24%),
+        linear-gradient(180deg, #2a170d 0%, var(--bg) 22%, #160d08 100%);
+      min-height:100vh;
     }
 
     .container{
-      max-width:1500px;
+      max-width:1600px;
       margin:0 auto;
-      padding:24px;
+      padding:22px;
     }
 
     .hero{
-      background:
-        linear-gradient(180deg, rgba(255,183,94,.06), rgba(0,0,0,0)),
-        linear-gradient(135deg, rgba(150,85,35,.20), rgba(80,40,15,.05));
-      border:1px solid rgba(215,176,106,.18);
+      border:1px solid rgba(210,171,103,.14);
       border-radius:28px;
-      padding:28px 28px 20px;
+      padding:26px 28px 18px;
+      background:
+        linear-gradient(180deg, rgba(255,193,110,.04), rgba(0,0,0,0)),
+        linear-gradient(135deg, rgba(126,62,17,.22), rgba(50,27,13,.05));
       box-shadow:var(--shadow);
       position:relative;
       overflow:hidden;
@@ -54,55 +57,50 @@
     .hero::after{
       content:"";
       position:absolute;
-      inset:auto -10% -60% auto;
-      width:420px;
-      height:420px;
-      background:radial-gradient(circle, rgba(215,176,106,.12), transparent 60%);
+      width:500px;
+      height:500px;
+      right:-160px;
+      top:-160px;
+      background:radial-gradient(circle, rgba(210,171,103,.14), transparent 65%);
       pointer-events:none;
     }
 
     .title-row{
       display:flex;
-      align-items:flex-start;
       justify-content:space-between;
-      gap:20px;
+      gap:18px;
+      align-items:flex-start;
       flex-wrap:wrap;
     }
 
     .brand{
       display:flex;
-      align-items:flex-start;
       gap:14px;
+      align-items:flex-start;
     }
 
     .brand .icon{
-      font-size:30px;
+      font-size:32px;
       line-height:1;
       margin-top:2px;
     }
 
     h1{
       margin:0;
-      font-size:40px;
+      font-size:42px;
       line-height:1;
       letter-spacing:.06em;
-      font-family:Georgia, "Times New Roman", serif;
       color:var(--gold);
+      font-family:Georgia, "Times New Roman", serif;
     }
 
     .subtitle{
       margin-top:8px;
       color:var(--muted);
-      letter-spacing:.20em;
+      letter-spacing:.22em;
       text-transform:uppercase;
       font-size:12px;
-    }
-
-    .top-actions{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
+      font-family:Georgia, "Times New Roman", serif;
     }
 
     .pill-stats{
@@ -113,41 +111,48 @@
     }
 
     .pill{
-      border:1px solid rgba(215,176,106,.25);
-      background:rgba(255,255,255,.03);
+      border:1px solid rgba(210,171,103,.2);
+      background:rgba(255,255,255,.025);
       color:var(--text);
       padding:10px 14px;
       border-radius:999px;
-      font-size:14px;
-      display:inline-flex;
-      gap:8px;
+      display:flex;
       align-items:center;
+      gap:8px;
+      font-size:14px;
     }
 
     .pill strong{color:var(--gold)}
 
+    .top-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
     .tabs{
       display:flex;
-      gap:8px;
-      margin:18px 0 24px;
-      border-bottom:1px solid rgba(215,176,106,.18);
+      gap:10px;
+      margin:18px 0 18px;
+      border-bottom:1px solid rgba(210,171,103,.18);
       padding-bottom:10px;
       flex-wrap:wrap;
     }
 
     .tab{
-      background:transparent;
-      color:var(--muted);
+      appearance:none;
       border:none;
-      padding:12px 8px;
-      min-width:120px;
-      text-align:left;
-      font-weight:600;
-      letter-spacing:.16em;
-      text-transform:uppercase;
+      background:none;
+      color:var(--muted);
+      padding:12px 10px;
       font-size:12px;
+      font-weight:700;
+      letter-spacing:.18em;
+      text-transform:uppercase;
       border-bottom:2px solid transparent;
       cursor:pointer;
+      min-width:120px;
+      text-align:left;
     }
 
     .tab.active{
@@ -157,6 +162,24 @@
 
     .tab-content{display:none}
     .tab-content.active{display:block}
+
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.015));
+      border:1px solid rgba(210,171,103,.12);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+
+    .panel h3{
+      margin:0 0 16px;
+      font-size:13px;
+      color:var(--gold);
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      font-family:Georgia, "Times New Roman", serif;
+      font-weight:700;
+    }
 
     .grid-3{
       display:grid;
@@ -170,21 +193,31 @@
       gap:18px;
     }
 
-    .panel{
-      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
-      border:1px solid rgba(215,176,106,.14);
-      border-radius:var(--radius);
-      padding:18px;
-      box-shadow:var(--shadow);
+    .kpi-grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:14px;
+      margin-bottom:18px;
     }
 
-    .panel h3{
-      margin:0 0 16px;
-      font-size:13px;
-      color:var(--gold);
-      letter-spacing:.22em;
+    .kpi{
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(210,171,103,.12);
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .kpi-label{
+      color:var(--muted);
       text-transform:uppercase;
-      font-weight:700;
+      letter-spacing:.16em;
+      font-size:11px;
+      margin-bottom:8px;
+    }
+
+    .kpi-value{
+      font-size:31px;
+      color:var(--gold);
       font-family:Georgia, "Times New Roman", serif;
     }
 
@@ -212,7 +245,6 @@
       border-radius:999px;
       background:#241a14;
       overflow:hidden;
-      border:1px solid rgba(255,255,255,.04);
     }
 
     .bar-fill{
@@ -223,32 +255,32 @@
     .fill-rose{background:linear-gradient(90deg, #b72f53, #d54a68)}
     .fill-gold{background:linear-gradient(90deg, #b9923d, #e1c162)}
     .fill-blue{background:linear-gradient(90deg, #63a7c5, #8fd5f0)}
-    .fill-green{background:linear-gradient(90deg, #a8d7ad, #d3f2d6)}
-    .fill-red{background:linear-gradient(90deg, #c26d6d, #e39a9a)}
-    .fill-purple{background:linear-gradient(90deg, #7f5aa7, #9f7fc5)}
+    .fill-green{background:linear-gradient(90deg, #59a35b, #78c96d)}
+    .fill-red{background:linear-gradient(90deg, #9f3535, #c95252)}
+    .fill-purple{background:linear-gradient(90deg, #7c5ba0, #a383c6)}
 
     .ready-box{
       margin-top:18px;
-      border:1px solid rgba(215,176,106,.18);
+      border:1px solid rgba(210,171,103,.16);
       border-radius:18px;
       padding:18px;
       text-align:center;
-      background:rgba(215,176,106,.07);
+      background:rgba(210,171,103,.06);
     }
 
     .ready-number{
       font-size:42px;
-      line-height:1;
       color:var(--gold);
       font-family:Georgia, "Times New Roman", serif;
+      line-height:1;
       margin-bottom:8px;
     }
 
     .ready-label{
       color:var(--muted);
+      font-size:11px;
       text-transform:uppercase;
       letter-spacing:.18em;
-      font-size:11px;
     }
 
     .region-grid{
@@ -259,16 +291,15 @@
 
     .region-card{
       background:rgba(255,255,255,.03);
-      border:1px solid rgba(215,176,106,.12);
+      border:1px solid rgba(210,171,103,.12);
       border-radius:18px;
       padding:14px;
-      min-height:110px;
+      min-height:105px;
     }
 
     .region-code{
-      color:var(--text);
-      font-weight:800;
       font-size:14px;
+      font-weight:800;
       letter-spacing:.08em;
       margin-bottom:8px;
     }
@@ -282,110 +313,179 @@
     .region-sub{
       color:var(--muted);
       font-size:13px;
-      min-height:32px;
+      min-height:30px;
     }
 
     .region-count{
       margin-top:10px;
       color:var(--gold);
-      font-weight:700;
       font-size:20px;
+      font-weight:700;
       font-family:Georgia, "Times New Roman", serif;
     }
 
-    .kpi-grid{
-      display:grid;
-      grid-template-columns:repeat(4, 1fr);
-      gap:14px;
-      margin-bottom:18px;
+    .timeline-panel{
+      padding:16px 18px 22px;
     }
 
-    .kpi{
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(215,176,106,.12);
-      border-radius:18px;
-      padding:16px;
+    .timeline-title-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
     }
 
-    .kpi-label{
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      font-size:11px;
-      margin-bottom:8px;
-    }
-
-    .kpi-value{
-      font-size:30px;
+    .timeline-caption{
       color:var(--gold);
+      font-size:13px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
       font-family:Georgia, "Times New Roman", serif;
+      font-weight:700;
     }
 
-    .timeline-list{
+    .timeline-range-note{
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .timeline-chart{
+      position:relative;
+      border-radius:20px;
+      background:rgba(255,255,255,.025);
+      border:1px solid rgba(210,171,103,.10);
+      padding:16px 16px 10px;
+      overflow:auto;
+    }
+
+    .timeline-scale{
+      position:relative;
+      min-width:1180px;
+      display:grid;
+      grid-template-columns:150px 1fr 110px;
+      align-items:end;
+      margin-bottom:10px;
+      gap:12px;
+    }
+
+    .timeline-years{
+      position:relative;
+      height:36px;
+      border-bottom:1px solid rgba(210,171,103,.1);
+      display:grid;
+      grid-template-columns:repeat(8, 1fr);
+      color:#9f8a6f;
+      font-size:10px;
+      letter-spacing:.08em;
+    }
+
+    .timeline-years span{
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      justify-content:flex-start;
+      padding-bottom:6px;
+    }
+
+    .timeline-now-line{
+      position:absolute;
+      top:0;
+      bottom:0;
+      width:2px;
+      background:var(--amber);
+      box-shadow:0 0 0 1px rgba(216,180,93,.15);
+      opacity:.95;
+      z-index:4;
+    }
+
+    .timeline-now-label{
+      position:absolute;
+      top:-2px;
+      transform:translateX(-50%);
+      color:var(--amber);
+      font-size:11px;
+      font-weight:700;
+      white-space:nowrap;
+      background:rgba(26,16,11,.88);
+      padding:2px 6px;
+      border-radius:8px;
+      border:1px solid rgba(216,180,93,.16);
+      z-index:5;
+    }
+
+    .timeline-rows{
+      position:relative;
+      min-width:1180px;
       display:flex;
       flex-direction:column;
-      gap:14px;
+      gap:9px;
     }
 
-    .timeline-item{
+    .timeline-row{
       display:grid;
-      grid-template-columns:130px 1fr auto;
-      gap:14px;
+      grid-template-columns:150px 1fr 110px;
+      gap:12px;
       align-items:center;
-      padding:16px;
-      border-radius:18px;
-      border:1px solid rgba(215,176,106,.12);
-      background:rgba(255,255,255,.03);
+      min-height:25px;
     }
 
-    .timeline-year{
-      color:var(--gold);
-      font-weight:800;
-      font-size:16px;
-      letter-spacing:.06em;
-    }
-
-    .timeline-main{
-      min-width:0;
-    }
-
-    .timeline-title{
-      font-weight:700;
-      margin-bottom:4px;
-    }
-
-    .timeline-sub{
+    .timeline-label{
       color:var(--muted);
-      font-size:14px;
+      font-size:13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
-    .timeline-badge{
-      padding:8px 12px;
+    .timeline-track-wrap{
+      position:relative;
+      height:14px;
+      background:var(--timeline-track);
       border-radius:999px;
-      font-size:12px;
-      font-weight:700;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-      border:1px solid rgba(255,255,255,.08);
+      overflow:hidden;
+    }
+
+    .timeline-fill{
+      position:absolute;
+      top:0;
+      height:100%;
+      border-radius:999px;
+      z-index:2;
+    }
+
+    .timeline-fill.ready{
+      background:linear-gradient(90deg, #3c8f48, #6fd46f);
+    }
+
+    .timeline-fill.past{
+      background:linear-gradient(90deg, #8b2323, #c73a3a);
+    }
+
+    .timeline-fill.aging{
+      background:linear-gradient(90deg, #5d8a39, #9fd15d);
+    }
+
+    .timeline-window{
+      color:#9f8a6f;
+      font-size:11px;
+      text-align:right;
       white-space:nowrap;
     }
-
-    .badge-ready{background:rgba(191,230,195,.12); color:var(--green)}
-    .badge-aging{background:rgba(214,176,93,.10); color:var(--amber)}
-    .badge-past{background:rgba(217,138,138,.10); color:var(--red)}
 
     .toolbar{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      margin-bottom:16px;
       align-items:center;
+      margin-bottom:16px;
     }
 
     input, select, textarea{
       background:#241912;
       color:var(--text);
-      border:1px solid rgba(215,176,106,.18);
+      border:1px solid rgba(210,171,103,.18);
       border-radius:14px;
       padding:12px 14px;
       font-size:14px;
@@ -393,7 +493,9 @@
       width:100%;
     }
 
-    input::placeholder, textarea::placeholder{color:#8f7d68}
+    input::placeholder, textarea::placeholder{
+      color:#8f7d68;
+    }
 
     .btn{
       border:none;
@@ -412,12 +514,12 @@
     .btn-secondary{
       background:#2b1d14;
       color:var(--text);
-      border:1px solid rgba(215,176,106,.18);
+      border:1px solid rgba(210,171,103,.18);
     }
 
     .btn-danger{
       background:#5f2727;
-      color:#fff1f1;
+      color:#fff2f2;
       border:1px solid rgba(255,255,255,.05);
     }
 
@@ -435,19 +537,23 @@
 
     .form-grid .full{grid-column:1/-1}
 
+    .table-wrap{
+      overflow:auto;
+      border:1px solid rgba(210,171,103,.12);
+      border-radius:18px;
+    }
+
     table{
       width:100%;
       border-collapse:collapse;
-      overflow:hidden;
-      border-radius:16px;
     }
 
     th, td{
       padding:14px 12px;
-      border-bottom:1px solid rgba(215,176,106,.10);
+      border-bottom:1px solid rgba(210,171,103,.10);
       text-align:left;
-      font-size:14px;
       vertical-align:top;
+      font-size:14px;
     }
 
     th{
@@ -458,22 +564,14 @@
       background:rgba(255,255,255,.02);
       position:sticky;
       top:0;
+      z-index:1;
     }
 
     tbody tr:hover{
-      background:rgba(255,255,255,.025);
+      background:rgba(255,255,255,.02);
     }
 
-    .table-wrap{
-      overflow:auto;
-      border:1px solid rgba(215,176,106,.12);
-      border-radius:18px;
-    }
-
-    .wine-name{
-      font-weight:700;
-    }
-
+    .wine-name{font-weight:700}
     .wine-sub{
       color:var(--muted);
       font-size:12px;
@@ -488,36 +586,38 @@
     }
 
     .dot{
-      width:10px;height:10px;border-radius:50%;
+      width:10px;
+      height:10px;
+      border-radius:50%;
       display:inline-block;
     }
 
-    .dot-ready{background:var(--green)}
+    .dot-ready{background:var(--green-soft)}
     .dot-aging{background:var(--amber)}
     .dot-past{background:var(--red)}
 
     .muted{color:var(--muted)}
-    .section-spacer{height:18px}
-
     .footer-note{
-      margin-top:16px;
+      margin-top:14px;
       color:var(--muted);
       font-size:13px;
     }
 
-    @media (max-width: 1200px){
+    .section-spacer{height:18px}
+
+    @media (max-width: 1250px){
       .grid-3,.grid-2,.kpi-grid,.form-grid{grid-template-columns:1fr 1fr}
       .region-grid{grid-template-columns:repeat(3,1fr)}
     }
 
-    @media (max-width: 760px){
+    @media (max-width: 800px){
       .container{padding:14px}
-      h1{font-size:30px}
+      h1{font-size:31px}
       .grid-3,.grid-2,.kpi-grid,.form-grid{grid-template-columns:1fr}
       .region-grid{grid-template-columns:1fr 1fr}
-      .timeline-item{grid-template-columns:1fr; align-items:flex-start}
       .tab{min-width:auto}
-      .title-row{flex-direction:column}
+      .timeline-scale,
+      .timeline-rows{min-width:980px}
     }
   </style>
 </head>
@@ -533,6 +633,7 @@
               <div class="subtitle" id="heroSubtitle">0 bottles · 0 countries</div>
             </div>
           </div>
+
           <div class="pill-stats">
             <div class="pill"><span>Ready</span><strong id="pillReady">0</strong></div>
             <div class="pill"><span>Aging</span><strong id="pillAging">0</strong></div>
@@ -582,7 +683,7 @@
         </div>
 
         <div class="panel">
-          <h3>By type</h3>
+          <h3>By wine type</h3>
           <div class="bar-list" id="typeBars"></div>
         </div>
 
@@ -605,14 +706,15 @@
     </section>
 
     <section id="timeline" class="tab-content">
-      <div class="grid-2">
-        <div class="panel">
-          <h3>Drink now & soon</h3>
-          <div class="timeline-list" id="timelineNow"></div>
+      <div class="panel timeline-panel">
+        <div class="timeline-title-row">
+          <div class="timeline-caption" id="timelineCaption">Drink window timeline</div>
+          <div class="timeline-range-note" id="timelineRangeNote">—</div>
         </div>
-        <div class="panel">
-          <h3>Age longer</h3>
-          <div class="timeline-list" id="timelineLater"></div>
+
+        <div class="timeline-chart">
+          <div class="timeline-scale" id="timelineScale"></div>
+          <div class="timeline-rows" id="timelineRows"></div>
         </div>
       </div>
     </section>
@@ -627,7 +729,7 @@
           <input id="f_region" placeholder="Region" />
 
           <select id="f_type">
-            <option value="">Type</option>
+            <option value="">Wine type</option>
             <option>Red</option>
             <option>White</option>
             <option>Sparkling</option>
@@ -661,7 +763,7 @@
         <div class="toolbar">
           <input id="searchInput" placeholder="Search wine, producer, region..." style="max-width:320px;">
           <select id="filterType" style="max-width:180px;">
-            <option value="">All types</option>
+            <option value="">All wine types</option>
           </select>
           <select id="filterCountry" style="max-width:180px;">
             <option value="">All countries</option>
@@ -680,7 +782,7 @@
               <tr>
                 <th>Wine</th>
                 <th>Country / Region</th>
-                <th>Type</th>
+                <th>Wine type</th>
                 <th>Vintage</th>
                 <th>Price</th>
                 <th>Status</th>
@@ -702,7 +804,7 @@
   </div>
 
   <script>
-    const STORAGE_KEY = "wineCellarDashboardData_v1";
+    const STORAGE_KEY = "wineCellarDashboardData_v2";
     const CURRENT_YEAR = new Date().getFullYear();
 
     const seedData = [
@@ -1298,52 +1400,85 @@
       document.getElementById("kpiAvgPrice").textContent = bottleCount ? currency(value / bottleCount) : "0 SEK";
 
       const mostExp = [...bottles].sort((a,b)=>Number(b.priceSek||0)-Number(a.priceSek||0))[0];
-      document.getElementById("kpiMostExpensive").textContent = mostExp ? `${mostExp.name}` : "—";
+      document.getElementById("kpiMostExpensive").textContent = mostExp ? mostExp.name : "—";
       document.getElementById("readyNowBig").textContent = statuses.Ready || 0;
 
       renderBars("countryBars", aggregate(bottles, "country").slice(0,10), ["fill-rose","fill-gold","fill-blue","fill-purple"]);
       renderBars("typeBars", aggregate(bottles, "type"), ["fill-rose","fill-gold","fill-blue","fill-purple","fill-green"]);
       renderBars("statusBars", aggregateStatus(bottles), ["fill-green","fill-gold","fill-red"]);
-
       renderRegions();
       renderFilters();
     }
 
     function renderTimeline(){
-      const now = document.getElementById("timelineNow");
-      const later = document.getElementById("timelineLater");
-      now.innerHTML = "";
-      later.innerHTML = "";
+      const scale = document.getElementById("timelineScale");
+      const rows = document.getElementById("timelineRows");
+      const caption = document.getElementById("timelineCaption");
+      const rangeNote = document.getElementById("timelineRangeNote");
 
-      const sorted = [...bottles].sort((a,b)=>Number(a.drinkFrom||9999)-Number(b.drinkFrom||9999));
+      scale.innerHTML = "";
+      rows.innerHTML = "";
 
-      const readySoon = sorted.filter(b=>Number(b.drinkFrom||0) <= CURRENT_YEAR + 1);
-      const ageLonger = sorted.filter(b=>Number(b.drinkFrom||0) > CURRENT_YEAR + 1);
+      if(!bottles.length){
+        caption.textContent = "Drink window timeline";
+        rangeNote.textContent = "No bottles";
+        return;
+      }
 
-      const renderList = (target, list) => {
-        if(!list.length){
-          target.innerHTML = `<div class="muted">No bottles in this section.</div>`;
-          return;
-        }
-        list.forEach(b=>{
-          const status = getStatus(b);
-          const badgeClass = status === "Ready" ? "badge-ready" : status === "Aging" ? "badge-aging" : "badge-past";
-          const div = document.createElement("div");
-          div.className = "timeline-item";
-          div.innerHTML = `
-            <div class="timeline-year">${b.drinkFrom || "—"}–${b.drinkTo || "—"}</div>
-            <div class="timeline-main">
-              <div class="timeline-title">${b.producer} — ${b.name}</div>
-              <div class="timeline-sub">${b.country} · ${b.region || "—"} · ${b.vintage || "NV"} · ${currency(b.priceSek)}</div>
-            </div>
-            <div class="timeline-badge ${badgeClass}">${status}</div>
-          `;
-          target.appendChild(div);
-        });
-      };
+      const minYear = Math.min(...bottles.map(b => Number(b.drinkFrom || CURRENT_YEAR))) - 1;
+      const maxYear = Math.max(...bottles.map(b => Number(b.drinkTo || CURRENT_YEAR))) + 1;
+      const totalYears = Math.max(1, maxYear - minYear);
 
-      renderList(now, readySoon);
-      renderList(later, ageLonger);
+      caption.textContent = `Drink window timeline (${minYear} – ${maxYear})`;
+      rangeNote.textContent = `${CURRENT_YEAR} marker shown in gold`;
+
+      const yearLabels = [];
+      const steps = 7;
+      for(let i=0; i<=steps; i++){
+        yearLabels.push(Math.round(minYear + (totalYears * (i/steps))));
+      }
+
+      const nowPct = ((CURRENT_YEAR - minYear) / totalYears) * 100;
+
+      scale.innerHTML = `
+        <div></div>
+        <div class="timeline-years" id="timelineYears">
+          ${yearLabels.map(y=>`<span>${y}</span>`).join("")}
+          <div class="timeline-now-line" style="left:${Math.max(0, Math.min(100, nowPct))}%"></div>
+          <div class="timeline-now-label" style="left:${Math.max(0, Math.min(100, nowPct))}%">${CURRENT_YEAR}</div>
+        </div>
+        <div></div>
+      `;
+
+      const sorted = [...bottles].sort((a,b)=>{
+        const sa = getStatus(a), sb = getStatus(b);
+        const order = {Ready:0, Aging:1, "Past Peak":2};
+        if(order[sa] !== order[sb]) return order[sa] - order[sb];
+        return Number(a.drinkFrom||0) - Number(b.drinkFrom||0);
+      });
+
+      sorted.forEach(b=>{
+        const from = Number(b.drinkFrom || CURRENT_YEAR);
+        const to = Number(b.drinkTo || CURRENT_YEAR);
+        const left = ((from - minYear) / totalYears) * 100;
+        const width = Math.max(2, ((to - from) / totalYears) * 100);
+        const status = getStatus(b);
+        const fillClass = status === "Past Peak" ? "past" : status === "Aging" ? "aging" : "ready";
+
+        const row = document.createElement("div");
+        row.className = "timeline-row";
+        row.innerHTML = `
+          <div class="timeline-label" title="${b.producer} — ${b.name}">
+            ${b.producer}
+          </div>
+          <div class="timeline-track-wrap">
+            <div class="timeline-fill ${fillClass}" style="left:${left}%; width:${width}%"></div>
+            <div class="timeline-now-line" style="left:${Math.max(0, Math.min(100, nowPct))}%"></div>
+          </div>
+          <div class="timeline-window">${from}–${to}</div>
+        `;
+        rows.appendChild(row);
+      });
     }
 
     function statusCell(status){
@@ -1354,11 +1489,18 @@
     function renderFilters(){
       const typeSelect = document.getElementById("filterType");
       const countrySelect = document.getElementById("filterCountry");
+
+      const currentType = typeSelect.value;
+      const currentCountry = countrySelect.value;
+
       const types = [...new Set(bottles.map(b=>b.type).filter(Boolean))].sort();
       const countries = [...new Set(bottles.map(b=>b.country).filter(Boolean))].sort();
 
-      typeSelect.innerHTML = `<option value="">All types</option>` + types.map(t=>`<option>${t}</option>`).join("");
-      countrySelect.innerHTML = `<option value="">All countries</option>` + countries.map(c=>`<option>${c}</option>`).join("");
+      typeSelect.innerHTML = `<option value="">All wine types</option>` + types.map(t=>`<option value="${t}">${t}</option>`).join("");
+      countrySelect.innerHTML = `<option value="">All countries</option>` + countries.map(c=>`<option value="${c}">${c}</option>`).join("");
+
+      typeSelect.value = types.includes(currentType) ? currentType : "";
+      countrySelect.value = countries.includes(currentCountry) ? currentCountry : "";
     }
 
     function renderCollection(){
@@ -1372,7 +1514,7 @@
 
       const filtered = bottles.filter(b=>{
         const status = getStatus(b);
-        const searchBlob = `${b.name} ${b.producer} ${b.country} ${b.region} ${b.food} ${b.notes}`.toLowerCase();
+        const searchBlob = `${b.name} ${b.producer} ${b.country} ${b.region} ${b.type} ${b.food} ${b.notes}`.toLowerCase();
         return (!q || searchBlob.includes(q))
           && (!type || b.type === type)
           && (!country || b.country === country)
@@ -1387,7 +1529,10 @@
             <div class="wine-name">${b.name}</div>
             <div class="wine-sub">${b.producer}</div>
           </td>
-          <td>${b.country}<div class="wine-sub">${b.region || "—"}</div></td>
+          <td>
+            ${b.country}
+            <div class="wine-sub">${b.region || "—"}</div>
+          </td>
           <td>${b.type || "—"}</td>
           <td>${b.vintage || "NV"}</td>
           <td>${currency(b.priceSek)}</td>
