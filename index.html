@@ -188,15 +188,6 @@
     <div class="modal">
       <h2 id="modalTitle">Add bottle</h2>
       <div class="form-grid">
-        <div class="field"><label>Producer</label><input id="producerInput" /></div>
-        <div class="field"><label>Wine</label><input id="wineInput" /></div>
-        <div class="field"><label>Country</label><input id="countryInput" /></div>
-        <div class="field"><label>Region</label><input id="regionInput" /></div>
-        <div class="field"><label>Type</label><select id="typeInput"><option>Red</option><option>White</option><option>Sparkling</option><option>Rosé</option><option>Dessert</option></select></div>
-        <div class="field"><label>Quantity</label><input id="quantityInput" type="number" min="1" value="1" /></div>
-        <div class="field"><label>Drink from</label><input id="drinkFromInput" type="number" /></div>
-        <div class="field"><label>Drink to</label><input id="drinkToInput" type="number" /></div>
-        <div class="field full"><label>Notes</label><textarea id="notesInput"></textarea></div>
         <div class="field full">
           <label>Add bottle photos</label>
           <div class="photo-grid">
@@ -210,7 +201,6 @@
               </div>
               <input id="frontUploadInput" class="hidden-input" type="file" accept="image/*" />
               <input id="frontCameraInput" class="hidden-input" type="file" accept="image/*" capture="environment" />
-              <div class="small-note">You can either choose an existing front image or take a new front photo with your iPhone camera.</div>
             </div>
             <div class="photo-card">
               <h4>Back label</h4>
@@ -222,9 +212,9 @@
               </div>
               <input id="backUploadInput" class="hidden-input" type="file" accept="image/*" />
               <input id="backCameraInput" class="hidden-input" type="file" accept="image/*" capture="environment" />
-              <div class="small-note">You can either choose an existing back image or take a new back photo with your iPhone camera.</div>
             </div>
           </div>
+          <div class="small-note">Add a bottle simply by taking two photos: the front label and the back label.</div>
         </div>
       </div>
       <div class="modal-actions">
@@ -486,19 +476,19 @@
     function saveBottle(){
       const bottle = {
         id: editingId || Date.now(),
-        producer: document.getElementById("producerInput").value.trim(),
-        wine: document.getElementById("wineInput").value.trim(),
-        country: document.getElementById("countryInput").value.trim(),
-        region: document.getElementById("regionInput").value.trim(),
-        type: document.getElementById("typeInput").value,
-        quantity: Number(document.getElementById("quantityInput").value || 1),
-        drinkFrom: Number(document.getElementById("drinkFromInput").value || 0) || null,
-        drinkTo: Number(document.getElementById("drinkToInput").value || 0) || null,
-        notes: document.getElementById("notesInput").value.trim(),
+        producer: "Wine bottle",
+        wine: "Added from photos",
+        country: "Unknown",
+        region: "Unknown",
+        type: "Unknown",
+        quantity: 1,
+        drinkFrom: null,
+        drinkTo: null,
+        notes: "Added using bottle photos",
         frontImage: frontImageData,
         backImage: backImageData
       };
-      if (!bottle.producer || !bottle.wine){ alert("Please enter producer and wine."); return; }
+      
       if (editingId) {
         bottles = bottles.map(b => b.id === editingId ? bottle : b);
       } else {
