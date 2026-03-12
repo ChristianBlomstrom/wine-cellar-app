@@ -20,20 +20,12 @@
       --accent:#f0d28b;
     }
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Arial,Helvetica,sans-serif;
-      background:linear-gradient(180deg,#2a1713 0%,#1e1210 100%);
-      color:var(--text);
-    }
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#2a1713 0%,#1e1210 100%);color:var(--text)}
     .wrap{max-width:1400px;margin:0 auto;padding:28px}
-    .hero{
-      background:linear-gradient(180deg,#43251b 0%,#2a1713 100%);
-      border-radius:20px;padding:28px;border:1px solid var(--line);margin-bottom:18px;
-    }
+    .hero{background:linear-gradient(180deg,#43251b 0%,#2a1713 100%);border-radius:20px;padding:28px;border:1px solid var(--line);margin-bottom:18px}
     .title{font-size:52px;font-weight:700;margin:0 0 8px 0}
     .subtitle{color:var(--muted);margin-bottom:20px}
-    .status-pills,.tabs,.action-row,.list-controls,.photo-actions,.modal-actions{display:flex;flex-wrap:wrap;gap:10px}
+    .status-pills,.tabs,.action-row,.list-controls,.photo-actions,.modal-actions,.scan-actions{display:flex;flex-wrap:wrap;gap:10px}
     .pill,.btn,.action-btn,.tab{border:none;cursor:pointer;font-weight:700}
     .pill{border-radius:999px;padding:10px 16px;color:#1e1e1e}
     .pill.ready{background:rgba(143,209,158,.95)}
@@ -43,19 +35,13 @@
     .pill.all{background:#f1ece7}
     .pill.active{outline:3px solid rgba(255,255,255,.25)}
     .tabs{margin-top:8px}
-    .tab{
-      background:transparent;color:var(--muted);border-bottom:2px solid transparent;
-      padding:10px 0;font-size:15px;letter-spacing:.04em;text-transform:uppercase;
-    }
+    .tab{background:transparent;color:var(--muted);border-bottom:2px solid transparent;padding:10px 0;font-size:15px;letter-spacing:.04em;text-transform:uppercase}
     .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
     .page{display:none}
     .page.active{display:block}
     .grid{display:grid;gap:18px}
     .grid-3{grid-template-columns:1.4fr 1.4fr 1fr}
-    .card{
-      background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);
-      border:1px solid var(--line);border-radius:18px;padding:18px;
-    }
+    .card{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--line);border-radius:18px;padding:18px}
     .card h3{margin:0 0 14px 0;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
     .big-number{font-size:46px;font-weight:700;text-align:center;margin-top:22px}
     .muted-center{text-align:center;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-size:12px}
@@ -73,10 +59,7 @@
     .region-box{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:14px;min-height:100px}
     .region-code{color:var(--accent);font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}
     .region-name{font-size:20px;font-weight:700;margin-bottom:8px}
-    .search{
-      flex:1;min-width:220px;max-width:420px;background:rgba(255,255,255,.08);
-      border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:14px;outline:none;
-    }
+    .search{flex:1;min-width:220px;max-width:420px;background:rgba(255,255,255,.08);border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:14px;outline:none}
     .btn{background:var(--accent);color:#2b1a14;border-radius:14px;padding:12px 16px}
     .bottle{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:12px}
     .bottle-top{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
@@ -110,15 +93,12 @@
     .empty{color:var(--muted);padding:20px 0}
     .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);padding:20px;z-index:1000;overflow:auto}
     .modal-backdrop.show{display:block}
-    .modal{max-width:860px;margin:30px auto;background:#2c1b17;border:1px solid var(--line);border-radius:20px;padding:20px}
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .form-grid .full{grid-column:1 / -1}
+    .modal{max-width:920px;margin:30px auto;background:#2c1b17;border:1px solid var(--line);border-radius:20px;padding:20px}
+    .form-grid{display:grid;grid-template-columns:1fr;gap:12px}
     .field label{display:block;margin-bottom:6px;color:var(--muted);font-size:14px}
-    .field input,.field select,.field textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--text)}
-    .field textarea{min-height:90px;resize:vertical}
     .photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .photo-card{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:14px}
-    .photo-card h4{margin:0 0 10px 0;font-size:14px;color:var(--accent);text-transform:uppercase;letter-spacing:.1em}
+    .photo-card,.scan-card{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:14px}
+    .photo-card h4,.scan-card h4{margin:0 0 10px 0;font-size:14px;color:var(--accent);text-transform:uppercase;letter-spacing:.1em}
     .photo-preview{width:100%;height:220px;border-radius:14px;background:rgba(0,0,0,.2);border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--muted);font-size:14px;text-align:center;padding:10px}
     .photo-preview img{width:100%;height:100%;object-fit:cover;display:block}
     .hidden-input{display:none}
@@ -126,11 +106,11 @@
     .thumb-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
     .thumb{width:120px;height:120px;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.05)}
     .thumb img{width:100%;height:100%;object-fit:cover}
-    @media (max-width:980px){
-      .grid-3,.timeline-header,.timeline-row,.form-grid,.photo-grid{grid-template-columns:1fr}
-      .title{font-size:40px}
-      .bottle-name{font-size:24px}
-    }
+    .scan-output{margin-top:12px;padding:14px;border-radius:14px;background:rgba(0,0,0,.18);border:1px solid var(--line)}
+    .scan-output h5{margin:0 0 10px 0;color:var(--accent);font-size:13px;text-transform:uppercase;letter-spacing:.1em}
+    .scan-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;font-size:14px}
+    .scan-grid div span{color:var(--muted);display:block;font-size:12px}
+    @media (max-width:980px){.grid-3,.timeline-header,.timeline-row,.photo-grid,.scan-grid{grid-template-columns:1fr}.title{font-size:40px}.bottle-name{font-size:24px}}
   </style>
 </head>
 <body>
@@ -138,7 +118,6 @@
     <section class="hero">
       <div class="title">Wine Cellar</div>
       <div class="subtitle" id="heroSub"></div>
-
       <div class="status-pills">
         <button class="pill all active" data-filter="All">All</button>
         <button class="pill ready" data-filter="Ready">Ready</button>
@@ -146,7 +125,6 @@
         <button class="pill soon" data-filter="Drink soon">Drink soon</button>
         <button class="pill past" data-filter="Past Peak">Past Peak</button>
       </div>
-
       <div class="tabs">
         <button class="tab active" data-tab="overview">Overview</button>
         <button class="tab" data-tab="timeline">Timeline</button>
@@ -186,9 +164,9 @@
 
   <div class="modal-backdrop" id="modalBackdrop">
     <div class="modal">
-      <h2 id="modalTitle">Add bottle</h2>
+      <h2 id="modalTitle">Add bottle from photos</h2>
       <div class="form-grid">
-        <div class="field full">
+        <div class="field">
           <label>Add bottle photos</label>
           <div class="photo-grid">
             <div class="photo-card">
@@ -214,7 +192,19 @@
               <input id="backCameraInput" class="hidden-input" type="file" accept="image/*" capture="environment" />
             </div>
           </div>
-          <div class="small-note">Add a bottle simply by taking two photos: the front label and the back label.</div>
+          <div class="small-note">You can add a bottle in two ways: choose two existing images or take two new photos with the iPhone camera.</div>
+        </div>
+
+        <div class="scan-card">
+          <h4>AI scan preview</h4>
+          <div class="small-note">This browser-only version can prepare the workflow, but real automatic extraction needs a secure backend service. For now, the app creates a bottle from photos and shows a placeholder result.</div>
+          <div class="scan-actions" style="margin-top:12px;">
+            <button type="button" class="btn" id="scanInfoBtn">Simulate AI scan</button>
+          </div>
+          <div class="scan-output" id="scanOutput" style="display:none;">
+            <h5>Detected information</h5>
+            <div class="scan-grid" id="scanGrid"></div>
+          </div>
         </div>
       </div>
       <div class="modal-actions">
@@ -225,7 +215,7 @@
   </div>
 
   <script>
-    const STORAGE_KEY = "wine-cellar-single-file-v3";
+    const STORAGE_KEY = "wine-cellar-single-file-v4";
     const currentYear = new Date().getFullYear();
 
     const starterBottles = [
@@ -243,6 +233,7 @@
     let editingId = null;
     let frontImageData = null;
     let backImageData = null;
+    let scanResult = null;
 
     function loadBottles(){
       try{
@@ -255,9 +246,7 @@
       }
     }
 
-    function saveBottles(){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(bottles));
-    }
+    function saveBottles(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(bottles)); }
 
     function getStatus(bottle){
       if (!bottle.drinkFrom && !bottle.drinkTo) return "Ready";
@@ -292,9 +281,7 @@
       return base;
     }
 
-    function totalBottleCount(data){
-      return data.reduce((sum,b) => sum + Number(b.quantity || 1), 0);
-    }
+    function totalBottleCount(data){ return data.reduce((sum,b) => sum + Number(b.quantity || 1), 0); }
 
     function renderBars(containerId, items, total, cssClass){
       const el = document.getElementById(containerId);
@@ -383,11 +370,27 @@
 
     function setPreview(previewId, imageData, emptyText){
       const el = document.getElementById(previewId);
-      if (imageData) {
-        el.innerHTML = `<img src="${imageData}" alt="Preview" />`;
-      } else {
-        el.textContent = emptyText;
+      if (imageData) el.innerHTML = `<img src="${imageData}" alt="Preview" />`;
+      else el.textContent = emptyText;
+    }
+
+    function renderScanResult(){
+      const output = document.getElementById("scanOutput");
+      const grid = document.getElementById("scanGrid");
+      if (!scanResult) {
+        output.style.display = "none";
+        grid.innerHTML = "";
+        return;
       }
+      output.style.display = "block";
+      grid.innerHTML = `
+        <div><span>Producer</span>${scanResult.producer}</div>
+        <div><span>Wine</span>${scanResult.wine}</div>
+        <div><span>Country</span>${scanResult.country}</div>
+        <div><span>Region</span>${scanResult.region}</div>
+        <div><span>Type</span>${scanResult.type}</div>
+        <div><span>Drink window</span>${scanResult.drinkFrom || "?"}–${scanResult.drinkTo || "?"}</div>
+      `;
     }
 
     function renderAll(){
@@ -398,6 +401,7 @@
       renderOverview(data);
       renderCollection(data);
       renderTimeline(data);
+      renderScanResult();
     }
 
     function openModal(){ document.getElementById("modalBackdrop").classList.add("show"); }
@@ -406,28 +410,18 @@
       editingId = null;
       frontImageData = null;
       backImageData = null;
-      document.getElementById("modalTitle").textContent = "Add bottle";
-      document.getElementById("producerInput").value = "";
-      document.getElementById("wineInput").value = "";
-      document.getElementById("countryInput").value = "";
-      document.getElementById("regionInput").value = "";
-      document.getElementById("typeInput").value = "Red";
-      document.getElementById("quantityInput").value = 1;
-      document.getElementById("drinkFromInput").value = "";
-      document.getElementById("drinkToInput").value = "";
-      document.getElementById("notesInput").value = "";
+      scanResult = null;
+      document.getElementById("modalTitle").textContent = "Add bottle from photos";
       document.getElementById("frontUploadInput").value = "";
       document.getElementById("frontCameraInput").value = "";
       document.getElementById("backUploadInput").value = "";
       document.getElementById("backCameraInput").value = "";
       setPreview("frontPreview", null, "No front image selected");
       setPreview("backPreview", null, "No back image selected");
+      renderScanResult();
     }
 
-    function closeModal(){
-      document.getElementById("modalBackdrop").classList.remove("show");
-      resetModal();
-    }
+    function closeModal(){ document.getElementById("modalBackdrop").classList.remove("show"); resetModal(); }
 
     function openEdit(id){
       const b = bottles.find(x => x.id === id);
@@ -436,18 +430,19 @@
       editingId = id;
       frontImageData = b.frontImage || null;
       backImageData = b.backImage || null;
-      document.getElementById("modalTitle").textContent = "Edit bottle";
-      document.getElementById("producerInput").value = b.producer || "";
-      document.getElementById("wineInput").value = b.wine || "";
-      document.getElementById("countryInput").value = b.country || "";
-      document.getElementById("regionInput").value = b.region || "";
-      document.getElementById("typeInput").value = b.type || "Red";
-      document.getElementById("quantityInput").value = b.quantity || 1;
-      document.getElementById("drinkFromInput").value = b.drinkFrom || "";
-      document.getElementById("drinkToInput").value = b.drinkTo || "";
-      document.getElementById("notesInput").value = b.notes || "";
+      scanResult = {
+        producer: b.producer || "Wine bottle",
+        wine: b.wine || "Added from photos",
+        country: b.country || "Unknown",
+        region: b.region || "Unknown",
+        type: b.type || "Unknown",
+        drinkFrom: b.drinkFrom || null,
+        drinkTo: b.drinkTo || null
+      };
+      document.getElementById("modalTitle").textContent = "Edit bottle photos";
       setPreview("frontPreview", frontImageData, "No front image selected");
       setPreview("backPreview", backImageData, "No back image selected");
+      renderScanResult();
       openModal();
     }
 
@@ -473,44 +468,60 @@
       }
     }
 
-    function saveBottle(){
-      const bottle = {
-        id: editingId || Date.now(),
+    function simulateAiScan(){
+      if (!frontImageData && !backImageData) {
+        alert("Please add at least a front or back label photo first.");
+        return;
+      }
+      scanResult = {
         producer: "Wine bottle",
         wine: "Added from photos",
         country: "Unknown",
         region: "Unknown",
         type: "Unknown",
-        quantity: 1,
         drinkFrom: null,
-        drinkTo: null,
-        notes: "Added using bottle photos",
+        drinkTo: null
+      };
+      renderScanResult();
+    }
+
+    function saveBottle(){
+      if (!frontImageData && !backImageData) {
+        alert("Please add at least one photo before saving.");
+        return;
+      }
+      const base = scanResult || {
+        producer: "Wine bottle",
+        wine: "Added from photos",
+        country: "Unknown",
+        region: "Unknown",
+        type: "Unknown",
+        drinkFrom: null,
+        drinkTo: null
+      };
+      const bottle = {
+        id: editingId || Date.now(),
+        producer: base.producer,
+        wine: base.wine,
+        country: base.country,
+        region: base.region,
+        type: base.type,
+        quantity: 1,
+        drinkFrom: base.drinkFrom,
+        drinkTo: base.drinkTo,
+        notes: scanResult ? "Added using bottle photos and scan workflow" : "Added using bottle photos",
         frontImage: frontImageData,
         backImage: backImageData
       };
-      
-      if (editingId) {
-        bottles = bottles.map(b => b.id === editingId ? bottle : b);
-      } else {
-        bottles.unshift(bottle);
-      }
+      if (editingId) bottles = bottles.map(b => b.id === editingId ? bottle : b);
+      else bottles.unshift(bottle);
       saveBottles();
       closeModal();
       renderAll();
     }
 
-    function deleteBottle(id){
-      if (!confirm("Delete this bottle?")) return;
-      bottles = bottles.filter(b => b.id !== id);
-      saveBottles();
-      renderAll();
-    }
-
-    function drinkOne(id){
-      bottles = bottles.map(b => b.id === id ? { ...b, quantity: Math.max(0, Number(b.quantity || 0) - 1) } : b).filter(b => Number(b.quantity) > 0);
-      saveBottles();
-      renderAll();
-    }
+    function deleteBottle(id){ if (!confirm("Delete this bottle?")) return; bottles = bottles.filter(b => b.id !== id); saveBottles(); renderAll(); }
+    function drinkOne(id){ bottles = bottles.map(b => b.id === id ? { ...b, quantity: Math.max(0, Number(b.quantity || 0) - 1) } : b).filter(b => Number(b.quantity) > 0); saveBottles(); renderAll(); }
 
     document.querySelectorAll(".pill").forEach(btn => btn.addEventListener("click", () => { activeFilter = btn.dataset.filter; renderAll(); }));
     document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", () => { activeTab = btn.dataset.tab; renderAll(); }));
@@ -518,6 +529,7 @@
     document.getElementById("addBottleBtn").addEventListener("click", () => { resetModal(); openModal(); });
     document.getElementById("cancelBtn").addEventListener("click", closeModal);
     document.getElementById("saveBtn").addEventListener("click", saveBottle);
+    document.getElementById("scanInfoBtn").addEventListener("click", simulateAiScan);
     document.getElementById("modalBackdrop").addEventListener("click", (e) => { if (e.target.id === "modalBackdrop") closeModal(); });
 
     document.getElementById("frontUploadBtn").addEventListener("click", () => document.getElementById("frontUploadInput").click());
