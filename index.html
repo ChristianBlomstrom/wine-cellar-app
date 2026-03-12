@@ -19,386 +19,138 @@
       --past:#d77878;
       --accent:#f0d28b;
     }
-
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(180deg, #2a1713 0%, #1e1210 100%);
+      font-family:Arial,Helvetica,sans-serif;
+      background:linear-gradient(180deg,#2a1713 0%,#1e1210 100%);
       color:var(--text);
     }
-
-    .wrap{
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 28px;
-    }
-
+    .wrap{max-width:1400px;margin:0 auto;padding:28px}
     .hero{
-      background: linear-gradient(180deg, #43251b 0%, #2a1713 100%);
-      border-radius: 20px;
-      padding: 28px;
-      border:1px solid var(--line);
-      margin-bottom: 18px;
+      background:linear-gradient(180deg,#43251b 0%,#2a1713 100%);
+      border-radius:20px;padding:28px;border:1px solid var(--line);margin-bottom:18px;
     }
-
-    .title{
-      font-size: 52px;
-      font-weight: 700;
-      margin: 0 0 8px 0;
+    .title{font-size:52px;font-weight:700;margin:0 0 8px 0}
+    .subtitle{color:var(--muted);margin-bottom:20px}
+    .status-pills,.tabs,.action-row,.list-controls{display:flex;flex-wrap:wrap;gap:10px}
+    .pill,.btn,.action-btn,.tab{
+      border:none;cursor:pointer;font-weight:700;
     }
-
-    .subtitle{
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-
-    .status-pills{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom: 12px;
-    }
-
     .pill{
-      border:none;
-      border-radius:999px;
-      padding:10px 16px;
-      cursor:pointer;
-      font-weight:700;
-      color:#1e1e1e;
+      border-radius:999px;padding:10px 16px;color:#1e1e1e;
     }
-
-    .pill.ready{ background: rgba(143,209,158,.95); }
-    .pill.aging{ background: rgba(214,177,95,.95); }
-    .pill.soon{ background: rgba(217,201,107,.95); }
-    .pill.past{ background: rgba(215,120,120,.95); }
-    .pill.all{ background: #f1ece7; }
-
-    .pill.active{
-      outline:3px solid rgba(255,255,255,.25);
-      transform: translateY(-1px);
-    }
-
-    .tabs{
-      display:flex;
-      gap:12px;
-      margin-top: 8px;
-      flex-wrap:wrap;
-    }
-
+    .pill.ready{background:rgba(143,209,158,.95)}
+    .pill.aging{background:rgba(214,177,95,.95)}
+    .pill.soon{background:rgba(217,201,107,.95)}
+    .pill.past{background:rgba(215,120,120,.95)}
+    .pill.all{background:#f1ece7}
+    .pill.active{outline:3px solid rgba(255,255,255,.25)}
+    .tabs{margin-top:8px}
     .tab{
-      background: transparent;
-      color: var(--muted);
-      border:none;
-      border-bottom: 2px solid transparent;
-      padding: 10px 0;
-      cursor:pointer;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: .04em;
-      text-transform: uppercase;
+      background:transparent;color:var(--muted);border-bottom:2px solid transparent;
+      padding:10px 0;font-size:15px;letter-spacing:.04em;text-transform:uppercase;
     }
-
-    .tab.active{
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
-
-    .page{ display:none; }
-    .page.active{ display:block; }
-
-    .grid{
-      display:grid;
-      gap:18px;
-    }
-
-    .grid-3{
-      grid-template-columns: 1.4fr 1.4fr 1fr;
-    }
-
+    .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+    .page{display:none}
+    .page.active{display:block}
+    .grid{display:grid;gap:18px}
+    .grid-3{grid-template-columns:1.4fr 1.4fr 1fr}
     .card{
-      background: linear-gradient(180deg, var(--card) 0%, var(--card2) 100%);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:18px;
+      background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);
+      border:1px solid var(--line);border-radius:18px;padding:18px;
     }
-
     .card h3{
-      margin:0 0 14px 0;
-      font-size:14px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:var(--accent);
+      margin:0 0 14px 0;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);
     }
-
-    .big-number{
-      font-size:46px;
-      font-weight:700;
-      text-align:center;
-      margin-top:22px;
-    }
-
-    .muted-center{
-      text-align:center;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:.12em;
-      font-size:12px;
-    }
-
-    .bar-row{ margin-bottom:14px; }
-    .bar-head{
-      display:flex;
-      justify-content:space-between;
-      font-size:14px;
-      margin-bottom:6px;
-    }
-
-    .track{
-      height:10px;
-      background:rgba(0,0,0,.35);
-      border-radius:999px;
-      overflow:hidden;
-    }
-
-    .fill{
-      height:100%;
-      border-radius:999px;
-    }
-
-    .fill.ready{ background:var(--ready); }
-    .fill.aging{ background:var(--aging); }
-    .fill.soon{ background:var(--soon); }
-    .fill.past{ background:var(--past); }
-    .fill.country{ background:linear-gradient(90deg,#d77c7c,#e7c06d); }
-    .fill.type{ background:linear-gradient(90deg,#d77c7c,#85c8ff); }
-
-    .region-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
-      gap:12px;
-    }
-
+    .big-number{font-size:46px;font-weight:700;text-align:center;margin-top:22px}
+    .muted-center{text-align:center;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-size:12px}
+    .bar-row{margin-bottom:14px}
+    .bar-head{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
+    .track{height:10px;background:rgba(0,0,0,.35);border-radius:999px;overflow:hidden}
+    .fill{height:100%;border-radius:999px}
+    .fill.ready{background:var(--ready)}
+    .fill.aging{background:var(--aging)}
+    .fill.soon{background:var(--soon)}
+    .fill.past{background:var(--past)}
+    .fill.country{background:linear-gradient(90deg,#d77c7c,#e7c06d)}
+    .fill.type{background:linear-gradient(90deg,#d77c7c,#85c8ff)}
+    .region-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
     .region-box{
-      background: rgba(255,255,255,.04);
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:14px;
-      min-height:100px;
+      background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:14px;min-height:100px;
     }
-
-    .region-code{
-      color:var(--accent);
-      font-size:12px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      margin-bottom:18px;
-    }
-
-    .region-name{
-      font-size:20px;
-      font-weight:700;
-      margin-bottom:8px;
-    }
-
-    .list-controls{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:14px;
-    }
-
+    .region-code{color:var(--accent);font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}
+    .region-name{font-size:20px;font-weight:700;margin-bottom:8px}
     .search{
-      flex:1;
-      min-width:220px;
-      max-width:420px;
-      background: rgba(255,255,255,.08);
-      border:1px solid var(--line);
-      color:var(--text);
-      padding:12px 14px;
-      border-radius:14px;
-      outline:none;
+      flex:1;min-width:220px;max-width:420px;background:rgba(255,255,255,.08);
+      border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:14px;outline:none;
     }
-
     .btn{
-      background: var(--accent);
-      color:#2b1a14;
-      border:none;
-      border-radius:14px;
-      padding:12px 16px;
-      font-weight:700;
-      cursor:pointer;
+      background:var(--accent);color:#2b1a14;border-radius:14px;padding:12px 16px;
     }
-
     .bottle{
-      background: linear-gradient(180deg, var(--card) 0%, var(--card2) 100%);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:18px;
-      margin-bottom:12px;
+      background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);
+      border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:12px;
     }
-
     .bottle-top{
-      display:flex;
-      gap:12px;
-      justify-content:space-between;
-      align-items:flex-start;
-      flex-wrap:wrap;
+      display:flex;gap:12px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;
     }
-
-    .bottle-name{
-      font-size:30px;
-      font-weight:700;
-      margin-bottom:4px;
-    }
-
-    .bottle-meta{
-      color:var(--muted);
-      margin-bottom:8px;
-    }
-
+    .bottle-name{font-size:30px;font-weight:700;margin-bottom:4px}
+    .bottle-meta{color:var(--muted);margin-bottom:8px}
     .badge{
-      display:inline-block;
-      padding:7px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:700;
-      margin-right:8px;
-      margin-top:6px;
+      display:inline-block;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:700;margin-right:8px;margin-top:6px;
     }
-
-    .badge.ready{ background:rgba(143,209,158,.2); color:var(--ready); }
-    .badge.aging{ background:rgba(214,177,95,.2); color:var(--aging); }
-    .badge.soon{ background:rgba(217,201,107,.2); color:var(--soon); }
-    .badge.past{ background:rgba(215,120,120,.2); color:var(--past); }
-    .badge.type{ background:rgba(255,255,255,.08); color:#fff; }
-
+    .badge.ready{background:rgba(143,209,158,.2);color:var(--ready)}
+    .badge.aging{background:rgba(214,177,95,.2);color:var(--aging)}
+    .badge.soon{background:rgba(217,201,107,.2);color:var(--soon)}
+    .badge.past{background:rgba(215,120,120,.2);color:var(--past)}
+    .badge.type{background:rgba(255,255,255,.08);color:#fff}
     .qty{
-      min-width:90px;
-      text-align:center;
-      background:rgba(0,0,0,.2);
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:10px 14px;
+      min-width:90px;text-align:center;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:16px;padding:10px 14px;
     }
-
-    .qty-label{
-      color:var(--muted);
-      font-size:11px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
+    .qty-label{color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+    .qty-value{font-size:30px;font-weight:700}
+    .action-btn{border-radius:12px;padding:10px 14px}
+    .secondary{background:#e9e2da;color:#2a1713}
+    .danger{background:#d77878;color:#fff}
+    .timeline-header,.timeline-row{
+      display:grid;grid-template-columns:230px 1fr 100px;gap:14px;align-items:center;
     }
-
-    .qty-value{
-      font-size:30px;
-      font-weight:700;
-    }
-
-    .action-row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-
-    .action-btn{
-      border:none;
-      border-radius:12px;
-      padding:10px 14px;
-      cursor:pointer;
-      font-weight:700;
-    }
-
-    .secondary{
-      background:#e9e2da;
-      color:#2a1713;
-    }
-
-    .danger{
-      background:#d77878;
-      color:#fff;
-    }
-
     .timeline-header{
-      display:grid;
-      grid-template-columns: 230px 1fr 100px;
-      gap:14px;
-      align-items:center;
-      color:var(--muted);
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:.12em;
-      margin-bottom:12px;
+      color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px;
     }
-
-    .timeline-row{
-      display:grid;
-      grid-template-columns: 230px 1fr 100px;
-      gap:14px;
-      align-items:center;
-      margin-bottom:12px;
+    .timeline-row{margin-bottom:12px}
+    .timeline-name{font-weight:700;margin-bottom:4px}
+    .timeline-sub{color:var(--muted);font-size:13px}
+    .timeline-track{position:relative;height:22px;background:rgba(0,0,0,.3);border-radius:999px;overflow:hidden}
+    .timeline-fill{position:absolute;top:0;height:100%;border-radius:999px}
+    .timeline-fill.ready{background:linear-gradient(90deg,#4a8d60,#8fd19e)}
+    .timeline-fill.aging{background:linear-gradient(90deg,#7a6736,#d6b15f)}
+    .timeline-fill.soon{background:linear-gradient(90deg,#8d813c,#d9c96b)}
+    .timeline-fill.past{background:linear-gradient(90deg,#7a3333,#d77878)}
+    .year-line{position:absolute;top:0;bottom:0;width:2px;background:var(--accent)}
+    .summary-note{color:var(--muted);margin-top:8px}
+    .empty{color:var(--muted);padding:20px 0}
+    .modal-backdrop{
+      display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);padding:20px;z-index:1000;overflow:auto;
     }
-
-    .timeline-name{
-      font-weight:700;
-      margin-bottom:4px;
+    .modal-backdrop.show{display:block}
+    .modal{
+      max-width:760px;margin:30px auto;background:#2c1b17;border:1px solid var(--line);border-radius:20px;padding:20px;
     }
-
-    .timeline-sub{
-      color:var(--muted);
-      font-size:13px;
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .form-grid .full{grid-column:1 / -1}
+    .field label{display:block;margin-bottom:6px;color:var(--muted);font-size:14px}
+    .field input,.field select,.field textarea{
+      width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--text);
     }
-
-    .timeline-track{
-      position:relative;
-      height:22px;
-      background:rgba(0,0,0,.3);
-      border-radius:999px;
-      overflow:hidden;
-    }
-
-    .timeline-fill{
-      position:absolute;
-      top:0;
-      height:100%;
-      border-radius:999px;
-    }
-
-    .timeline-fill.ready{ background:linear-gradient(90deg,#4a8d60,#8fd19e); }
-    .timeline-fill.aging{ background:linear-gradient(90deg,#7a6736,#d6b15f); }
-    .timeline-fill.soon{ background:linear-gradient(90deg,#8d813c,#d9c96b); }
-    .timeline-fill.past{ background:linear-gradient(90deg,#7a3333,#d77878); }
-
-    .year-line{
-      position:absolute;
-      top:0;
-      bottom:0;
-      width:2px;
-      background:var(--accent);
-      opacity:.9;
-    }
-
-    .summary-note{
-      color:var(--muted);
-      margin-top:8px;
-    }
-
-    .empty{
-      color:var(--muted);
-      padding:20px 0;
-    }
-
-    @media (max-width: 980px){
-      .grid-3{ grid-template-columns:1fr; }
-      .timeline-header,
-      .timeline-row{
-        grid-template-columns:1fr;
-      }
-      .title{ font-size:40px; }
-      .bottle-name{ font-size:24px; }
+    .field textarea{min-height:90px;resize:vertical}
+    .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+    @media (max-width:980px){
+      .grid-3{grid-template-columns:1fr}
+      .timeline-header,.timeline-row,.form-grid{grid-template-columns:1fr}
+      .title{font-size:40px}
+      .bottle-name{font-size:24px}
     }
   </style>
 </head>
@@ -429,12 +181,10 @@
           <h3>By country</h3>
           <div id="countryBars"></div>
         </div>
-
         <div class="card">
           <h3>By type</h3>
           <div id="typeBars"></div>
         </div>
-
         <div class="card">
           <h3>Drink window status</h3>
           <div id="statusBars"></div>
@@ -466,7 +216,7 @@
         <h3>Collection</h3>
         <div class="list-controls">
           <input id="searchInput" class="search" type="text" placeholder="Search producer, wine, country, region..." />
-          <button class="btn" onclick="alert('Add bottle can be the next step.')">Add bottle</button>
+          <button class="btn" id="addBottleBtn">Add bottle</button>
         </div>
         <div class="summary-note" id="collectionSummary"></div>
         <div id="collectionList"></div>
@@ -474,75 +224,92 @@
     </section>
   </div>
 
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <h2 id="modalTitle">Add bottle</h2>
+      <div class="form-grid">
+        <div class="field">
+          <label>Producer</label>
+          <input id="producerInput" />
+        </div>
+        <div class="field">
+          <label>Wine</label>
+          <input id="wineInput" />
+        </div>
+        <div class="field">
+          <label>Country</label>
+          <input id="countryInput" />
+        </div>
+        <div class="field">
+          <label>Region</label>
+          <input id="regionInput" />
+        </div>
+        <div class="field">
+          <label>Type</label>
+          <select id="typeInput">
+            <option>Red</option>
+            <option>White</option>
+            <option>Sparkling</option>
+            <option>Rosé</option>
+            <option>Dessert</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Quantity</label>
+          <input id="quantityInput" type="number" min="1" value="1" />
+        </div>
+        <div class="field">
+          <label>Drink from</label>
+          <input id="drinkFromInput" type="number" />
+        </div>
+        <div class="field">
+          <label>Drink to</label>
+          <input id="drinkToInput" type="number" />
+        </div>
+        <div class="field full">
+          <label>Notes</label>
+          <textarea id="notesInput"></textarea>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="action-btn secondary" id="cancelBtn">Cancel</button>
+        <button class="btn" id="saveBtn">Save bottle</button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    const STORAGE_KEY = "wine-cellar-single-file-v2";
     const currentYear = new Date().getFullYear();
 
-    const bottles = [
-      {
-        id: 1,
-        producer: "Grande Alberone",
-        wine: "Moscato",
-        country: "Italy",
-        region: "Bardolino",
-        type: "Sparkling",
-        quantity: 1,
-        drinkFrom: 2025,
-        drinkTo: 2027,
-        notes: "Imported from first uploaded bottle photo."
-      },
-      {
-        id: 2,
-        producer: "Saint Auriol",
-        wine: "Chatelaine",
-        country: "France",
-        region: "La Clape",
-        type: "Red",
-        quantity: 2,
-        drinkFrom: 2024,
-        drinkTo: 2028,
-        notes: "La Clape AOP"
-      },
-      {
-        id: 3,
-        producer: "Example Winery",
-        wine: "Barolo",
-        country: "Italy",
-        region: "Piemonte",
-        type: "Red",
-        quantity: 1,
-        drinkFrom: 2028,
-        drinkTo: 2038,
-        notes: "Example aging bottle"
-      },
-      {
-        id: 4,
-        producer: "Old Cellar",
-        wine: "Rioja Reserva",
-        country: "Spain",
-        region: "Rioja",
-        type: "Red",
-        quantity: 1,
-        drinkFrom: 2016,
-        drinkTo: 2024,
-        notes: "Should be prioritized"
-      },
-      {
-        id: 5,
-        producer: "Fresh Hills",
-        wine: "Chablis",
-        country: "France",
-        region: "Burgundy",
-        type: "White",
-        quantity: 1,
-        drinkFrom: 2023,
-        drinkTo: 2026,
-        notes: "Drink soon"
-      }
+    const starterBottles = [
+      { id:1, producer:"Grande Alberone", wine:"Moscato", country:"Italy", region:"Bardolino", type:"Sparkling", quantity:1, drinkFrom:2025, drinkTo:2027, notes:"Imported from first uploaded bottle photo." },
+      { id:2, producer:"Saint Auriol", wine:"Chatelaine", country:"France", region:"La Clape", type:"Red", quantity:2, drinkFrom:2024, drinkTo:2028, notes:"La Clape AOP" },
+      { id:3, producer:"Example Winery", wine:"Barolo", country:"Italy", region:"Piemonte", type:"Red", quantity:1, drinkFrom:2028, drinkTo:2038, notes:"Example aging bottle" },
+      { id:4, producer:"Old Cellar", wine:"Rioja Reserva", country:"Spain", region:"Rioja", type:"Red", quantity:1, drinkFrom:2016, drinkTo:2024, notes:"Should be prioritized" },
+      { id:5, producer:"Fresh Hills", wine:"Chablis", country:"France", region:"Burgundy", type:"White", quantity:1, drinkFrom:2023, drinkTo:2026, notes:"Drink soon" }
     ];
 
+    let bottles = loadBottles();
     let activeFilter = "All";
     let activeTab = "overview";
     let searchText = "";
+    let editingId = null;
+
+    function loadBottles(){
+      try{
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if(!saved) return starterBottles;
+        const parsed = JSON.parse(saved);
+        return Array.isArray(parsed) && parsed.length ? parsed : starterBottles;
+      }catch{
+        return starterBottles;
+      }
+    }
+
+    function saveBottles(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(bottles));
+    }
 
     function getStatus(bottle){
       if (!bottle.drinkFrom && !bottle.drinkTo) return "Ready";
@@ -566,39 +333,27 @@
       const map = {};
       data.forEach(b => {
         const key = b[field] || "Unknown";
-        map[key] = (map[key] || 0) + (b.quantity || 1);
+        map[key] = (map[key] || 0) + Number(b.quantity || 1);
       });
-      return Object.entries(map)
-        .map(([label,count]) => ({label,count}))
-        .sort((a,b) => b.count - a.count);
+      return Object.entries(map).map(([label,count]) => ({label,count})).sort((a,b) => b.count - a.count);
     }
 
     function statusCounts(data){
       const base = { "Ready":0, "Aging":0, "Drink soon":0, "Past Peak":0 };
-      data.forEach(b => {
-        base[getStatus(b)] += b.quantity || 1;
-      });
+      data.forEach(b => { base[getStatus(b)] += Number(b.quantity || 1); });
       return base;
     }
 
     function totalBottleCount(data){
-      return data.reduce((sum,b) => sum + (b.quantity || 1), 0);
+      return data.reduce((sum,b) => sum + Number(b.quantity || 1), 0);
     }
 
     function renderBars(containerId, items, total, cssClass){
       const el = document.getElementById(containerId);
-      if (!items.length){
-        el.innerHTML = '<div class="empty">No data</div>';
-        return;
-      }
+      if (!items.length){ el.innerHTML = '<div class="empty">No data</div>'; return; }
       el.innerHTML = items.map(item => {
         const pct = Math.max(8, Math.round((item.count / total) * 100));
-        return `
-          <div class="bar-row">
-            <div class="bar-head"><span>${item.label}</span><span>${item.count}</span></div>
-            <div class="track"><div class="fill ${cssClass}" style="width:${pct}%"></div></div>
-          </div>
-        `;
+        return `<div class="bar-row"><div class="bar-head"><span>${item.label}</span><span>${item.count}</span></div><div class="track"><div class="fill ${cssClass}" style="width:${pct}%"></div></div></div>`;
       }).join("");
     }
 
@@ -617,12 +372,7 @@
 
       document.getElementById("statusBars").innerHTML = statusItems.map(item => {
         const pct = total ? Math.max(8, Math.round((item.count / total) * 100)) : 0;
-        return `
-          <div class="bar-row">
-            <div class="bar-head"><span>${item.label}</span><span>${item.count} bottles</span></div>
-            <div class="track"><div class="fill ${item.cls}" style="width:${pct}%"></div></div>
-          </div>
-        `;
+        return `<div class="bar-row"><div class="bar-head"><span>${item.label}</span><span>${item.count} bottles</span></div><div class="track"><div class="fill ${item.cls}" style="width:${pct}%"></div></div></div>`;
       }).join("");
 
       document.getElementById("readyNowNumber").textContent = counts["Ready"];
@@ -633,11 +383,9 @@
           <div class="region-code">${r.label.slice(0,2).toUpperCase()}</div>
           <div class="region-name">${r.label}</div>
           <div>${r.count} bottle${r.count === 1 ? "" : "s"}</div>
-        </div>
-      `).join("");
+        </div>`).join("");
 
-      document.getElementById("heroSub").textContent =
-        `${totalBottleCount(data)} bottles · ${totalsBy("country", data).length} countries`;
+      document.getElementById("heroSub").textContent = `${totalBottleCount(data)} bottles · ${totalsBy("country", data).length} countries`;
     }
 
     function renderCollection(data){
@@ -659,7 +407,7 @@
               <div>
                 <div class="bottle-name">${b.producer}</div>
                 <div style="font-size:28px; margin-bottom:6px;">${b.wine}</div>
-                <div class="bottle-meta">${b.country} · ${b.region} · ${b.drinkFrom}–${b.drinkTo}</div>
+                <div class="bottle-meta">${b.country} · ${b.region} · ${b.drinkFrom || "?"}–${b.drinkTo || "?"}</div>
                 <span class="badge type">${b.type}</span>
                 <span class="badge ${statusClass}">${status}</span>
                 ${status === "Drink soon" ? '<span class="badge soon">Final year</span>' : ''}
@@ -671,9 +419,9 @@
               </div>
             </div>
             <div class="action-row">
-              <button class="action-btn secondary">Drink one</button>
-              <button class="action-btn secondary">Edit</button>
-              <button class="action-btn danger">Delete</button>
+              <button class="action-btn secondary" onclick="drinkOne(${b.id})">Drink one</button>
+              <button class="action-btn secondary" onclick="openEdit(${b.id})">Edit</button>
+              <button class="action-btn danger" onclick="deleteBottle(${b.id})">Delete</button>
             </div>
           </div>
         `;
@@ -687,14 +435,20 @@
         return;
       }
 
-      const allYears = data.flatMap(b => [b.drinkFrom, b.drinkTo]);
+      const valid = data.filter(b => b.drinkFrom && b.drinkTo);
+      if (!valid.length){
+        rows.innerHTML = '<div class="empty">No bottles with drink windows.</div>';
+        return;
+      }
+
+      const allYears = valid.flatMap(b => [b.drinkFrom, b.drinkTo]);
       const minYear = Math.min(...allYears) - 1;
       const maxYear = Math.max(...allYears) + 1;
       const span = maxYear - minYear;
 
       document.getElementById("timelineYearHeader").textContent = `${minYear} – ${maxYear}`;
 
-      rows.innerHTML = data.map(b => {
+      rows.innerHTML = valid.map(b => {
         const status = getStatus(b);
         const cls = status === "Ready" ? "ready" : status === "Aging" ? "aging" : status === "Drink soon" ? "soon" : "past";
         const left = ((b.drinkFrom - minYear) / span) * 100;
@@ -712,29 +466,101 @@
               <div class="timeline-fill ${cls}" style="left:${left}%; width:${Math.max(width,4)}%;"></div>
             </div>
             <div style="text-align:right; color:var(--muted);">${b.drinkFrom}–${b.drinkTo}</div>
-          </div>
-        `;
+          </div>`;
       }).join("");
     }
 
     function renderAll(){
       const data = getFilteredBottles();
 
-      document.querySelectorAll(".pill").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.filter === activeFilter);
-      });
-
-      document.querySelectorAll(".tab").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.tab === activeTab);
-      });
-
-      document.querySelectorAll(".page").forEach(page => {
-        page.classList.toggle("active", page.id === activeTab);
-      });
+      document.querySelectorAll(".pill").forEach(btn => btn.classList.toggle("active", btn.dataset.filter === activeFilter));
+      document.querySelectorAll(".tab").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === activeTab));
+      document.querySelectorAll(".page").forEach(page => page.classList.toggle("active", page.id === activeTab));
 
       renderOverview(data);
       renderCollection(data);
       renderTimeline(data);
+    }
+
+    function openModal(){
+      document.getElementById("modalBackdrop").classList.add("show");
+    }
+
+    function closeModal(){
+      document.getElementById("modalBackdrop").classList.remove("show");
+      editingId = null;
+      document.getElementById("modalTitle").textContent = "Add bottle";
+      document.getElementById("producerInput").value = "";
+      document.getElementById("wineInput").value = "";
+      document.getElementById("countryInput").value = "";
+      document.getElementById("regionInput").value = "";
+      document.getElementById("typeInput").value = "Red";
+      document.getElementById("quantityInput").value = 1;
+      document.getElementById("drinkFromInput").value = "";
+      document.getElementById("drinkToInput").value = "";
+      document.getElementById("notesInput").value = "";
+    }
+
+    function openEdit(id){
+      const b = bottles.find(x => x.id === id);
+      if (!b) return;
+      editingId = id;
+      document.getElementById("modalTitle").textContent = "Edit bottle";
+      document.getElementById("producerInput").value = b.producer || "";
+      document.getElementById("wineInput").value = b.wine || "";
+      document.getElementById("countryInput").value = b.country || "";
+      document.getElementById("regionInput").value = b.region || "";
+      document.getElementById("typeInput").value = b.type || "Red";
+      document.getElementById("quantityInput").value = b.quantity || 1;
+      document.getElementById("drinkFromInput").value = b.drinkFrom || "";
+      document.getElementById("drinkToInput").value = b.drinkTo || "";
+      document.getElementById("notesInput").value = b.notes || "";
+      openModal();
+    }
+
+    function saveBottle(){
+      const bottle = {
+        id: editingId || Date.now(),
+        producer: document.getElementById("producerInput").value.trim(),
+        wine: document.getElementById("wineInput").value.trim(),
+        country: document.getElementById("countryInput").value.trim(),
+        region: document.getElementById("regionInput").value.trim(),
+        type: document.getElementById("typeInput").value,
+        quantity: Number(document.getElementById("quantityInput").value || 1),
+        drinkFrom: Number(document.getElementById("drinkFromInput").value || 0) || null,
+        drinkTo: Number(document.getElementById("drinkToInput").value || 0) || null,
+        notes: document.getElementById("notesInput").value.trim()
+      };
+
+      if (!bottle.producer || !bottle.wine){
+        alert("Please enter producer and wine.");
+        return;
+      }
+
+      if (editingId){
+        bottles = bottles.map(b => b.id === editingId ? bottle : b);
+      } else {
+        bottles.unshift(bottle);
+      }
+
+      saveBottles();
+      closeModal();
+      renderAll();
+    }
+
+    function deleteBottle(id){
+      if (!confirm("Delete this bottle?")) return;
+      bottles = bottles.filter(b => b.id !== id);
+      saveBottles();
+      renderAll();
+    }
+
+    function drinkOne(id){
+      bottles = bottles
+        .map(b => b.id === id ? { ...b, quantity: Math.max(0, Number(b.quantity || 0) - 1) } : b)
+        .filter(b => Number(b.quantity) > 0);
+      saveBottles();
+      renderAll();
     }
 
     document.querySelectorAll(".pill").forEach(btn => {
@@ -754,6 +580,18 @@
     document.getElementById("searchInput").addEventListener("input", (e) => {
       searchText = e.target.value;
       renderAll();
+    });
+
+    document.getElementById("addBottleBtn").addEventListener("click", () => {
+      editingId = null;
+      document.getElementById("modalTitle").textContent = "Add bottle";
+      openModal();
+    });
+
+    document.getElementById("cancelBtn").addEventListener("click", closeModal);
+    document.getElementById("saveBtn").addEventListener("click", saveBottle);
+    document.getElementById("modalBackdrop").addEventListener("click", (e) => {
+      if (e.target.id === "modalBackdrop") closeModal();
     });
 
     renderAll();
