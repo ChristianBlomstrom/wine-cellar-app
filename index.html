@@ -1,814 +1,1471 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wine Cellar</title>
-  <style>
-    :root {
-      --bg: linear-gradient(135deg, #1e120d 0%, #2a1710 45%, #3a2014 100%);
-      --panel: rgba(255,255,255,0.08);
-      --border: rgba(255,255,255,0.14);
-      --text: #f7efe9;
-      --muted: #d0b8a8;
-      --accent: #f0d28c;
-      --danger: #d48a8a;
-      --shadow: 0 12px 30px rgba(0,0,0,0.28);
-      --radius: 18px;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wine Cellar</title>
+<style>
+:root {
+--bg: linear-gradient(135deg, #1e120d 0%, #2a1710 45%, #3a2014 100%);
+--panel: rgba(255,255,255,0.08);
+--panel-strong: rgba(255,255,255,0.12);
+--border: rgba(255,255,255,0.14);
+--text: #f7efe9;
+--muted: #d0b8a8;
+--accent: #f0d28c;
+--accent-dark: #6a4d22;
+--danger: #d48a8a;
+--success: #86c29a;
+--chip: rgba(255,255,255,0.08);
+--shadow: 0 12px 30px rgba(0,0,0,0.28);
+--radius: 18px;
+}
 
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
-    .app {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-    }
-    .title-wrap h1 {
-      margin: 0;
-      font-size: 42px;
-      line-height: 1;
-    }
-    .title-wrap p {
-      margin: 8px 0 0;
-      color: var(--muted);
-    }
-    .top-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    button, select, input, textarea { font: inherit; }
-    button {
-      border: 0;
-      border-radius: 14px;
-      padding: 11px 16px;
-      cursor: pointer;
-      transition: transform .12s ease, opacity .12s ease, background .12s ease;
-    }
-    button:hover { transform: translateY(-1px); }
-    button:active { transform: translateY(0); }
-    .btn-primary {
-      background: var(--accent);
-      color: #2f1c10;
-      font-weight: 700;
-    }
-    .btn-secondary {
-      background: rgba(255,255,255,0.12);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn-danger {
-      background: #b96262;
-      color: white;
-    }
-    .btn-small {
-      padding: 8px 12px;
-      border-radius: 10px;
-      font-size: 14px;
-    }
-    .stats {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-    .stat {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 10px 14px;
-      color: var(--accent);
-      font-weight: 700;
-      box-shadow: var(--shadow);
-    }
-    .tab-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-    .tab-btn.active {
-      background: var(--accent);
-      color: #2f1c10;
-      font-weight: 700;
-    }
-    .toolbar {
-      display: grid;
-      grid-template-columns: 1.3fr 1fr 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-    .toolbar input,
-    .toolbar select,
-    .form-grid input,
-    .form-grid select,
-    .form-grid textarea {
-      width: 100%;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 14px;
-      padding: 12px 14px;
-      outline: none;
-    }
-    .toolbar input::placeholder,
-    .form-grid input::placeholder,
-    .form-grid textarea::placeholder {
-      color: #d6c3b7;
-    }
-    .toolbar select option,
-    .form-grid select option {
-      background: #341e14;
-      color: white;
-    }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
-    }
-    .card,
-    .dashboard-box,
-    .timeline-row {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(8px);
-    }
-    .card-body,
-    .dashboard-box,
-    .timeline-row {
-      padding: 16px;
-    }
-    .wine-name {
-      font-size: 22px;
-      font-weight: 800;
-      margin: 0 0 6px;
-      line-height: 1.15;
-    }
-    .wine-sub {
-      margin: 0 0 12px;
-      color: var(--muted);
-    }
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .chip {
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-    .details {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px 12px;
-      margin-bottom: 14px;
-      font-size: 14px;
-    }
-    .detail-label {
-      color: var(--muted);
-      display: block;
-      font-size: 12px;
-      margin-bottom: 2px;
-    }
-    .status-ready { color: #9ae6b4; }
-    .status-aging { color: #f6d365; }
-    .status-soon { color: #f3b37b; }
-    .status-past { color: #f2a2a2; }
-    .status-unknown { color: #d6c3b7; }
-    .card-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .empty {
-      padding: 30px;
-      text-align: center;
-      background: var(--panel);
-      border: 1px dashed var(--border);
-      border-radius: var(--radius);
-      color: var(--muted);
-    }
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-    .dashboard-box h3 {
-      margin: 0 0 10px;
-      font-size: 14px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: .08em;
-    }
-    .dashboard-line {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      font-size: 14px;
-    }
-    .dashboard-line:last-child { border-bottom: 0; }
-    .timeline-list {
-      display: grid;
-      gap: 12px;
-    }
-    .timeline-title {
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .timeline-meta {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 10px;
-    }
-    .timeline-bar {
-      position: relative;
-      height: 16px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .timeline-fill {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #d7b36b, #f0d28c);
-    }
-    .timeline-now {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: #fff;
-      opacity: .85;
-    }
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.55);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 999;
-    }
-    .modal-backdrop.open { display: flex; }
-    .modal {
-      width: min(980px, 100%);
-      max-height: 90vh;
-      overflow: auto;
-      background: #2c1a11;
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      box-shadow: 0 25px 60px rgba(0,0,0,.45);
-      padding: 22px;
-    }
-    .modal h2 { margin: 0 0 6px; }
-    .modal p {
-      margin: 0 0 18px;
-      color: var(--muted);
-    }
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-    .form-grid .full { grid-column: 1 / -1; }
-    .field label {
-      display: block;
-      margin: 0 0 6px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-      margin-top: 18px;
-    }
-    @media (max-width: 900px) {
-      .toolbar { grid-template-columns: 1fr 1fr; }
-      .form-grid,
-      .dashboard-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 640px) {
-      .app { padding: 14px; }
-      .title-wrap h1 { font-size: 34px; }
-      .toolbar { grid-template-columns: 1fr; }
-      .details { grid-template-columns: 1fr; }
-      .modal { padding: 16px; }
-    }
-  </style>
+* { box-sizing: border-box; }
+
+body {
+margin: 0;
+font-family: Arial, Helvetica, sans-serif;
+background: var(--bg);
+color: var(--text);
+min-height: 100vh;
+}
+
+.app {
+max-width: 1280px;
+margin: 0 auto;
+padding: 20px;
+}
+
+.header {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+gap: 16px;
+margin-bottom: 18px;
+flex-wrap: wrap;
+}
+
+.title-wrap h1 {
+margin: 0;
+font-size: 42px;
+line-height: 1;
+}
+
+.title-wrap p {
+margin: 8px 0 0;
+color: var(--muted);
+}
+
+.top-actions {
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+}
+
+button, select, input, textarea {
+font: inherit;
+}
+
+button {
+border: 0;
+border-radius: 14px;
+padding: 11px 16px;
+cursor: pointer;
+transition: transform .12s ease, opacity .12s ease, background .12s ease;
+}
+
+button:hover { transform: translateY(-1px); }
+button:active { transform: translateY(0); }
+
+.btn-primary {
+background: var(--accent);
+color: #2f1c10;
+font-weight: 700;
+}
+
+.btn-secondary {
+background: rgba(255,255,255,0.12);
+color: var(--text);
+border: 1px solid var(--border);
+}
+
+.btn-danger {
+background: #b96262;
+color: white;
+}
+
+.btn-small {
+padding: 8px 12px;
+border-radius: 10px;
+font-size: 14px;
+}
+
+.stats {
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+margin-bottom: 18px;
+}
+
+.stat {
+background: var(--chip);
+border: 1px solid var(--border);
+border-radius: 999px;
+padding: 10px 14px;
+color: var(--accent);
+font-weight: 700;
+box-shadow: var(--shadow);
+}
+
+.toolbar {
+display: grid;
+grid-template-columns: 1.3fr 1fr 1fr 1fr;
+gap: 12px;
+margin-bottom: 18px;
+}
+
+.toolbar input,
+.toolbar select,
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
+width: 100%;
+background: rgba(255,255,255,0.08);
+border: 1px solid var(--border);
+color: var(--text);
+border-radius: 14px;
+padding: 12px 14px;
+outline: none;
+}
+
+.toolbar input::placeholder,
+.form-grid input::placeholder,
+.form-grid textarea::placeholder {
+color: #d6c3b7;
+}
+
+.toolbar select option,
+.form-grid select option {
+background: #341e14;
+color: white;
+}
+
+.cards {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+gap: 16px;
+}
+
+.card {
+background: var(--panel);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+overflow: hidden;
+box-shadow: var(--shadow);
+backdrop-filter: blur(8px);
+}
+
+.card-image {
+height: 220px;
+background: rgba(255,255,255,0.04);
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden;
+color: var(--muted);
+font-size: 14px;
+}
+
+.card-image img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+display: block;
+}
+
+.card-body {
+padding: 16px;
+}
+
+.wine-name {
+font-size: 22px;
+font-weight: 800;
+margin: 0 0 6px;
+line-height: 1.15;
+}
+
+.wine-sub {
+margin: 0 0 12px;
+color: var(--muted);
+}
+
+.chips {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin-bottom: 12px;
+}
+
+.chip {
+font-size: 12px;
+padding: 6px 10px;
+border-radius: 999px;
+background: rgba(255,255,255,0.08);
+border: 1px solid var(--border);
+color: var(--text);
+}
+
+.details {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px 12px;
+margin-bottom: 14px;
+font-size: 14px;
+}
+
+.detail-label {
+color: var(--muted);
+display: block;
+font-size: 12px;
+margin-bottom: 2px;
+}
+
+.status-ready { color: #9ae6b4; }
+.status-aging { color: #f6d365; }
+.status-soon { color: #f3b37b; }
+.status-past { color: #f2a2a2; }
+.status-unknown { color: #d6c3b7; }
+
+.card-actions {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+}
+
+.empty {
+padding: 30px;
+text-align: center;
+background: var(--panel);
+border: 1px dashed var(--border);
+border-radius: var(--radius);
+color: var(--muted);
+}
+
+.modal-backdrop {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.55);
+display: none;
+align-items: center;
+justify-content: center;
+padding: 20px;
+z-index: 999;
+}
+
+.modal-backdrop.open { display: flex; }
+
+.modal {
+width: min(980px, 100%);
+max-height: 90vh;
+overflow: auto;
+background: #2c1a11;
+border: 1px solid var(--border);
+border-radius: 22px;
+box-shadow: 0 25px 60px rgba(0,0,0,.45);
+padding: 22px;
+}
+
+.modal h2 {
+margin: 0 0 6px;
+}
+
+.modal p {
+margin: 0 0 18px;
+color: var(--muted);
+}
+
+.form-grid {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 12px;
+}
+
+.form-grid .full {
+grid-column: 1 / -1;
+}
+
+.field label {
+display: block;
+margin: 0 0 6px;
+font-size: 13px;
+color: var(--muted);
+}
+
+.photo-preview {
+height: 220px;
+border: 1px dashed var(--border);
+border-radius: 16px;
+display: flex;
+align-items: center;
+justify-content: center;
+background: rgba(255,255,255,0.04);
+overflow: hidden;
+color: var(--muted);
+text-align: center;
+padding: 10px;
+}
+
+.photo-preview img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.modal-actions {
+display: flex;
+gap: 10px;
+justify-content: flex-end;
+flex-wrap: wrap;
+margin-top: 18px;
+}
+
+.helper {
+color: var(--muted);
+font-size: 12px;
+margin-top: 6px;
+}
+
+@media (max-width: 900px) {
+.toolbar {
+grid-template-columns: 1fr 1fr;
+}
+
+.form-grid {
+grid-template-columns: 1fr;
+}
+}
+
+@media (max-width: 640px) {
+.app { padding: 14px; }
+.title-wrap h1 { font-size: 34px; }
+.toolbar { grid-template-columns: 1fr; }
+.details { grid-template-columns: 1fr; }
+.modal { padding: 16px; }
+}
+</style>
 </head>
 <body>
-  <div class="app">
-    <div class="header">
-      <div class="title-wrap">
-        <h1>Wine Cellar</h1>
-        <p>Manual wine collection with dashboard, collection, timeline, filters, editing, and local save on your device.</p>
-      </div>
-      <div class="top-actions">
-        <button class="btn-primary" id="addBottleBtn">+ Add bottle</button>
-        <button class="btn-secondary" id="exportBtn">Export JSON</button>
-        <button class="btn-secondary" id="importBtn">Import JSON</button>
-        <input type="file" id="importFile" accept="application/json" hidden />
-      </div>
-    </div>
+<div class="app">
+<div class="header">
+<div class="title-wrap">
+<h1>Wine Cellar</h1>
+<p>Manual wine collection with filters, editing, photos, and local save on your device.</p>
+</div>
+<div class="top-actions">
+<button class="btn-primary" id="addBottleBtn">+ Add bottle</button>
+<button class="btn-secondary" id="exportBtn">Export JSON</button>
+<button class="btn-secondary" id="importBtn">Import JSON</button>
+<input type="file" id="importFile" accept="application/json" hidden />
+</div>
+</div>
 
-    <div class="stats" id="stats"></div>
+<div class="stats" id="stats"></div>
 
-    <div class="tab-row">
-      <button class="btn-secondary btn-small tab-btn active" data-tab="dashboard">Dashboard</button>
-      <button class="btn-secondary btn-small tab-btn" data-tab="collection">Collection</button>
-      <button class="btn-secondary btn-small tab-btn" data-tab="timeline">Timeline</button>
-    </div>
+<div class="toolbar">
+<input id="searchInput" type="text" placeholder="Search wine, producer, region, grape, country..." />
+<select id="statusFilter">
+<option value="all">All statuses</option>
+<option value="ready">Ready</option>
+<option value="aging">Aging</option>
+<option value="drink soon">Drink soon</option>
+<option value="past peak">Past peak</option>
+<option value="unknown">Unknown</option>
+</select>
+<select id="typeFilter">
+<option value="all">All types</option>
+<option value="red">Red</option>
+<option value="white">White</option>
+<option value="sparkling">Sparkling</option>
+<option value="rosé">Rosé</option>
+<option value="dessert">Dessert</option>
+<option value="aromatized">Aromatized</option>
+</select>
+<select id="priceFilter">
+<option value="all">All prices</option>
+<option value="lt100">&lt; 100 SEK</option>
+<option value="100-199">100-199 SEK</option>
+<option value="200-299">200-299 SEK</option>
+<option value="300-399">300-399 SEK</option>
+<option value="gte400">400+ SEK</option>
+</select>
+</div>
 
-    <div class="toolbar">
-      <input id="searchInput" type="text" placeholder="Search wine, producer, region, grape, country..." />
-      <select id="statusFilter">
-        <option value="all">All statuses</option>
-        <option value="ready">Ready</option>
-        <option value="aging">Aging</option>
-        <option value="drink soon">Drink soon</option>
-        <option value="past peak">Past peak</option>
-        <option value="unknown">Unknown</option>
-      </select>
-      <select id="typeFilter">
-        <option value="all">All wine types</option>
-        <option value="red">Red</option>
-        <option value="white">White</option>
-        <option value="sparkling">Sparkling</option>
-        <option value="rosé">Rosé</option>
-        <option value="dessert">Dessert</option>
-        <option value="aromatized">Aromatized</option>
-      </select>
-      <select id="priceFilter">
-        <option value="all">All prices</option>
-        <option value="lt100">&lt; 100 SEK</option>
-        <option value="100-199">100-199 SEK</option>
-        <option value="200-299">200-299 SEK</option>
-        <option value="300-399">300-399 SEK</option>
-        <option value="gte400">400+ SEK</option>
-      </select>
-    </div>
+<div id="cards" class="cards"></div>
+</div>
 
-    <div id="dashboardTab" class="tab-panel">
-      <div id="dashboardCards"></div>
-    </div>
+<div class="modal-backdrop" id="modalBackdrop">
+<div class="modal">
+<h2 id="modalTitle">Add bottle</h2>
+<p>Enter the wine details manually. Optional: add one front photo for display in the collection.</p>
 
-    <div id="collectionTab" class="tab-panel" style="display:none;">
-      <div id="cards" class="cards"></div>
-    </div>
+<div class="form-grid">
+<div class="field full">
+<label>Photo (optional)</label>
+<div class="photo-preview" id="photoPreview">No photo selected</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+<input type="file" id="photoInput" accept="image/*" hidden />
+<button type="button" class="btn-secondary" id="choosePhotoBtn">Choose photo</button>
+<button type="button" class="btn-secondary" id="removePhotoBtn">Remove photo</button>
+</div>
+<div class="helper">The photo is stored only in this browser on this device.</div>
+</div>
 
-    <div id="timelineTab" class="tab-panel" style="display:none;">
-      <div id="timelineView"></div>
-    </div>
-  </div>
+<div class="field">
+<label>Name</label>
+<input id="nameInput" type="text" placeholder="e.g. Taittinger Brut Réserve" />
+</div>
 
-  <div class="modal-backdrop" id="modalBackdrop">
-    <div class="modal">
-      <h2 id="modalTitle">Add bottle</h2>
-      <p>Enter the wine details manually.</p>
+<div class="field">
+<label>Producer</label>
+<input id="producerInput" type="text" placeholder="e.g. Taittinger" />
+</div>
 
-      <div class="form-grid">
-        <div class="field"><label>Name</label><input id="nameInput" type="text" placeholder="e.g. Taittinger Brut Réserve" /></div>
-        <div class="field"><label>Producer</label><input id="producerInput" type="text" placeholder="e.g. Taittinger" /></div>
-        <div class="field"><label>Country</label><input id="countryInput" type="text" placeholder="e.g. France" /></div>
-        <div class="field"><label>Region / Appellation</label><input id="regionInput" type="text" placeholder="e.g. Champagne, Rioja, Barolo" /></div>
-        <div class="field"><label>Type</label><select id="typeInput"><option value="red">Red</option><option value="white">White</option><option value="sparkling">Sparkling</option><option value="rosé">Rosé</option><option value="dessert">Dessert</option><option value="aromatized">Aromatized</option></select></div>
-        <div class="field"><label>Grapes</label><input id="grapesInput" type="text" placeholder="e.g. Pinot Noir, Chardonnay" /></div>
-        <div class="field"><label>Vintage</label><input id="vintageInput" type="text" placeholder="e.g. 2018" /></div>
-        <div class="field"><label>Alcohol %</label><input id="alcoholInput" type="text" placeholder="e.g. 12.5" /></div>
-        <div class="field"><label>Price SEK</label><input id="priceInput" type="number" min="0" step="1" placeholder="e.g. 249" /></div>
-        <div class="field"><label>Status</label><select id="statusInput"><option value="ready">Ready</option><option value="aging">Aging</option><option value="drink soon">Drink soon</option><option value="past peak">Past peak</option><option value="unknown">Unknown</option></select></div>
-        <div class="field"><label>Drink from</label><input id="drinkFromInput" type="text" placeholder="e.g. 2025" /></div>
-        <div class="field"><label>Drink to</label><input id="drinkToInput" type="text" placeholder="e.g. 2030" /></div>
-        <div class="field"><label>Quantity</label><input id="quantityInput" type="number" min="1" step="1" placeholder="1" /></div>
-        <div class="field"><label>Location</label><input id="locationInput" type="text" placeholder="e.g. Shelf A" /></div>
-        <div class="field full"><label>Notes</label><textarea id="notesInput" rows="4" placeholder="Tasting notes, food pairing, where you bought it, etc."></textarea></div>
-      </div>
+<div class="field">
+<label>Country</label>
+<input id="countryInput" type="text" placeholder="e.g. France" />
+</div>
 
-      <div class="modal-actions">
-        <button class="btn-secondary" id="cancelBtn" type="button">Cancel</button>
-        <button class="btn-primary" id="saveBtn" type="button">Save bottle</button>
-      </div>
-    </div>
-  </div>
+<div class="field">
+<label>Region / Appellation</label>
+<input id="regionInput" type="text" placeholder="e.g. Champagne, Rioja, Barolo" />
+</div>
 
-  <script>
-    const STORAGE_KEY = "wine-cellar-manual-v5";
-    const currentYear = new Date().getFullYear();
+<div class="field">
+<label>Type</label>
+<select id="typeInput">
+<option value="red">Red</option>
+<option value="white">White</option>
+<option value="sparkling">Sparkling</option>
+<option value="rosé">Rosé</option>
+<option value="dessert">Dessert</option>
+<option value="aromatized">Aromatized</option>
+</select>
+</div>
 
-    const starterBottles = [
-      { id: crypto.randomUUID(), name: "Grande Alberone Moscato Spumante Dolce", producer: "Grande Alberone", country: "Italy", region: "Spumante Dolce", type: "sparkling", grapes: "Moscato", vintage: "", alcohol: "7.5", priceSek: 99, status: "ready", drinkFrom: "2025", drinkTo: "2026", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
-      { id: crypto.randomUUID(), name: "Saint Auriol Chatelaine La Clape", producer: "Saint Auriol", country: "France", region: "La Clape", type: "red", grapes: "", vintage: "2023", alcohol: "14", priceSek: 129, status: "aging", drinkFrom: "2025", drinkTo: "2028", quantity: 1, location: "", notes: "Vin biologique." },
-      { id: crypto.randomUUID(), name: "Rawson's Retreat Chardonnay", producer: "Rawson's Retreat", country: "Australia", region: "South Eastern Australia", type: "white", grapes: "Chardonnay", vintage: "2020", alcohol: "9.5", priceSek: 89, status: "ready", drinkFrom: "2025", drinkTo: "2025", quantity: 1, location: "", notes: "Reduced alcohol wine-based beverage." },
-      { id: crypto.randomUUID(), name: "Casalforte Prosecco Extra Dry", producer: "Casalforte", country: "Italy", region: "Prosecco DOC", type: "sparkling", grapes: "Glera", vintage: "", alcohol: "11.5", priceSek: 119, status: "ready", drinkFrom: "2025", drinkTo: "2026", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
-      { id: crypto.randomUUID(), name: "Barón de Ley Reserva", producer: "Barón de Ley", country: "Spain", region: "Rioja", type: "red", grapes: "Tempranillo", vintage: "", alcohol: "14", priceSek: 179, status: "ready", drinkFrom: "2025", drinkTo: "2028", quantity: 1, location: "", notes: "Vintage not fully readable from uploaded photos." },
-      { id: crypto.randomUUID(), name: "El Mar Cava Brut Rosé", producer: "El Mar", country: "Spain", region: "Cava", type: "rosé", grapes: "", vintage: "", alcohol: "11.5", priceSek: 99, status: "ready", drinkFrom: "2025", drinkTo: "2026", quantity: 1, location: "", notes: "Método tradicional." },
-      { id: crypto.randomUUID(), name: "Blossa Sparkling & Spices Citrus", producer: "Blossa", country: "Germany", region: "Aromatized wine-based drink", type: "aromatized", grapes: "", vintage: "", alcohol: "10", priceSek: 99, status: "ready", drinkFrom: "2025", drinkTo: "2025", quantity: 1, location: "", notes: "Sparkling and spices citrus." },
-      { id: crypto.randomUUID(), name: "Cadis Amarone della Valpolicella", producer: "Cadis", country: "Italy", region: "Amarone della Valpolicella", type: "red", grapes: "", vintage: "2017", alcohol: "15", priceSek: 349, status: "ready", drinkFrom: "2025", drinkTo: "2032", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
-      { id: crypto.randomUUID(), name: "Couvent des Jacobins Bourgogne Pinot Noir", producer: "Louis Jadot", country: "France", region: "Bourgogne", type: "red", grapes: "Pinot Noir", vintage: "2019", alcohol: "13", priceSek: 219, status: "ready", drinkFrom: "2025", drinkTo: "2028", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
-      { id: crypto.randomUUID(), name: "Memòro Italia", producer: "Piccini", country: "Italy", region: "Vino Rosso d'Italia", type: "red", grapes: "", vintage: "", alcohol: "14", priceSek: 129, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
-      { id: crypto.randomUUID(), name: "Bonacosta Valpolicella Classico", producer: "Masi", country: "Italy", region: "Valpolicella Classico", type: "red", grapes: "", vintage: "2016", alcohol: "12", priceSek: 169, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
-      { id: crypto.randomUUID(), name: "Villa Fura Valpolicella Ripasso Superiore", producer: "Villa Fura", country: "Italy", region: "Valpolicella Ripasso Superiore", type: "red", grapes: "", vintage: "", alcohol: "14", priceSek: 149, status: "ready", drinkFrom: "2025", drinkTo: "2028", quantity: 1, location: "", notes: "Lot shows 2020. Vintage not clearly stated on front label." },
-      { id: crypto.randomUUID(), name: "Domaine d'Agel Sensation'Ailes", producer: "Domaine d'Agel", country: "France", region: "Minervois", type: "red", grapes: "Syrah, Grenache, Carignan, Mourvèdre", vintage: "2024", alcohol: "14", priceSek: 159, status: "aging", drinkFrom: "2025", drinkTo: "2029", quantity: 1, location: "", notes: "Organic wine." },
-      { id: crypto.randomUUID(), name: "B by Fonbadet Bordeaux", producer: "Fonbadet", country: "France", region: "Bordeaux", type: "red", grapes: "", vintage: "2019", alcohol: "13.5", priceSek: 139, status: "ready", drinkFrom: "2025", drinkTo: "2028", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
-      { id: crypto.randomUUID(), name: "El Círculo Rioja Crianza", producer: "Pagos del Rey", country: "Spain", region: "Rioja", type: "red", grapes: "", vintage: "2015", alcohol: "13.5", priceSek: 139, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Aged 12 months in oak barrels." },
-      { id: crypto.randomUUID(), name: "Orso d'Oro", producer: "Orso d'Oro", country: "Italy", region: "Vino Rosso", type: "red", grapes: "", vintage: "", alcohol: "15", priceSek: 109, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Southern Italian red wine." },
-      { id: crypto.randomUUID(), name: "Ruppertsberger Imperial Pinot Noir", producer: "Ruppertsberger Weinkeller Hoheburg eG", country: "Germany", region: "Pfalz", type: "red", grapes: "Pinot Noir", vintage: "2019", alcohol: "13.5", priceSek: 169, status: "ready", drinkFrom: "2025", drinkTo: "2028", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
-      { id: crypto.randomUUID(), name: "Coronas Tempranillo Organic Wine", producer: "Torres", country: "Spain", region: "Penedès", type: "red", grapes: "Tempranillo", vintage: "2018", alcohol: "", priceSek: 149, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Organic wine." },
-      { id: crypto.randomUUID(), name: "Les Dauphins Côtes du Rhône Organic", producer: "Les Dauphins", country: "France", region: "Côtes du Rhône", type: "red", grapes: "", vintage: "2016", alcohol: "14", priceSek: 139, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Organic wine." },
-      { id: crypto.randomUUID(), name: "Réserve de Bonpas Côtes-du-Rhône", producer: "Bonpas", country: "France", region: "Côtes-du-Rhône", type: "red", grapes: "", vintage: "", alcohol: "13.5", priceSek: 129, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
-      { id: crypto.randomUUID(), name: "Lynx Petite Sirah Zinfandel", producer: "Lynx", country: "USA", region: "California", type: "red", grapes: "Petite Sirah, Zinfandel", vintage: "2020", alcohol: "13.5", priceSek: 159, status: "ready", drinkFrom: "2025", drinkTo: "2028", quantity: 1, location: "", notes: "Precision picked." },
-      { id: crypto.randomUUID(), name: "Richard Juhlin Blanc de Blancs Brut", producer: "Richard Juhlin", country: "France", region: "Vin de France", type: "sparkling", grapes: "Chardonnay", vintage: "", alcohol: "12", priceSek: 129, status: "ready", drinkFrom: "2025", drinkTo: "2026", quantity: 1, location: "", notes: "Méthode traditionnelle." },
-      { id: crypto.randomUUID(), name: "Jeanmaire Cuvée Brut", producer: "Jeanmaire", country: "France", region: "Champagne", type: "sparkling", grapes: "Pinot Noir, Pinot Meunier, Chardonnay", vintage: "", alcohol: "", priceSek: 299, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Champagne brut." },
-      { id: crypto.randomUUID(), name: "François Martenot Crémant de Bourgogne Brut", producer: "François Martenot", country: "France", region: "Crémant de Bourgogne", type: "sparkling", grapes: "", vintage: "2022", alcohol: "12", priceSek: 149, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
-      { id: crypto.randomUUID(), name: "Charles de Fère Cuvée Jean-Louis Blanc de Blancs Brut", producer: "Charles de Fère", country: "France", region: "Sparkling wine", type: "sparkling", grapes: "", vintage: "", alcohol: "", priceSek: 119, status: "ready", drinkFrom: "2025", drinkTo: "2026", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
-      { id: crypto.randomUUID(), name: "Champagne Vieille France Blanc de Noirs", producer: "Vieille France", country: "France", region: "Champagne", type: "sparkling", grapes: "Pinot Noir", vintage: "2013", alcohol: "12", priceSek: 499, status: "ready", drinkFrom: "2025", drinkTo: "2030", quantity: 1, location: "", notes: "Millésime 2013." },
-      { id: crypto.randomUUID(), name: "Taittinger Brut Réserve", producer: "Taittinger", country: "France", region: "Champagne", type: "sparkling", grapes: "Chardonnay, Pinot Noir, Pinot Meunier", vintage: "", alcohol: "12.5", priceSek: 549, status: "ready", drinkFrom: "2025", drinkTo: "2029", quantity: 1, location: "", notes: "Predominantly Chardonnay blend." },
-      { id: crypto.randomUUID(), name: "Louis Bouillot Crémant de Bourgogne Perle de Vigne Brut", producer: "Louis Bouillot", country: "France", region: "Crémant de Bourgogne", type: "sparkling", grapes: "", vintage: "", alcohol: "12", priceSek: 179, status: "ready", drinkFrom: "2025", drinkTo: "2027", quantity: 1, location: "", notes: "Grande Réserve." },
-      { id: crypto.randomUUID(), name: "Pol Roger Vintage", producer: "Pol Roger", country: "France", region: "Champagne", type: "sparkling", grapes: "", vintage: "2015", alcohol: "", priceSek: 999, status: "aging", drinkFrom: "2026", drinkTo: "2038", quantity: 1, location: "", notes: "Vintage champagne." },
-      { id: crypto.randomUUID(), name: "Louis Roederer Collection 242", producer: "Louis Roederer", country: "France", region: "Champagne", type: "sparkling", grapes: "", vintage: "", alcohol: "12", priceSek: 699, status: "ready", drinkFrom: "2025", drinkTo: "2030", quantity: 1, location: "", notes: "242nd harvest. Based on 2017 harvest with reserve wines aged in oak." }
-    ];
+<div class="field">
+<label>Grapes</label>
+<input id="grapesInput" type="text" placeholder="e.g. Pinot Noir, Chardonnay" />
+</div>
 
-    let wines = loadWines();
-    let editingId = null;
+<div class="field">
+<label>Vintage</label>
+<input id="vintageInput" type="text" placeholder="e.g. 2018" />
+</div>
 
-    const elements = {
-      cards: document.getElementById("cards"),
-      stats: document.getElementById("stats"),
-      searchInput: document.getElementById("searchInput"),
-      statusFilter: document.getElementById("statusFilter"),
-      typeFilter: document.getElementById("typeFilter"),
-      priceFilter: document.getElementById("priceFilter"),
-      addBottleBtn: document.getElementById("addBottleBtn"),
-      exportBtn: document.getElementById("exportBtn"),
-      importBtn: document.getElementById("importBtn"),
-      importFile: document.getElementById("importFile"),
-      modalBackdrop: document.getElementById("modalBackdrop"),
-      modalTitle: document.getElementById("modalTitle"),
-      saveBtn: document.getElementById("saveBtn"),
-      cancelBtn: document.getElementById("cancelBtn"),
-      nameInput: document.getElementById("nameInput"),
-      producerInput: document.getElementById("producerInput"),
-      countryInput: document.getElementById("countryInput"),
-      regionInput: document.getElementById("regionInput"),
-      typeInput: document.getElementById("typeInput"),
-      grapesInput: document.getElementById("grapesInput"),
-      vintageInput: document.getElementById("vintageInput"),
-      alcoholInput: document.getElementById("alcoholInput"),
-      priceInput: document.getElementById("priceInput"),
-      statusInput: document.getElementById("statusInput"),
-      drinkFromInput: document.getElementById("drinkFromInput"),
-      drinkToInput: document.getElementById("drinkToInput"),
-      quantityInput: document.getElementById("quantityInput"),
-      locationInput: document.getElementById("locationInput"),
-      notesInput: document.getElementById("notesInput")
-    };
+<div class="field">
+<label>Alcohol %</label>
+<input id="alcoholInput" type="text" placeholder="e.g. 12.5" />
+</div>
 
-    function loadWines() {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (!saved) return deepCopy(starterBottles);
-      try {
-        const parsed = JSON.parse(saved);
-        return Array.isArray(parsed) ? parsed : deepCopy(starterBottles);
-      } catch {
-        return deepCopy(starterBottles);
-      }
-    }
-    function saveWines() { localStorage.setItem(STORAGE_KEY, JSON.stringify(wines)); }
-    function deepCopy(data) { return JSON.parse(JSON.stringify(data)); }
-    function escapeHtml(value) {
-      return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/\"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-    function statusClass(status) {
-      if (status === "ready") return "status-ready";
-      if (status === "aging") return "status-aging";
-      if (status === "drink soon") return "status-soon";
-      if (status === "past peak") return "status-past";
-      return "status-unknown";
-    }
-    function formatValue(value, suffix = "") {
-      if (value === null || value === undefined || value === "") return "—";
-      return `${escapeHtml(value)}${suffix}`;
-    }
-    function matchesPriceRange(price, range) {
-      if (range === "all") return true;
-      if (price === "" || price === null || price === undefined || Number.isNaN(Number(price))) return false;
-      const val = Number(price);
-      if (range === "lt100") return val < 100;
-      if (range === "100-199") return val >= 100 && val <= 199;
-      if (range === "200-299") return val >= 200 && val <= 299;
-      if (range === "300-399") return val >= 300 && val <= 399;
-      if (range === "gte400") return val >= 400;
-      return true;
-    }
-    function getFilteredWines() {
-      const search = elements.searchInput.value.trim().toLowerCase();
-      const status = elements.statusFilter.value;
-      const type = elements.typeFilter.value;
-      const priceRange = elements.priceFilter.value;
-      return wines.filter((wine) => {
-        const haystack = [wine.name, wine.producer, wine.country, wine.region, wine.type, wine.grapes, wine.vintage, wine.notes, wine.location].join(" ").toLowerCase();
-        const matchesSearch = !search || haystack.includes(search);
-        const matchesStatus = status === "all" || wine.status === status;
-        const matchesType = type === "all" || wine.type === type;
-        const matchesPrice = matchesPriceRange(wine.priceSek, priceRange);
-        return matchesSearch && matchesStatus && matchesType && matchesPrice;
-      });
-    }
-    function renderStats() {
-      const totalQty = wines.reduce((sum, wine) => sum + (Number(wine.quantity) || 1), 0);
-      const ready = wines.filter(w => w.status === "ready").length;
-      const aging = wines.filter(w => w.status === "aging").length;
-      const soon = wines.filter(w => w.status === "drink soon").length;
-      const past = wines.filter(w => w.status === "past peak").length;
-      const avgPrice = wines.filter(w => Number(w.priceSek) > 0).length
-        ? Math.round(wines.filter(w => Number(w.priceSek) > 0).reduce((sum, w) => sum + Number(w.priceSek), 0) / wines.filter(w => Number(w.priceSek) > 0).length)
-        : 0;
-      elements.stats.innerHTML = `
-        <div class="stat">Bottles: ${totalQty}</div>
-        <div class="stat">Labels: ${wines.length}</div>
-        <div class="stat">Ready: ${ready}</div>
-        <div class="stat">Aging: ${aging}</div>
-        <div class="stat">Drink soon: ${soon}</div>
-        <div class="stat">Past peak: ${past}</div>
-        <div class="stat">Avg price: ${avgPrice ? avgPrice + ' SEK' : '—'}</div>
-      `;
-    }
-    function renderDashboard() {
-      const filtered = getFilteredWines();
-      const typeCounts = {};
-      const countryCounts = {};
-      const priceBands = { '<100': 0, '100-199': 0, '200-299': 0, '300-399': 0, '400+': 0 };
-      filtered.forEach((wine) => {
-        typeCounts[wine.type || 'unknown'] = (typeCounts[wine.type || 'unknown'] || 0) + 1;
-        countryCounts[wine.country || 'unknown'] = (countryCounts[wine.country || 'unknown'] || 0) + 1;
-        const p = Number(wine.priceSek || 0);
-        if (p > 0 && p < 100) priceBands['<100']++;
-        else if (p >= 100 && p <= 199) priceBands['100-199']++;
-        else if (p >= 200 && p <= 299) priceBands['200-299']++;
-        else if (p >= 300 && p <= 399) priceBands['300-399']++;
-        else if (p >= 400) priceBands['400+']++;
-      });
-      const topPrice = [...filtered].filter(w => Number(w.priceSek) > 0).sort((a, b) => Number(b.priceSek) - Number(a.priceSek)).slice(0, 5);
-      document.getElementById('dashboardCards').innerHTML = `
-        <div class="dashboard-grid">
-          <div class="dashboard-box">
-            <h3>Wine types</h3>
-            ${Object.entries(typeCounts).length ? Object.entries(typeCounts).map(([k,v]) => `<div class="dashboard-line"><span>${k}</span><strong>${v}</strong></div>`).join('') : '<div class="empty">No data</div>'}
-          </div>
-          <div class="dashboard-box">
-            <h3>Countries</h3>
-            ${Object.entries(countryCounts).length ? Object.entries(countryCounts).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v]) => `<div class="dashboard-line"><span>${k}</span><strong>${v}</strong></div>`).join('') : '<div class="empty">No data</div>'}
-          </div>
-          <div class="dashboard-box">
-            <h3>Price ranges</h3>
-            ${Object.entries(priceBands).map(([k,v]) => `<div class="dashboard-line"><span>${k} SEK</span><strong>${v}</strong></div>`).join('')}
-          </div>
-          <div class="dashboard-box" style="grid-column: 1 / -1;">
-            <h3>Most expensive bottles</h3>
-            ${topPrice.length ? topPrice.map(w => `<div class="dashboard-line"><span>${escapeHtml(w.name)}</span><strong>${w.priceSek} SEK</strong></div>`).join('') : '<div class="empty">No prices available</div>'}
-          </div>
-        </div>
-      `;
-    }
-    function renderCards() {
-      const filtered = getFilteredWines();
-      if (!filtered.length) {
-        elements.cards.innerHTML = `<div class="empty">No bottles match the current filters.</div>`;
-        return;
-      }
-      elements.cards.innerHTML = filtered.map((wine) => `
-        <div class="card">
-          <div class="card-body">
-            <h3 class="wine-name">${escapeHtml(wine.name)}</h3>
-            <p class="wine-sub">${escapeHtml(wine.producer || "Unknown producer")}</p>
-            <div class="chips">
-              <span class="chip ${statusClass(wine.status)}">${escapeHtml(wine.status)}</span>
-              <span class="chip">${escapeHtml(wine.type)}</span>
-              <span class="chip">${formatValue(wine.country)}</span>
-            </div>
-            <div class="details">
-              <div><span class="detail-label">Region</span>${formatValue(wine.region)}</div>
-              <div><span class="detail-label">Vintage</span>${formatValue(wine.vintage)}</div>
-              <div><span class="detail-label">Price</span>${wine.priceSek ? escapeHtml(wine.priceSek) + ' SEK' : '—'}</div>
-              <div><span class="detail-label">Quantity</span>${formatValue(wine.quantity)}</div>
-              <div><span class="detail-label">Drink window</span>${escapeHtml([wine.drinkFrom, wine.drinkTo].filter(Boolean).join(' - ') || '—')}</div>
-              <div><span class="detail-label">Alcohol</span>${formatValue(wine.alcohol, wine.alcohol ? '%' : '')}</div>
-            </div>
-            <div class="card-actions">
-              <button class="btn-secondary btn-small" onclick="editBottle('${wine.id}')">Edit</button>
-              <button class="btn-danger btn-small" onclick="deleteBottle('${wine.id}')">Delete</button>
-            </div>
-          </div>
-        </div>
-      `).join("");
-    }
-    function renderTimeline() {
-      const filtered = getFilteredWines().filter(w => w.drinkFrom || w.drinkTo);
-      const timeline = document.getElementById('timelineView');
-      if (!filtered.length) {
-        timeline.innerHTML = '<div class="empty">No bottles with drink windows yet.</div>';
-        return;
-      }
-      const years = filtered.flatMap(w => [Number(w.drinkFrom) || currentYear, Number(w.drinkTo) || currentYear]);
-      const minYear = Math.min(...years) - 1;
-      const maxYear = Math.max(...years) + 1;
-      const span = Math.max(1, maxYear - minYear);
-      timeline.innerHTML = `<div class="timeline-list">${filtered.map(w => {
-        const from = Number(w.drinkFrom) || currentYear;
-        const to = Number(w.drinkTo) || currentYear;
-        const left = ((from - minYear) / span) * 100;
-        const width = Math.max(4, ((to - from + 1) / span) * 100);
-        const now = ((currentYear - minYear) / span) * 100;
-        return `
-          <div class="timeline-row">
-            <div class="timeline-title">${escapeHtml(w.name)}</div>
-            <div class="timeline-meta">${escapeHtml(w.producer || '')} · ${escapeHtml(w.region || '')} · ${from} - ${to}</div>
-            <div class="timeline-bar">
-              <div class="timeline-fill" style="left:${left}%; width:${width}%;"></div>
-              <div class="timeline-now" style="left:${now}%;"></div>
-            </div>
-          </div>
-        `;
-      }).join('')}</div>`;
-    }
-    function renderAll() {
-      renderStats();
-      renderDashboard();
-      renderCards();
-      renderTimeline();
-    }
-    function openModal(editWine = null) {
-      elements.modalBackdrop.classList.add("open");
-      if (editWine) {
-        editingId = editWine.id;
-        elements.modalTitle.textContent = "Edit bottle";
-        elements.nameInput.value = editWine.name || "";
-        elements.producerInput.value = editWine.producer || "";
-        elements.countryInput.value = editWine.country || "";
-        elements.regionInput.value = editWine.region || "";
-        elements.typeInput.value = editWine.type || "red";
-        elements.grapesInput.value = editWine.grapes || "";
-        elements.vintageInput.value = editWine.vintage || "";
-        elements.alcoholInput.value = editWine.alcohol || "";
-        elements.priceInput.value = editWine.priceSek || "";
-        elements.statusInput.value = editWine.status || "unknown";
-        elements.drinkFromInput.value = editWine.drinkFrom || "";
-        elements.drinkToInput.value = editWine.drinkTo || "";
-        elements.quantityInput.value = editWine.quantity || 1;
-        elements.locationInput.value = editWine.location || "";
-        elements.notesInput.value = editWine.notes || "";
-      } else {
-        editingId = null;
-        elements.modalTitle.textContent = "Add bottle";
-        elements.nameInput.value = "";
-        elements.producerInput.value = "";
-        elements.countryInput.value = "";
-        elements.regionInput.value = "";
-        elements.typeInput.value = "red";
-        elements.grapesInput.value = "";
-        elements.vintageInput.value = "";
-        elements.alcoholInput.value = "";
-        elements.priceInput.value = "";
-        elements.statusInput.value = "ready";
-        elements.drinkFromInput.value = "";
-        elements.drinkToInput.value = "";
-        elements.quantityInput.value = 1;
-        elements.locationInput.value = "";
-        elements.notesInput.value = "";
-      }
-    }
-    function closeModal() { elements.modalBackdrop.classList.remove("open"); }
-    function getFormData() {
-      return {
-        id: editingId || crypto.randomUUID(),
-        name: elements.nameInput.value.trim(),
-        producer: elements.producerInput.value.trim(),
-        country: elements.countryInput.value.trim(),
-        region: elements.regionInput.value.trim(),
-        type: elements.typeInput.value,
-        grapes: elements.grapesInput.value.trim(),
-        vintage: elements.vintageInput.value.trim(),
-        alcohol: elements.alcoholInput.value.trim(),
-        priceSek: elements.priceInput.value ? Number(elements.priceInput.value) : "",
-        status: elements.statusInput.value,
-        drinkFrom: elements.drinkFromInput.value.trim(),
-        drinkTo: elements.drinkToInput.value.trim(),
-        quantity: elements.quantityInput.value ? Number(elements.quantityInput.value) : 1,
-        location: elements.locationInput.value.trim(),
-        notes: elements.notesInput.value.trim()
-      };
-    }
-    function saveBottle() {
-      const wine = getFormData();
-      if (!wine.name) {
-        alert("Please enter at least the wine name.");
-        return;
-      }
-      if (editingId) wines = wines.map((item) => item.id === editingId ? wine : item);
-      else wines.unshift(wine);
-      saveWines();
-      closeModal();
-      renderAll();
-    }
-    window.editBottle = function(id) {
-      const wine = wines.find((item) => item.id === id);
-      if (!wine) return;
-      openModal(wine);
-    };
-    window.deleteBottle = function(id) {
-      const wine = wines.find((item) => item.id === id);
-      if (!wine) return;
-      if (!confirm(`Delete "${wine.name}"?`)) return;
-      wines = wines.filter((item) => item.id !== id);
-      saveWines();
-      renderAll();
-    };
-    function exportJson() {
-      const blob = new Blob([JSON.stringify(wines, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "wine-cellar-export.json";
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-    async function importJsonFile(file) {
-      const text = await file.text();
-      const parsed = JSON.parse(text);
-      if (!Array.isArray(parsed)) {
-        alert("Invalid file format.");
-        return;
-      }
-      wines = parsed;
-      saveWines();
-      renderAll();
-      alert("Import complete.");
-    }
-    elements.addBottleBtn.addEventListener("click", () => openModal());
-    elements.cancelBtn.addEventListener("click", closeModal);
-    elements.saveBtn.addEventListener("click", saveBottle);
-    elements.exportBtn.addEventListener("click", exportJson);
-    elements.importBtn.addEventListener("click", () => elements.importFile.click());
-    elements.importFile.addEventListener("change", async (event) => {
-      const file = event.target.files?.[0];
-      if (!file) return;
-      try { await importJsonFile(file); }
-      catch (error) { alert("Could not import file."); console.error(error); }
-      event.target.value = "";
-    });
-    [elements.searchInput, elements.statusFilter, elements.typeFilter, elements.priceFilter].forEach((element) => {
-      element.addEventListener("input", renderAll);
-      element.addEventListener("change", renderAll);
-    });
-    elements.modalBackdrop.addEventListener("click", (event) => {
-      if (event.target === elements.modalBackdrop) closeModal();
-    });
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const tab = btn.dataset.tab;
-        document.getElementById('dashboardTab').style.display = tab === 'dashboard' ? '' : 'none';
-        document.getElementById('collectionTab').style.display = tab === 'collection' ? '' : 'none';
-        document.getElementById('timelineTab').style.display = tab === 'timeline' ? '' : 'none';
-      });
-    });
-    renderAll();
-  </script>
+<div class="field">
+<label>Price SEK</label>
+<input id="priceInput" type="number" min="0" step="1" placeholder="e.g. 249" />
+</div>
+
+<div class="field">
+<label>Status</label>
+<select id="statusInput">
+<option value="ready">Ready</option>
+<option value="aging">Aging</option>
+<option value="drink soon">Drink soon</option>
+<option value="past peak">Past peak</option>
+<option value="unknown">Unknown</option>
+</select>
+</div>
+
+<div class="field">
+<label>Drink from</label>
+<input id="drinkFromInput" type="text" placeholder="e.g. 2025" />
+</div>
+
+<div class="field">
+<label>Drink to</label>
+<input id="drinkToInput" type="text" placeholder="e.g. 2030" />
+</div>
+
+<div class="field">
+<label>Quantity</label>
+<input id="quantityInput" type="number" min="1" step="1" placeholder="1" />
+</div>
+
+<div class="field">
+<label>Location</label>
+<input id="locationInput" type="text" placeholder="e.g. Shelf A" />
+</div>
+
+<div class="field full">
+<label>Notes</label>
+<textarea id="notesInput" rows="4" placeholder="Tasting notes, food pairing, where you bought it, etc."></textarea>
+</div>
+</div>
+
+<div class="modal-actions">
+<button class="btn-secondary" id="cancelBtn" type="button">Cancel</button>
+<button class="btn-primary" id="saveBtn" type="button">Save bottle</button>
+</div>
+</div>
+</div>
+
+<script>
+const STORAGE_KEY = "wine-cellar-manual-v3";
+
+const starterBottles = [
+{
+id: crypto.randomUUID(),
+name: "Grande Alberone Moscato Spumante Dolce",
+producer: "Grande Alberone",
+country: "Italy",
+region: "Spumante Dolce",
+type: "sparkling",
+grapes: "Moscato",
+vintage: "",
+alcohol: "7.5",
+priceSek: 99,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2026",
+quantity: 1,
+location: "",
+notes: "Imported from your uploaded bottle photos.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Saint Auriol Chatelaine La Clape",
+producer: "Saint Auriol",
+country: "France",
+region: "La Clape",
+type: "red",
+grapes: "",
+vintage: "2023",
+alcohol: "14",
+priceSek: 129,
+status: "aging",
+drinkFrom: "2025",
+drinkTo: "2028",
+quantity: 1,
+location: "",
+notes: "Vin biologique.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Rawson's Retreat Chardonnay",
+producer: "Rawson's Retreat",
+country: "Australia",
+region: "South Eastern Australia",
+type: "white",
+grapes: "Chardonnay",
+vintage: "2020",
+alcohol: "9.5",
+priceSek: 89,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2025",
+quantity: 1,
+location: "",
+notes: "Reduced alcohol wine-based beverage.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Casalforte Prosecco Extra Dry",
+producer: "Casalforte",
+country: "Italy",
+region: "Prosecco DOC",
+type: "sparkling",
+grapes: "Glera",
+vintage: "",
+alcohol: "11.5",
+priceSek: 119,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2026",
+quantity: 1,
+location: "",
+notes: "Imported from your uploaded bottle photos.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Barón de Ley Reserva",
+producer: "Barón de Ley",
+country: "Spain",
+region: "Rioja",
+type: "red",
+grapes: "Tempranillo",
+vintage: "",
+alcohol: "14",
+priceSek: 179,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2028",
+quantity: 1,
+location: "",
+notes: "Vintage not fully readable from uploaded photos.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "El Mar Cava Brut Rosé",
+producer: "El Mar",
+country: "Spain",
+region: "Cava",
+type: "rosé",
+grapes: "",
+vintage: "",
+alcohol: "11.5",
+priceSek: 99,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2026",
+quantity: 1,
+location: "",
+notes: "Método tradicional.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Blossa Sparkling & Spices Citrus",
+producer: "Blossa",
+country: "Germany",
+region: "Aromatized wine-based drink",
+type: "aromatized",
+grapes: "",
+vintage: "",
+alcohol: "10",
+priceSek: 99,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2025",
+quantity: 1,
+location: "",
+notes: "Sparkling and spices citrus.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Cadis Amarone della Valpolicella",
+producer: "Cadis",
+country: "Italy",
+region: "Amarone della Valpolicella",
+type: "red",
+grapes: "",
+vintage: "2017",
+alcohol: "15",
+priceSek: 349,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2032",
+quantity: 1,
+location: "",
+notes: "Imported from your uploaded bottle photos.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Couvent des Jacobins Bourgogne Pinot Noir",
+producer: "Louis Jadot",
+country: "France",
+region: "Bourgogne",
+type: "red",
+grapes: "Pinot Noir",
+vintage: "2019",
+alcohol: "13",
+priceSek: 219,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2028",
+quantity: 1,
+location: "",
+notes: "Imported from your uploaded bottle photos.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Memòro Italia",
+producer: "Piccini",
+country: "Italy",
+region: "Vino Rosso d'Italia",
+type: "red",
+grapes: "",
+vintage: "",
+alcohol: "14",
+priceSek: 129,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2027",
+quantity: 1,
+location: "",
+notes: "Imported from your uploaded bottle photos.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Bonacosta Valpolicella Classico",
+producer: "Masi",
+country: "Italy",
+region: "Valpolicella Classico",
+type: "red",
+grapes: "",
+vintage: "2016",
+alcohol: "12",
+priceSek: 169,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2027",
+quantity: 1,
+location: "",
+notes: "Imported from your uploaded bottle photos.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Villa Fura Valpolicella Ripasso Superiore",
+producer: "Villa Fura",
+country: "Italy",
+region: "Valpolicella Ripasso Superiore",
+type: "red",
+grapes: "",
+vintage: "",
+alcohol: "14",
+priceSek: 149,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2028",
+quantity: 1,
+location: "",
+notes: "Lot shows 2020. Vintage not clearly stated on front label.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Domaine d'Agel Sensation'Ailes",
+producer: "Domaine d'Agel",
+country: "France",
+region: "Minervois",
+type: "red",
+grapes: "Syrah, Grenache, Carignan, Mourvèdre",
+vintage: "2024",
+alcohol: "14",
+priceSek: 159,
+status: "aging",
+drinkFrom: "2025",
+drinkTo: "2029",
+quantity: 1,
+location: "",
+notes: "Organic wine.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "B by Fonbadet Bordeaux",
+producer: "Fonbadet",
+country: "France",
+region: "Bordeaux",
+type: "red",
+grapes: "",
+vintage: "2019",
+alcohol: "13.5",
+priceSek: 139,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2028",
+quantity: 1,
+location: "",
+notes: "Imported from your uploaded bottle photos.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "El Círculo Rioja Crianza",
+producer: "Pagos del Rey",
+country: "Spain",
+region: "Rioja",
+type: "red",
+grapes: "",
+vintage: "2015",
+alcohol: "13.5",
+priceSek: 139,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2027",
+quantity: 1,
+location: "",
+notes: "Aged 12 months in oak barrels.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Orso d'Oro",
+producer: "Orso d'Oro",
+country: "Italy",
+region: "Vino Rosso",
+type: "red",
+grapes: "",
+vintage: "",
+alcohol: "15",
+priceSek: 109,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2027",
+quantity: 1,
+location: "",
+notes: "Southern Italian red wine.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Ruppertsberger Imperial Pinot Noir",
+producer: "Ruppertsberger Weinkeller Hoheburg eG",
+country: "Germany",
+region: "Pfalz",
+type: "red",
+grapes: "Pinot Noir",
+vintage: "2019",
+alcohol: "13.5",
+priceSek: 169,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2028",
+quantity: 1,
+location: "",
+notes: "Imported from your uploaded bottle photos.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Coronas Tempranillo Organic Wine",
+producer: "Torres",
+country: "Spain",
+region: "Penedès",
+type: "red",
+grapes: "Tempranillo",
+vintage: "2018",
+alcohol: "",
+priceSek: 149,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2027",
+quantity: 1,
+location: "",
+notes: "Organic wine.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Les Dauphins Côtes du Rhône Organic",
+producer: "Les Dauphins",
+country: "France",
+region: "Côtes du Rhône",
+type: "red",
+grapes: "",
+vintage: "2016",
+alcohol: "14",
+priceSek: 139,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2027",
+quantity: 1,
+location: "",
+notes: "Organic wine.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Réserve de Bonpas Côtes-du-Rhône",
+producer: "Bonpas",
+country: "France",
+region: "Côtes-du-Rhône",
+type: "red",
+grapes: "",
+vintage: "",
+alcohol: "13.5",
+priceSek: 129,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2027",
+quantity: 1,
+location: "",
+notes: "Imported from your uploaded bottle photos.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Lynx Petite Sirah Zinfandel",
+producer: "Lynx",
+country: "USA",
+region: "California",
+type: "red",
+grapes: "Petite Sirah, Zinfandel",
+vintage: "2020",
+alcohol: "13.5",
+priceSek: 159,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2028",
+quantity: 1,
+location: "",
+notes: "Precision picked.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Richard Juhlin Blanc de Blancs Brut",
+producer: "Richard Juhlin",
+country: "France",
+region: "Vin de France",
+type: "sparkling",
+grapes: "Chardonnay",
+vintage: "",
+alcohol: "12",
+priceSek: 129,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2026",
+quantity: 1,
+location: "",
+notes: "Méthode traditionnelle.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Jeanmaire Cuvée Brut",
+producer: "Jeanmaire",
+country: "France",
+region: "Champagne",
+type: "sparkling",
+grapes: "Pinot Noir, Pinot Meunier, Chardonnay",
+vintage: "",
+alcohol: "",
+priceSek: 299,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2027",
+quantity: 1,
+location: "",
+notes: "Champagne brut.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "François Martenot Crémant de Bourgogne Brut",
+producer: "François Martenot",
+country: "France",
+region: "Crémant de Bourgogne",
+type: "sparkling",
+grapes: "",
+vintage: "2022",
+alcohol: "12",
+priceSek: 149,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2027",
+quantity: 1,
+location: "",
+notes: "Imported from your uploaded bottle photos.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Charles de Fère Cuvée Jean-Louis Blanc de Blancs Brut",
+producer: "Charles de Fère",
+country: "France",
+region: "Sparkling wine",
+type: "sparkling",
+grapes: "",
+vintage: "",
+alcohol: "",
+priceSek: 119,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2026",
+quantity: 1,
+location: "",
+notes: "Imported from your uploaded bottle photos.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Champagne Vieille France Blanc de Noirs",
+producer: "Vieille France",
+country: "France",
+region: "Champagne",
+type: "sparkling",
+grapes: "Pinot Noir",
+vintage: "2013",
+alcohol: "12",
+priceSek: 499,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2030",
+quantity: 1,
+location: "",
+notes: "Millésime 2013.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Taittinger Brut Réserve",
+producer: "Taittinger",
+country: "France",
+region: "Champagne",
+type: "sparkling",
+grapes: "Chardonnay, Pinot Noir, Pinot Meunier",
+vintage: "",
+alcohol: "12.5",
+priceSek: 549,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2029",
+quantity: 1,
+location: "",
+notes: "Predominantly Chardonnay blend.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Louis Bouillot Crémant de Bourgogne Perle de Vigne Brut",
+producer: "Louis Bouillot",
+country: "France",
+region: "Crémant de Bourgogne",
+type: "sparkling",
+grapes: "",
+vintage: "",
+alcohol: "12",
+priceSek: 179,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2027",
+quantity: 1,
+location: "",
+notes: "Grande Réserve.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Pol Roger Vintage",
+producer: "Pol Roger",
+country: "France",
+region: "Champagne",
+type: "sparkling",
+grapes: "",
+vintage: "2015",
+alcohol: "",
+priceSek: 999,
+status: "aging",
+drinkFrom: "2026",
+drinkTo: "2038",
+quantity: 1,
+location: "",
+notes: "Vintage champagne.",
+image: ""
+},
+{
+id: crypto.randomUUID(),
+name: "Louis Roederer Collection 242",
+producer: "Louis Roederer",
+country: "France",
+region: "Champagne",
+type: "sparkling",
+grapes: "",
+vintage: "",
+alcohol: "12",
+priceSek: 699,
+status: "ready",
+drinkFrom: "2025",
+drinkTo: "2030",
+quantity: 1,
+location: "",
+notes: "242nd harvest. Based on 2017 harvest with reserve wines aged in oak.",
+image: ""
+}
+];
+
+let wines = loadWines();
+let editingId = null;
+let currentPhotoData = "";
+
+const elements = {
+cards: document.getElementById("cards"),
+stats: document.getElementById("stats"),
+searchInput: document.getElementById("searchInput"),
+statusFilter: document.getElementById("statusFilter"),
+typeFilter: document.getElementById("typeFilter"),
+priceFilter: document.getElementById("priceFilter"),
+addBottleBtn: document.getElementById("addBottleBtn"),
+exportBtn: document.getElementById("exportBtn"),
+importBtn: document.getElementById("importBtn"),
+importFile: document.getElementById("importFile"),
+modalBackdrop: document.getElementById("modalBackdrop"),
+modalTitle: document.getElementById("modalTitle"),
+saveBtn: document.getElementById("saveBtn"),
+cancelBtn: document.getElementById("cancelBtn"),
+choosePhotoBtn: document.getElementById("choosePhotoBtn"),
+removePhotoBtn: document.getElementById("removePhotoBtn"),
+photoInput: document.getElementById("photoInput"),
+photoPreview: document.getElementById("photoPreview"),
+nameInput: document.getElementById("nameInput"),
+producerInput: document.getElementById("producerInput"),
+countryInput: document.getElementById("countryInput"),
+regionInput: document.getElementById("regionInput"),
+typeInput: document.getElementById("typeInput"),
+grapesInput: document.getElementById("grapesInput"),
+vintageInput: document.getElementById("vintageInput"),
+alcoholInput: document.getElementById("alcoholInput"),
+priceInput: document.getElementById("priceInput"),
+statusInput: document.getElementById("statusInput"),
+drinkFromInput: document.getElementById("drinkFromInput"),
+drinkToInput: document.getElementById("drinkToInput"),
+quantityInput: document.getElementById("quantityInput"),
+locationInput: document.getElementById("locationInput"),
+notesInput: document.getElementById("notesInput")
+};
+
+function loadWines() {
+const saved = localStorage.getItem(STORAGE_KEY);
+if (!saved) return structuredClone(starterBottles);
+try {
+const parsed = JSON.parse(saved);
+return Array.isArray(parsed) ? parsed : structuredClone(starterBottles);
+} catch {
+return structuredClone(starterBottles);
+}
+}
+
+function saveWines() {
+localStorage.setItem(STORAGE_KEY, JSON.stringify(wines));
+}
+
+function structuredClone(data) {
+return JSON.parse(JSON.stringify(data));
+}
+
+function escapeHtml(value) {
+return String(value ?? "")
+.replace(/&/g, "&amp;")
+.replace(/</g, "&lt;")
+.replace(/>/g, "&gt;")
+.replace(/\"/g, "&quot;")
+.replace(/'/g, "&#039;");
+}
+
+function statusClass(status) {
+if (status === "ready") return "status-ready";
+if (status === "aging") return "status-aging";
+if (status === "drink soon") return "status-soon";
+if (status === "past peak") return "status-past";
+return "status-unknown";
+}
+
+function formatValue(value, suffix = "") {
+if (value === null || value === undefined || value === "") return "—";
+return `${escapeHtml(value)}${suffix}`;
+}
+
+function matchesPriceRange(price, range) {
+if (range === "all") return true;
+if (price === "" || price === null || price === undefined || Number.isNaN(Number(price))) return false;
+const val = Number(price);
+if (range === "lt100") return val < 100;
+if (range === "100-199") return val >= 100 && val <= 199;
+if (range === "200-299") return val >= 200 && val <= 299;
+if (range === "300-399") return val >= 300 && val <= 399;
+if (range === "gte400") return val >= 400;
+return true;
+}
+
+function getFilteredWines() {
+const search = elements.searchInput.value.trim().toLowerCase();
+const status = elements.statusFilter.value;
+const type = elements.typeFilter.value;
+const priceRange = elements.priceFilter.value;
+
+return wines.filter((wine) => {
+const haystack = [
+wine.name,
+wine.producer,
+wine.country,
+wine.region,
+wine.type,
+wine.grapes,
+wine.vintage,
+wine.notes,
+wine.location
+].join(" ").toLowerCase();
+
+const matchesSearch = !search || haystack.includes(search);
+const matchesStatus = status === "all" || wine.status === status;
+const matchesType = type === "all" || wine.type === type;
+const matchesPrice = matchesPriceRange(wine.priceSek, priceRange);
+
+return matchesSearch && matchesStatus && matchesType && matchesPrice;
+});
+}
+
+function renderStats() {
+const totalQty = wines.reduce((sum, wine) => sum + (Number(wine.quantity) || 1), 0);
+const ready = wines.filter(w => w.status === "ready").length;
+const aging = wines.filter(w => w.status === "aging").length;
+const soon = wines.filter(w => w.status === "drink soon").length;
+const past = wines.filter(w => w.status === "past peak").length;
+const avgPrice = wines.filter(w => Number(w.priceSek) > 0).length
+? Math.round(wines.filter(w => Number(w.priceSek) > 0).reduce((sum, w) => sum + Number(w.priceSek), 0) / wines.filter(w => Number(w.priceSek) > 0).length)
+: 0;
+
+elements.stats.innerHTML = `
+<div class="stat">Bottles: ${totalQty}</div>
+<div class="stat">Labels: ${wines.length}</div>
+<div class="stat">Ready: ${ready}</div>
+<div class="stat">Aging: ${aging}</div>
+<div class="stat">Drink soon: ${soon}</div>
+<div class="stat">Past peak: ${past}</div>
+<div class="stat">Avg price: ${avgPrice ? avgPrice + ' SEK' : '—'}</div>
+`;
+}
+
+function renderCards() {
+const filtered = getFilteredWines();
+
+if (!filtered.length) {
+elements.cards.innerHTML = `<div class="empty">No bottles match the current filters.</div>`;
+return;
+}
+
+elements.cards.innerHTML = filtered.map((wine) => `
+<div class="card">
+<div class="card-image">
+${wine.image ? `<img src="${wine.image}" alt="${escapeHtml(wine.name)}" />` : `<span>No photo</span>`}
+</div>
+<div class="card-body">
+<h3 class="wine-name">${escapeHtml(wine.name)}</h3>
+<p class="wine-sub">${escapeHtml(wine.producer || "Unknown producer")}</p>
+
+<div class="chips">
+<span class="chip ${statusClass(wine.status)}">${escapeHtml(wine.status)}</span>
+<span class="chip">${escapeHtml(wine.type)}</span>
+<span class="chip">${formatValue(wine.country)}</span>
+</div>
+
+<div class="details">
+<div><span class="detail-label">Region</span>${formatValue(wine.region)}</div>
+<div><span class="detail-label">Vintage</span>${formatValue(wine.vintage)}</div>
+<div><span class="detail-label">Price</span>${wine.priceSek ? escapeHtml(wine.priceSek) + ' SEK' : '—'}</div>
+<div><span class="detail-label">Quantity</span>${formatValue(wine.quantity)}</div>
+<div><span class="detail-label">Drink window</span>${escapeHtml([wine.drinkFrom, wine.drinkTo].filter(Boolean).join(' - ') || '—')}</div>
+<div><span class="detail-label">Alcohol</span>${formatValue(wine.alcohol, wine.alcohol ? '%' : '')}</div>
+</div>
+
+<div class="card-actions">
+<button class="btn-secondary btn-small" onclick="editBottle('${wine.id}')">Edit</button>
+<button class="btn-danger btn-small" onclick="deleteBottle('${wine.id}')">Delete</button>
+</div>
+</div>
+</div>
+`).join("");
+}
+
+function renderAll() {
+renderStats();
+renderCards();
+}
+
+function openModal(editWine = null) {
+elements.modalBackdrop.classList.add("open");
+
+if (editWine) {
+editingId = editWine.id;
+elements.modalTitle.textContent = "Edit bottle";
+elements.nameInput.value = editWine.name || "";
+elements.producerInput.value = editWine.producer || "";
+elements.countryInput.value = editWine.country || "";
+elements.regionInput.value = editWine.region || "";
+elements.typeInput.value = editWine.type || "red";
+elements.grapesInput.value = editWine.grapes || "";
+elements.vintageInput.value = editWine.vintage || "";
+elements.alcoholInput.value = editWine.alcohol || "";
+elements.priceInput.value = editWine.priceSek || "";
+elements.statusInput.value = editWine.status || "unknown";
+elements.drinkFromInput.value = editWine.drinkFrom || "";
+elements.drinkToInput.value = editWine.drinkTo || "";
+elements.quantityInput.value = editWine.quantity || 1;
+elements.locationInput.value = editWine.location || "";
+elements.notesInput.value = editWine.notes || "";
+currentPhotoData = editWine.image || "";
+refreshPhotoPreview();
+} else {
+editingId = null;
+elements.modalTitle.textContent = "Add bottle";
+elements.nameInput.value = "";
+elements.producerInput.value = "";
+elements.countryInput.value = "";
+elements.regionInput.value = "";
+elements.typeInput.value = "red";
+elements.grapesInput.value = "";
+elements.vintageInput.value = "";
+elements.alcoholInput.value = "";
+elements.priceInput.value = "";
+elements.statusInput.value = "ready";
+elements.drinkFromInput.value = "";
+elements.drinkToInput.value = "";
+elements.quantityInput.value = 1;
+elements.locationInput.value = "";
+elements.notesInput.value = "";
+currentPhotoData = "";
+refreshPhotoPreview();
+}
+}
+
+function closeModal() {
+elements.modalBackdrop.classList.remove("open");
+}
+
+function refreshPhotoPreview() {
+elements.photoPreview.innerHTML = currentPhotoData
+? `<img src="${currentPhotoData}" alt="Bottle preview" />`
+: `No photo selected`;
+}
+
+function readPhoto(file) {
+return new Promise((resolve, reject) => {
+const reader = new FileReader();
+reader.onload = () => resolve(reader.result);
+reader.onerror = reject;
+reader.readAsDataURL(file);
+});
+}
+
+async function handlePhotoSelect(event) {
+const file = event.target.files?.[0];
+if (!file) return;
+currentPhotoData = await readPhoto(file);
+refreshPhotoPreview();
+event.target.value = "";
+}
+
+function getFormData() {
+return {
+id: editingId || crypto.randomUUID(),
+name: elements.nameInput.value.trim(),
+producer: elements.producerInput.value.trim(),
+country: elements.countryInput.value.trim(),
+region: elements.regionInput.value.trim(),
+type: elements.typeInput.value,
+grapes: elements.grapesInput.value.trim(),
+vintage: elements.vintageInput.value.trim(),
+alcohol: elements.alcoholInput.value.trim(),
+priceSek: elements.priceInput.value ? Number(elements.priceInput.value) : "",
+status: elements.statusInput.value,
+drinkFrom: elements.drinkFromInput.value.trim(),
+drinkTo: elements.drinkToInput.value.trim(),
+quantity: elements.quantityInput.value ? Number(elements.quantityInput.value) : 1,
+location: elements.locationInput.value.trim(),
+notes: elements.notesInput.value.trim(),
+image: currentPhotoData || ""
+};
+}
+
+function saveBottle() {
+const wine = getFormData();
+
+if (!wine.name) {
+alert("Please enter at least the wine name.");
+return;
+}
+
+if (editingId) {
+wines = wines.map((item) => item.id === editingId ? wine : item);
+} else {
+wines.unshift(wine);
+}
+
+saveWines();
+closeModal();
+renderAll();
+}
+
+window.editBottle = function(id) {
+const wine = wines.find((item) => item.id === id);
+if (!wine) return;
+openModal(wine);
+};
+
+window.deleteBottle = function(id) {
+const wine = wines.find((item) => item.id === id);
+if (!wine) return;
+const confirmed = confirm(`Delete "${wine.name}"?`);
+if (!confirmed) return;
+wines = wines.filter((item) => item.id !== id);
+saveWines();
+renderAll();
+};
+
+function exportJson() {
+const blob = new Blob([JSON.stringify(wines, null, 2)], { type: "application/json" });
+const url = URL.createObjectURL(blob);
+const a = document.createElement("a");
+a.href = url;
+a.download = "wine-cellar-export.json";
+a.click();
+URL.revokeObjectURL(url);
+}
+
+async function importJsonFile(file) {
+const text = await file.text();
+const parsed = JSON.parse(text);
+if (!Array.isArray(parsed)) {
+alert("Invalid file format.");
+return;
+}
+wines = parsed;
+saveWines();
+renderAll();
+alert("Import complete.");
+}
+
+elements.addBottleBtn.addEventListener("click", () => openModal());
+elements.cancelBtn.addEventListener("click", closeModal);
+elements.saveBtn.addEventListener("click", saveBottle);
+elements.choosePhotoBtn.addEventListener("click", () => elements.photoInput.click());
+elements.removePhotoBtn.addEventListener("click", () => { currentPhotoData = ""; refreshPhotoPreview(); });
+elements.photoInput.addEventListener("change", handlePhotoSelect);
+elements.exportBtn.addEventListener("click", exportJson);
+elements.importBtn.addEventListener("click", () => elements.importFile.click());
+elements.importFile.addEventListener("change", async (event) => {
+const file = event.target.files?.[0];
+if (!file) return;
+try {
+await importJsonFile(file);
+} catch (error) {
+alert("Could not import file.");
+console.error(error);
+}
+event.target.value = "";
+});
+
+[elements.searchInput, elements.statusFilter, elements.typeFilter, elements.priceFilter].forEach((element) => {
+element.addEventListener("input", renderCards);
+element.addEventListener("change", renderCards);
+});
+
+elements.modalBackdrop.addEventListener("click", (event) => {
+if (event.target === elements.modalBackdrop) closeModal();
+});
+
+renderAll();
+</script>
 </body>
 </html>
+
+Skickat från min iPhone
