@@ -8,7 +8,6 @@
     :root {
       --bg: linear-gradient(135deg, #1e120d 0%, #2a1710 45%, #3a2014 100%);
       --panel: rgba(255,255,255,0.08);
-      --panel-strong: rgba(255,255,255,0.12);
       --border: rgba(255,255,255,0.14);
       --text: #f7efe9;
       --muted: #d0b8a8;
@@ -19,7 +18,6 @@
     }
 
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
@@ -27,13 +25,11 @@
       color: var(--text);
       min-height: 100vh;
     }
-
     .app {
       max-width: 1280px;
       margin: 0 auto;
       padding: 20px;
     }
-
     .header {
       display: flex;
       justify-content: space-between;
@@ -42,28 +38,21 @@
       margin-bottom: 18px;
       flex-wrap: wrap;
     }
-
     .title-wrap h1 {
       margin: 0;
       font-size: 42px;
       line-height: 1;
     }
-
     .title-wrap p {
       margin: 8px 0 0;
       color: var(--muted);
     }
-
     .top-actions {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
     }
-
-    button, select, input, textarea {
-      font: inherit;
-    }
-
+    button, select, input, textarea { font: inherit; }
     button {
       border: 0;
       border-radius: 14px;
@@ -71,40 +60,33 @@
       cursor: pointer;
       transition: transform .12s ease, opacity .12s ease, background .12s ease;
     }
-
     button:hover { transform: translateY(-1px); }
     button:active { transform: translateY(0); }
-
     .btn-primary {
       background: var(--accent);
       color: #2f1c10;
       font-weight: 700;
     }
-
     .btn-secondary {
       background: rgba(255,255,255,0.12);
       color: var(--text);
       border: 1px solid var(--border);
     }
-
     .btn-danger {
       background: #b96262;
       color: white;
     }
-
     .btn-small {
       padding: 8px 12px;
       border-radius: 10px;
       font-size: 14px;
     }
-
     .stats {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
       margin-bottom: 18px;
     }
-
     .stat {
       background: rgba(255,255,255,0.08);
       border: 1px solid var(--border);
@@ -114,14 +96,23 @@
       font-weight: 700;
       box-shadow: var(--shadow);
     }
-
+    .tab-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #2f1c10;
+      font-weight: 700;
+    }
     .toolbar {
       display: grid;
       grid-template-columns: 1.3fr 1fr 1fr 1fr;
       gap: 12px;
       margin-bottom: 18px;
     }
-
     .toolbar input,
     .toolbar select,
     .form-grid input,
@@ -135,26 +126,24 @@
       padding: 12px 14px;
       outline: none;
     }
-
     .toolbar input::placeholder,
     .form-grid input::placeholder,
     .form-grid textarea::placeholder {
       color: #d6c3b7;
     }
-
     .toolbar select option,
     .form-grid select option {
       background: #341e14;
       color: white;
     }
-
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 16px;
     }
-
-    .card {
+    .card,
+    .dashboard-box,
+    .timeline-row {
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -162,30 +151,27 @@
       box-shadow: var(--shadow);
       backdrop-filter: blur(8px);
     }
-
-    .card-body {
+    .card-body,
+    .dashboard-box,
+    .timeline-row {
       padding: 16px;
     }
-
     .wine-name {
       font-size: 22px;
       font-weight: 800;
       margin: 0 0 6px;
       line-height: 1.15;
     }
-
     .wine-sub {
       margin: 0 0 12px;
       color: var(--muted);
     }
-
     .chips {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-bottom: 12px;
     }
-
     .chip {
       font-size: 12px;
       padding: 6px 10px;
@@ -194,7 +180,6 @@
       border: 1px solid var(--border);
       color: var(--text);
     }
-
     .details {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -202,26 +187,22 @@
       margin-bottom: 14px;
       font-size: 14px;
     }
-
     .detail-label {
       color: var(--muted);
       display: block;
       font-size: 12px;
       margin-bottom: 2px;
     }
-
     .status-ready { color: #9ae6b4; }
     .status-aging { color: #f6d365; }
     .status-soon { color: #f3b37b; }
     .status-past { color: #f2a2a2; }
     .status-unknown { color: #d6c3b7; }
-
     .card-actions {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
     }
-
     .empty {
       padding: 30px;
       text-align: center;
@@ -230,7 +211,62 @@
       border-radius: var(--radius);
       color: var(--muted);
     }
-
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .dashboard-box h3 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .dashboard-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 14px;
+    }
+    .dashboard-line:last-child { border-bottom: 0; }
+    .timeline-list {
+      display: grid;
+      gap: 12px;
+    }
+    .timeline-title {
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .timeline-meta {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+    .timeline-bar {
+      position: relative;
+      height: 16px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .timeline-fill {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #d7b36b, #f0d28c);
+    }
+    .timeline-now {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #fff;
+      opacity: .85;
+    }
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -241,9 +277,7 @@
       padding: 20px;
       z-index: 999;
     }
-
     .modal-backdrop.open { display: flex; }
-
     .modal {
       width: min(980px, 100%);
       max-height: 90vh;
@@ -254,33 +288,23 @@
       box-shadow: 0 25px 60px rgba(0,0,0,.45);
       padding: 22px;
     }
-
-    .modal h2 {
-      margin: 0 0 6px;
-    }
-
+    .modal h2 { margin: 0 0 6px; }
     .modal p {
       margin: 0 0 18px;
       color: var(--muted);
     }
-
     .form-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
     }
-
-    .form-grid .full {
-      grid-column: 1 / -1;
-    }
-
+    .form-grid .full { grid-column: 1 / -1; }
     .field label {
       display: block;
       margin: 0 0 6px;
       font-size: 13px;
       color: var(--muted);
     }
-
     .modal-actions {
       display: flex;
       gap: 10px;
@@ -288,12 +312,11 @@
       flex-wrap: wrap;
       margin-top: 18px;
     }
-
     @media (max-width: 900px) {
       .toolbar { grid-template-columns: 1fr 1fr; }
-      .form-grid { grid-template-columns: 1fr; }
+      .form-grid,
+      .dashboard-grid { grid-template-columns: 1fr; }
     }
-
     @media (max-width: 640px) {
       .app { padding: 14px; }
       .title-wrap h1 { font-size: 34px; }
@@ -308,7 +331,7 @@
     <div class="header">
       <div class="title-wrap">
         <h1>Wine Cellar</h1>
-        <p>Manual wine collection with filters, editing, and local save on your device.</p>
+        <p>Manual wine collection with dashboard, collection, timeline, filters, editing, and local save on your device.</p>
       </div>
       <div class="top-actions">
         <button class="btn-primary" id="addBottleBtn">+ Add bottle</button>
@@ -319,6 +342,12 @@
     </div>
 
     <div class="stats" id="stats"></div>
+
+    <div class="tab-row">
+      <button class="btn-secondary btn-small tab-btn active" data-tab="dashboard">Dashboard</button>
+      <button class="btn-secondary btn-small tab-btn" data-tab="collection">Collection</button>
+      <button class="btn-secondary btn-small tab-btn" data-tab="timeline">Timeline</button>
+    </div>
 
     <div class="toolbar">
       <input id="searchInput" type="text" placeholder="Search wine, producer, region, grape, country..." />
@@ -349,7 +378,17 @@
       </select>
     </div>
 
-    <div id="cards" class="cards"></div>
+    <div id="dashboardTab" class="tab-panel">
+      <div id="dashboardCards"></div>
+    </div>
+
+    <div id="collectionTab" class="tab-panel" style="display:none;">
+      <div id="cards" class="cards"></div>
+    </div>
+
+    <div id="timelineTab" class="tab-panel" style="display:none;">
+      <div id="timelineView"></div>
+    </div>
   </div>
 
   <div class="modal-backdrop" id="modalBackdrop">
@@ -358,93 +397,21 @@
       <p>Enter the wine details manually.</p>
 
       <div class="form-grid">
-        <div class="field">
-          <label>Name</label>
-          <input id="nameInput" type="text" placeholder="e.g. Taittinger Brut Réserve" />
-        </div>
-
-        <div class="field">
-          <label>Producer</label>
-          <input id="producerInput" type="text" placeholder="e.g. Taittinger" />
-        </div>
-
-        <div class="field">
-          <label>Country</label>
-          <input id="countryInput" type="text" placeholder="e.g. France" />
-        </div>
-
-        <div class="field">
-          <label>Region / Appellation</label>
-          <input id="regionInput" type="text" placeholder="e.g. Champagne, Rioja, Barolo" />
-        </div>
-
-        <div class="field">
-          <label>Type</label>
-          <select id="typeInput">
-            <option value="red">Red</option>
-            <option value="white">White</option>
-            <option value="sparkling">Sparkling</option>
-            <option value="rosé">Rosé</option>
-            <option value="dessert">Dessert</option>
-            <option value="aromatized">Aromatized</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Grapes</label>
-          <input id="grapesInput" type="text" placeholder="e.g. Pinot Noir, Chardonnay" />
-        </div>
-
-        <div class="field">
-          <label>Vintage</label>
-          <input id="vintageInput" type="text" placeholder="e.g. 2018" />
-        </div>
-
-        <div class="field">
-          <label>Alcohol %</label>
-          <input id="alcoholInput" type="text" placeholder="e.g. 12.5" />
-        </div>
-
-        <div class="field">
-          <label>Price SEK</label>
-          <input id="priceInput" type="number" min="0" step="1" placeholder="e.g. 249" />
-        </div>
-
-        <div class="field">
-          <label>Status</label>
-          <select id="statusInput">
-            <option value="ready">Ready</option>
-            <option value="aging">Aging</option>
-            <option value="drink soon">Drink soon</option>
-            <option value="past peak">Past peak</option>
-            <option value="unknown">Unknown</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Drink from</label>
-          <input id="drinkFromInput" type="text" placeholder="e.g. 2025" />
-        </div>
-
-        <div class="field">
-          <label>Drink to</label>
-          <input id="drinkToInput" type="text" placeholder="e.g. 2030" />
-        </div>
-
-        <div class="field">
-          <label>Quantity</label>
-          <input id="quantityInput" type="number" min="1" step="1" placeholder="1" />
-        </div>
-
-        <div class="field">
-          <label>Location</label>
-          <input id="locationInput" type="text" placeholder="e.g. Shelf A" />
-        </div>
-
-        <div class="field full">
-          <label>Notes</label>
-          <textarea id="notesInput" rows="4" placeholder="Tasting notes, food pairing, where you bought it, etc."></textarea>
-        </div>
+        <div class="field"><label>Name</label><input id="nameInput" type="text" placeholder="e.g. Taittinger Brut Réserve" /></div>
+        <div class="field"><label>Producer</label><input id="producerInput" type="text" placeholder="e.g. Taittinger" /></div>
+        <div class="field"><label>Country</label><input id="countryInput" type="text" placeholder="e.g. France" /></div>
+        <div class="field"><label>Region / Appellation</label><input id="regionInput" type="text" placeholder="e.g. Champagne, Rioja, Barolo" /></div>
+        <div class="field"><label>Type</label><select id="typeInput"><option value="red">Red</option><option value="white">White</option><option value="sparkling">Sparkling</option><option value="rosé">Rosé</option><option value="dessert">Dessert</option><option value="aromatized">Aromatized</option></select></div>
+        <div class="field"><label>Grapes</label><input id="grapesInput" type="text" placeholder="e.g. Pinot Noir, Chardonnay" /></div>
+        <div class="field"><label>Vintage</label><input id="vintageInput" type="text" placeholder="e.g. 2018" /></div>
+        <div class="field"><label>Alcohol %</label><input id="alcoholInput" type="text" placeholder="e.g. 12.5" /></div>
+        <div class="field"><label>Price SEK</label><input id="priceInput" type="number" min="0" step="1" placeholder="e.g. 249" /></div>
+        <div class="field"><label>Status</label><select id="statusInput"><option value="ready">Ready</option><option value="aging">Aging</option><option value="drink soon">Drink soon</option><option value="past peak">Past peak</option><option value="unknown">Unknown</option></select></div>
+        <div class="field"><label>Drink from</label><input id="drinkFromInput" type="text" placeholder="e.g. 2025" /></div>
+        <div class="field"><label>Drink to</label><input id="drinkToInput" type="text" placeholder="e.g. 2030" /></div>
+        <div class="field"><label>Quantity</label><input id="quantityInput" type="number" min="1" step="1" placeholder="1" /></div>
+        <div class="field"><label>Location</label><input id="locationInput" type="text" placeholder="e.g. Shelf A" /></div>
+        <div class="field full"><label>Notes</label><textarea id="notesInput" rows="4" placeholder="Tasting notes, food pairing, where you bought it, etc."></textarea></div>
       </div>
 
       <div class="modal-actions">
@@ -455,7 +422,8 @@
   </div>
 
   <script>
-    const STORAGE_KEY = "wine-cellar-manual-v4";
+    const STORAGE_KEY = "wine-cellar-manual-v5";
+    const currentYear = new Date().getFullYear();
 
     const starterBottles = [
       { id: crypto.randomUUID(), name: "Grande Alberone Moscato Spumante Dolce", producer: "Grande Alberone", country: "Italy", region: "Spumante Dolce", type: "sparkling", grapes: "Moscato", vintage: "", alcohol: "7.5", priceSek: 99, status: "ready", drinkFrom: "2025", drinkTo: "2026", quantity: 1, location: "", notes: "Imported from your uploaded bottle photos." },
@@ -535,15 +503,8 @@
         return deepCopy(starterBottles);
       }
     }
-
-    function saveWines() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(wines));
-    }
-
-    function deepCopy(data) {
-      return JSON.parse(JSON.stringify(data));
-    }
-
+    function saveWines() { localStorage.setItem(STORAGE_KEY, JSON.stringify(wines)); }
+    function deepCopy(data) { return JSON.parse(JSON.stringify(data)); }
     function escapeHtml(value) {
       return String(value ?? "")
         .replace(/&/g, "&amp;")
@@ -552,7 +513,6 @@
         .replace(/\"/g, "&quot;")
         .replace(/'/g, "&#039;");
     }
-
     function statusClass(status) {
       if (status === "ready") return "status-ready";
       if (status === "aging") return "status-aging";
@@ -560,12 +520,10 @@
       if (status === "past peak") return "status-past";
       return "status-unknown";
     }
-
     function formatValue(value, suffix = "") {
       if (value === null || value === undefined || value === "") return "—";
       return `${escapeHtml(value)}${suffix}`;
     }
-
     function matchesPriceRange(price, range) {
       if (range === "all") return true;
       if (price === "" || price === null || price === undefined || Number.isNaN(Number(price))) return false;
@@ -577,35 +535,20 @@
       if (range === "gte400") return val >= 400;
       return true;
     }
-
     function getFilteredWines() {
       const search = elements.searchInput.value.trim().toLowerCase();
       const status = elements.statusFilter.value;
       const type = elements.typeFilter.value;
       const priceRange = elements.priceFilter.value;
-
       return wines.filter((wine) => {
-        const haystack = [
-          wine.name,
-          wine.producer,
-          wine.country,
-          wine.region,
-          wine.type,
-          wine.grapes,
-          wine.vintage,
-          wine.notes,
-          wine.location
-        ].join(" ").toLowerCase();
-
+        const haystack = [wine.name, wine.producer, wine.country, wine.region, wine.type, wine.grapes, wine.vintage, wine.notes, wine.location].join(" ").toLowerCase();
         const matchesSearch = !search || haystack.includes(search);
         const matchesStatus = status === "all" || wine.status === status;
         const matchesType = type === "all" || wine.type === type;
         const matchesPrice = matchesPriceRange(wine.priceSek, priceRange);
-
         return matchesSearch && matchesStatus && matchesType && matchesPrice;
       });
     }
-
     function renderStats() {
       const totalQty = wines.reduce((sum, wine) => sum + (Number(wine.quantity) || 1), 0);
       const ready = wines.filter(w => w.status === "ready").length;
@@ -615,7 +558,6 @@
       const avgPrice = wines.filter(w => Number(w.priceSek) > 0).length
         ? Math.round(wines.filter(w => Number(w.priceSek) > 0).reduce((sum, w) => sum + Number(w.priceSek), 0) / wines.filter(w => Number(w.priceSek) > 0).length)
         : 0;
-
       elements.stats.innerHTML = `
         <div class="stat">Bottles: ${totalQty}</div>
         <div class="stat">Labels: ${wines.length}</div>
@@ -626,27 +568,59 @@
         <div class="stat">Avg price: ${avgPrice ? avgPrice + ' SEK' : '—'}</div>
       `;
     }
-
+    function renderDashboard() {
+      const filtered = getFilteredWines();
+      const typeCounts = {};
+      const countryCounts = {};
+      const priceBands = { '<100': 0, '100-199': 0, '200-299': 0, '300-399': 0, '400+': 0 };
+      filtered.forEach((wine) => {
+        typeCounts[wine.type || 'unknown'] = (typeCounts[wine.type || 'unknown'] || 0) + 1;
+        countryCounts[wine.country || 'unknown'] = (countryCounts[wine.country || 'unknown'] || 0) + 1;
+        const p = Number(wine.priceSek || 0);
+        if (p > 0 && p < 100) priceBands['<100']++;
+        else if (p >= 100 && p <= 199) priceBands['100-199']++;
+        else if (p >= 200 && p <= 299) priceBands['200-299']++;
+        else if (p >= 300 && p <= 399) priceBands['300-399']++;
+        else if (p >= 400) priceBands['400+']++;
+      });
+      const topPrice = [...filtered].filter(w => Number(w.priceSek) > 0).sort((a, b) => Number(b.priceSek) - Number(a.priceSek)).slice(0, 5);
+      document.getElementById('dashboardCards').innerHTML = `
+        <div class="dashboard-grid">
+          <div class="dashboard-box">
+            <h3>Wine types</h3>
+            ${Object.entries(typeCounts).length ? Object.entries(typeCounts).map(([k,v]) => `<div class="dashboard-line"><span>${k}</span><strong>${v}</strong></div>`).join('') : '<div class="empty">No data</div>'}
+          </div>
+          <div class="dashboard-box">
+            <h3>Countries</h3>
+            ${Object.entries(countryCounts).length ? Object.entries(countryCounts).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v]) => `<div class="dashboard-line"><span>${k}</span><strong>${v}</strong></div>`).join('') : '<div class="empty">No data</div>'}
+          </div>
+          <div class="dashboard-box">
+            <h3>Price ranges</h3>
+            ${Object.entries(priceBands).map(([k,v]) => `<div class="dashboard-line"><span>${k} SEK</span><strong>${v}</strong></div>`).join('')}
+          </div>
+          <div class="dashboard-box" style="grid-column: 1 / -1;">
+            <h3>Most expensive bottles</h3>
+            ${topPrice.length ? topPrice.map(w => `<div class="dashboard-line"><span>${escapeHtml(w.name)}</span><strong>${w.priceSek} SEK</strong></div>`).join('') : '<div class="empty">No prices available</div>'}
+          </div>
+        </div>
+      `;
+    }
     function renderCards() {
       const filtered = getFilteredWines();
-
       if (!filtered.length) {
         elements.cards.innerHTML = `<div class="empty">No bottles match the current filters.</div>`;
         return;
       }
-
       elements.cards.innerHTML = filtered.map((wine) => `
         <div class="card">
           <div class="card-body">
             <h3 class="wine-name">${escapeHtml(wine.name)}</h3>
             <p class="wine-sub">${escapeHtml(wine.producer || "Unknown producer")}</p>
-
             <div class="chips">
               <span class="chip ${statusClass(wine.status)}">${escapeHtml(wine.status)}</span>
               <span class="chip">${escapeHtml(wine.type)}</span>
               <span class="chip">${formatValue(wine.country)}</span>
             </div>
-
             <div class="details">
               <div><span class="detail-label">Region</span>${formatValue(wine.region)}</div>
               <div><span class="detail-label">Vintage</span>${formatValue(wine.vintage)}</div>
@@ -655,7 +629,6 @@
               <div><span class="detail-label">Drink window</span>${escapeHtml([wine.drinkFrom, wine.drinkTo].filter(Boolean).join(' - ') || '—')}</div>
               <div><span class="detail-label">Alcohol</span>${formatValue(wine.alcohol, wine.alcohol ? '%' : '')}</div>
             </div>
-
             <div class="card-actions">
               <button class="btn-secondary btn-small" onclick="editBottle('${wine.id}')">Edit</button>
               <button class="btn-danger btn-small" onclick="deleteBottle('${wine.id}')">Delete</button>
@@ -664,15 +637,43 @@
         </div>
       `).join("");
     }
-
+    function renderTimeline() {
+      const filtered = getFilteredWines().filter(w => w.drinkFrom || w.drinkTo);
+      const timeline = document.getElementById('timelineView');
+      if (!filtered.length) {
+        timeline.innerHTML = '<div class="empty">No bottles with drink windows yet.</div>';
+        return;
+      }
+      const years = filtered.flatMap(w => [Number(w.drinkFrom) || currentYear, Number(w.drinkTo) || currentYear]);
+      const minYear = Math.min(...years) - 1;
+      const maxYear = Math.max(...years) + 1;
+      const span = Math.max(1, maxYear - minYear);
+      timeline.innerHTML = `<div class="timeline-list">${filtered.map(w => {
+        const from = Number(w.drinkFrom) || currentYear;
+        const to = Number(w.drinkTo) || currentYear;
+        const left = ((from - minYear) / span) * 100;
+        const width = Math.max(4, ((to - from + 1) / span) * 100);
+        const now = ((currentYear - minYear) / span) * 100;
+        return `
+          <div class="timeline-row">
+            <div class="timeline-title">${escapeHtml(w.name)}</div>
+            <div class="timeline-meta">${escapeHtml(w.producer || '')} · ${escapeHtml(w.region || '')} · ${from} - ${to}</div>
+            <div class="timeline-bar">
+              <div class="timeline-fill" style="left:${left}%; width:${width}%;"></div>
+              <div class="timeline-now" style="left:${now}%;"></div>
+            </div>
+          </div>
+        `;
+      }).join('')}</div>`;
+    }
     function renderAll() {
       renderStats();
+      renderDashboard();
       renderCards();
+      renderTimeline();
     }
-
     function openModal(editWine = null) {
       elements.modalBackdrop.classList.add("open");
-
       if (editWine) {
         editingId = editWine.id;
         elements.modalTitle.textContent = "Edit bottle";
@@ -711,11 +712,7 @@
         elements.notesInput.value = "";
       }
     }
-
-    function closeModal() {
-      elements.modalBackdrop.classList.remove("open");
-    }
-
+    function closeModal() { elements.modalBackdrop.classList.remove("open"); }
     function getFormData() {
       return {
         id: editingId || crypto.randomUUID(),
@@ -736,41 +733,31 @@
         notes: elements.notesInput.value.trim()
       };
     }
-
     function saveBottle() {
       const wine = getFormData();
       if (!wine.name) {
         alert("Please enter at least the wine name.");
         return;
       }
-
-      if (editingId) {
-        wines = wines.map((item) => item.id === editingId ? wine : item);
-      } else {
-        wines.unshift(wine);
-      }
-
+      if (editingId) wines = wines.map((item) => item.id === editingId ? wine : item);
+      else wines.unshift(wine);
       saveWines();
       closeModal();
       renderAll();
     }
-
     window.editBottle = function(id) {
       const wine = wines.find((item) => item.id === id);
       if (!wine) return;
       openModal(wine);
     };
-
     window.deleteBottle = function(id) {
       const wine = wines.find((item) => item.id === id);
       if (!wine) return;
-      const confirmed = confirm(`Delete "${wine.name}"?`);
-      if (!confirmed) return;
+      if (!confirm(`Delete "${wine.name}"?`)) return;
       wines = wines.filter((item) => item.id !== id);
       saveWines();
       renderAll();
     };
-
     function exportJson() {
       const blob = new Blob([JSON.stringify(wines, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
@@ -780,7 +767,6 @@
       a.click();
       URL.revokeObjectURL(url);
     }
-
     async function importJsonFile(file) {
       const text = await file.text();
       const parsed = JSON.parse(text);
@@ -793,7 +779,6 @@
       renderAll();
       alert("Import complete.");
     }
-
     elements.addBottleBtn.addEventListener("click", () => openModal());
     elements.cancelBtn.addEventListener("click", closeModal);
     elements.saveBtn.addEventListener("click", saveBottle);
@@ -802,24 +787,27 @@
     elements.importFile.addEventListener("change", async (event) => {
       const file = event.target.files?.[0];
       if (!file) return;
-      try {
-        await importJsonFile(file);
-      } catch (error) {
-        alert("Could not import file.");
-        console.error(error);
-      }
+      try { await importJsonFile(file); }
+      catch (error) { alert("Could not import file."); console.error(error); }
       event.target.value = "";
     });
-
     [elements.searchInput, elements.statusFilter, elements.typeFilter, elements.priceFilter].forEach((element) => {
-      element.addEventListener("input", renderCards);
-      element.addEventListener("change", renderCards);
+      element.addEventListener("input", renderAll);
+      element.addEventListener("change", renderAll);
     });
-
     elements.modalBackdrop.addEventListener("click", (event) => {
       if (event.target === elements.modalBackdrop) closeModal();
     });
-
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tab = btn.dataset.tab;
+        document.getElementById('dashboardTab').style.display = tab === 'dashboard' ? '' : 'none';
+        document.getElementById('collectionTab').style.display = tab === 'collection' ? '' : 'none';
+        document.getElementById('timelineTab').style.display = tab === 'timeline' ? '' : 'none';
+      });
+    });
     renderAll();
   </script>
 </body>
